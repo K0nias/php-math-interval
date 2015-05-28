@@ -1,0 +1,28 @@
+{
+	"name": "achse/php-interval",
+	"description": "",
+	"type": "library",
+	"license": [
+		"New BSD"
+	],
+	"authors": [
+		{
+			"name": "Petr Hejna",
+			"homepage": "http://petrhejna.org"
+		}
+	],
+	"require": {
+		"php": ">= 5.3.7"
+	},
+	"require-dev": {
+		"nette/tester": "@dev"
+	},
+	"autoload": {
+		"psr-4": {
+			"Achse\\Interval\\": "src/"
+		},
+		"classmap": [
+			"src/Exceptions.php"
+		]
+	}
+}
