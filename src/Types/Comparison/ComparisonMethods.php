@@ -6,10 +6,7 @@ use Nette;
 
 
 
-/**
- * @method int compare(IComparable $other)
- */
-trait Comparison
+trait ComparisonMethods
 {
 
 	/**

@@ -9,7 +9,7 @@ interface IComparable
 
 	const THIS_LESS_THEN_OTHER = -1;
 	const THIS_EQUAL_AS_OTHER = 0;
-	const THIS_GREATER_THEN_OTHER = 0;
+	const THIS_GREATER_THEN_OTHER = 1;
 
 
 
