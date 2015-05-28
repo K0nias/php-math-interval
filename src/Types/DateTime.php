@@ -13,11 +13,6 @@ class DateTime extends NDateTime implements IComparable
 
 	use ComparisonMethods;
 
-	/**
-	 * @var NDateTime
-	 */
-	private $dateTime;
-
 
 
 	/**
@@ -25,7 +20,7 @@ class DateTime extends NDateTime implements IComparable
 	 */
 	public function compare(IComparable $other)
 	{
-		if (!$other instanceof DateTime) {
+		if (!$other instanceof static) {
 			throw new \LogicException('You cannot compare sheep with the goat.');
 		}
 
