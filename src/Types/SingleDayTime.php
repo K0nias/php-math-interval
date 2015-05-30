@@ -166,6 +166,7 @@ class SingleDayTime extends Object implements IComparable
 		}
 
 		throw new NotImplementedException();
+
 //		$result = Strings::match();
 
 		return $this;
@@ -193,32 +194,7 @@ class SingleDayTime extends Object implements IComparable
 	 */
 	public function add(SingleDayTime $other)
 	{
-		$seconds = $this->seconds;
-		$minutes = $this->minutes;
-		$hours = $this->hours;
-
-		$seconds += $other->getSeconds();
-		$carryMinutes = 0;
-		if ($seconds > 59) {
-			$carryMinutes = (int)($seconds / 60);
-			$seconds = $seconds % 60;
-		}
-
-		$minutes += ($other->getMinutes() + $carryMinutes);
-		$carryHours = 0;
-		if ($minutes > 59) {
-			$carryHours = (int)($minutes / 60);
-			$minutes = $minutes % 60;
-		}
-
-		$hours += ($other->getHours() + $carryHours);
-		if ($hours > 23) {
-			throw new InvalidArgumentException('By adding this Time we would overcome midnight!');
-		}
-
-		$this->seconds = $seconds;
-		$this->minutes = $minutes;
-		$this->hours = $hours;
+		$this->addOrSub($other, 1);
 
 		return $this;
 	}
@@ -231,13 +207,7 @@ class SingleDayTime extends Object implements IComparable
 	 */
 	public function sub(SingleDayTime $other)
 	{
-		$seconds = $this->seconds;
-		$minutes = $this->minutes;
-		$hours = $this->hours;
-
-		$this->seconds = $seconds;
-		$this->minutes = $minutes;
-		$this->hours = $hours;
+		$this->addOrSub($other, -1);
 
 		return $this;
 	}
@@ -254,6 +224,44 @@ class SingleDayTime extends Object implements IComparable
 		$dateTime = new DateTime(self::INTERNAL_DATE . " {$this->hours}:{$this->minutes}:{$this->seconds}");
 
 		return $dateTime->format($format);
+	}
+
+
+
+	/**
+	 * @param SingleDayTime $other
+	 * @param int $sign -1 (sub) or 1 (add)
+	 */
+	private function addOrSub(SingleDayTime $other, $sign)
+	{
+		$seconds = $this->seconds;
+		$minutes = $this->minutes;
+		$hours = $this->hours;
+
+		$seconds += $sign * $other->getSeconds();
+		$carryMinutes = 0;
+		if ($seconds > 59 || $seconds < 0) {
+			$carryMinutes = 1;
+			$seconds += (-$sign) * 60;
+		}
+
+		$minutes += $sign * ($other->getMinutes() + $carryMinutes);
+		$carryHours = 0;
+		if ($minutes > 59 || $minutes < 0) {
+			$carryHours = 1;
+			$minutes += (-$sign) * 60;
+		}
+
+		$hours += $sign * ($other->getHours() + $carryHours);
+		if ($hours > 23 || $hours < 0) {
+			throw new InvalidArgumentException(
+				'By ' . ($sign === 1 ? 'adding' : 'subbing') . ' this Time we would get put of one day!'
+			);
+		}
+
+		$this->seconds = $seconds;
+		$this->minutes = $minutes;
+		$this->hours = $hours;
 	}
 
 }
