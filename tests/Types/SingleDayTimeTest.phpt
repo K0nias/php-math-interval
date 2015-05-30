@@ -19,6 +19,17 @@ use Tester\TestCase;
 class SingleDayTimeTest extends TestCase
 {
 
+	use TestComparison;
+
+
+
+	public function testCompare()
+	{
+		$this->assertForComparison(new SingleDayTime(0, 5, 0), new SingleDayTime(0, 6, 0));
+	}
+
+
+
 	public function testToDateTime()
 	{
 		$day = new DateTime('2015-12-24 00:00:00');
