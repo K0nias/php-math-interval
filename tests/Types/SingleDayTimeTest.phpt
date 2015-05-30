@@ -8,6 +8,7 @@ namespace Achse\Tests\Interval\Types;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
+use Achse\Interval\Types\DateTime;
 use Achse\Interval\Types\SingleDayTime;
 use Nette\InvalidArgumentException;
 use Tester\Assert;
@@ -17,6 +18,15 @@ use Tester\TestCase;
 
 class SingleDayTimeTest extends TestCase
 {
+
+	public function testToDateTime()
+	{
+		$day = new DateTime('2015-12-24 00:00:00');
+
+		Assert::equal(new DateTime('2015-12-24 12:13:14'), (new SingleDayTime(12, 13, 14))->toDateTime($day));
+	}
+
+
 
 	public function testAdd()
 	{
@@ -88,6 +98,32 @@ class SingleDayTimeTest extends TestCase
 		Assert::exception(
 			function () {
 				(new SingleDayTime(23, 59, 58))->sub(new SingleDayTime(23, 59, 59));
+			},
+			InvalidArgumentException::class
+		);
+	}
+
+
+
+	public function testModify()
+	{
+		$time = new SingleDayTime(10, 10, 10);
+
+		$time->modify('+1 hour');
+		Assert::equal('11:10:10', $time->format('H:i:s'));
+
+		$time->modify('+1 minute');
+		Assert::equal('11:11:10', $time->format('H:i:s'));
+
+		$time->modify('+1 second');
+		Assert::equal('11:11:11', $time->format('H:i:s'));
+
+		$time->modify('-80 seconds');
+		Assert::equal('11:09:51', $time->format('H:i:s'));
+
+		Assert::exception(
+			function () {
+				(new SingleDayTime(5, 14, 58))->modify('-6 hours');
 			},
 			InvalidArgumentException::class
 		);

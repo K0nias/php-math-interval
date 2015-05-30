@@ -5,10 +5,7 @@ namespace Achse\Interval\Types;
 use Achse\Interval\Types\Comparison\ComparisonMethods;
 use Achse\Interval\Types\Comparison\IComparable;
 use Nette\InvalidArgumentException;
-use Nette\NotImplementedException;
 use Nette\Object;
-use Nette\Utils\DateTime;
-use Nette\Utils\Strings;
 
 
 
@@ -161,13 +158,16 @@ class SingleDayTime extends Object implements IComparable
 	 */
 	public function modify($modifier)
 	{
-		if (is_numeric($modifier)) {
-			$this->add(new static(0, 0, $modifier));
+		$thisDateTime = $this->toInternalDateTime();
+		$modified = $thisDateTime->modifyClone($modifier);
+
+		if ($thisDateTime->format('Y-m-d') !== $modified->format('Y-m-d')) {
+			throw new InvalidArgumentException("Modifying this by '{$modifier}' leaves a single day range.");
 		}
 
-		throw new NotImplementedException();
-
-//		$result = Strings::match();
+		$this->setSeconds((float) $modified->format('s'));
+		$this->setMinutes((int) $modified->format('i'));
+		$this->setHours((int) $modified->format('H'));
 
 		return $this;
 	}
@@ -221,9 +221,21 @@ class SingleDayTime extends Object implements IComparable
 	public function format($format)
 	{
 		// Todo: remove DateTime dependency OR make NOT possible to get anything of self::INTERNAL_DATE go out
-		$dateTime = new DateTime(self::INTERNAL_DATE . " {$this->hours}:{$this->minutes}:{$this->seconds}");
+		return $this->toInternalDateTime()->format($format);
+	}
 
-		return $dateTime->format($format);
+
+
+	/**
+	 * @param \DateTime $day
+	 * @return DateTime
+	 */
+	public function toDateTime(\DateTime $day)
+	{
+		$day = DateTime::from($day);
+		$day->setTime($this->hours, $this->minutes, $this->seconds);
+
+		return $day;
 	}
 
 
@@ -262,6 +274,16 @@ class SingleDayTime extends Object implements IComparable
 		$this->seconds = $seconds;
 		$this->minutes = $minutes;
 		$this->hours = $hours;
+	}
+
+
+
+	/**
+	 * @return DateTime
+	 */
+	private function toInternalDateTime()
+	{
+		return $this->toDateTime(new DateTime(self::INTERNAL_DATE));
 	}
 
 }
