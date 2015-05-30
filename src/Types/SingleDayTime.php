@@ -4,6 +4,7 @@ namespace Achse\Interval\Types;
 
 use Achse\Interval\Types\Comparison\ComparisonMethods;
 use Achse\Interval\Types\Comparison\IComparable;
+use Achse\Interval\Types\Comparison\Utils;
 use Nette\InvalidArgumentException;
 use Nette\Object;
 
@@ -59,7 +60,7 @@ class SingleDayTime extends Object implements IComparable
 			throw new \LogicException('You cannot compare sheep with the goat.');
 		}
 
-		return gmp_cmp($this->toSeconds(), $other->toSeconds());
+		return Utils::gmpCmp($this->toSeconds(), $other->toSeconds());
 	}
 
 
@@ -165,9 +166,7 @@ class SingleDayTime extends Object implements IComparable
 			throw new InvalidArgumentException("Modifying this by '{$modifier}' leaves a single day range.");
 		}
 
-		$this->setSeconds((float) $modified->format('s'));
-		$this->setMinutes((int) $modified->format('i'));
-		$this->setHours((int) $modified->format('H'));
+		$this->setFromDateTime($modified);
 
 		return $this;
 	}
@@ -241,6 +240,37 @@ class SingleDayTime extends Object implements IComparable
 
 
 	/**
+	 * @param int|string|SingleDayTime $time
+	 * @return SingleDayTime
+	 */
+	public static function from($time)
+	{
+		if ($time instanceof static) {
+			return clone $time;
+		}
+
+		$dateTime = DateTime::from($time);
+
+		return static::fromDateTime($dateTime);
+	}
+
+
+
+	/**
+	 * @param \DateTime $dateTime
+	 * @return static
+	 */
+	public static function fromDateTime(\DateTime $dateTime)
+	{
+		/** @var DateTime $dateTime */
+		$dateTime = DateTime::from($dateTime);
+
+		return new static((int) $dateTime->format('H'), (int) $dateTime->format('i'), (float) $dateTime->format('s'));
+	}
+
+
+
+	/**
 	 * @param SingleDayTime $other
 	 * @param int $sign -1 (sub) or 1 (add)
 	 */
@@ -284,6 +314,18 @@ class SingleDayTime extends Object implements IComparable
 	private function toInternalDateTime()
 	{
 		return $this->toDateTime(new DateTime(self::INTERNAL_DATE));
+	}
+
+
+
+	/**
+	 * @param \DateTime $modified
+	 */
+	private function setFromDateTime(\DateTime $modified)
+	{
+		$this->setSeconds((float) $modified->format('s'));
+		$this->setMinutes((int) $modified->format('i'));
+		$this->setHours((int) $modified->format('H'));
 	}
 
 }

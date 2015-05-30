@@ -1,119 +1,224 @@
 <?php
 
-namespace Achse\Interval;
+namespace Achse\Interval\Intervals;
 
 use Achse\Interval\Types\Comparison\IComparable;
-use Achse\Interval\Types\DateTime;
+use Nette\InvalidArgumentException;
+use Nette\Object;
 
 
 
-class DateTimeInterval extends Interval
+class Interval extends Object
 {
 
-	const PRECISION_ON_SECOND = '1 second';
-	const PRECISION_ON_MINUTE = '1 minute';
+	const OPENED = TRUE;
+	const CLOSED = FALSE;
+
+	/**
+	 * @var IComparable
+	 */
+	private $left;
+
+	/**
+	 * @var IComparable
+	 */
+	private $right;
+
+	/**
+	 * @var bool
+	 */
+	private $leftState;
+
+	/**
+	 * @var bool
+	 */
+	private $rightState;
 
 
 
 	/**
-	 * @inheritdoc
+	 * @param IComparable $left
+	 * @param bool $stateA
+	 * @param IComparable $right
+	 * @param bool $stateB
 	 */
 	public function __construct(IComparable $left, $stateA, IComparable $right, $stateB)
 	{
-		/** @var DateTime $left */
-		$left = DateTime::from($left);
-		/** @var DateTime $right */
-		$right = DateTime::from($right);
+		$this->leftState = $stateA;
+		$this->rightState = $stateB;
 
-		parent::__construct($left, $stateA, $right, $stateB);
+		$this->setLeft($left);
+		$this->setRight($right);
+
 	}
 
 
 
 	/**
-	 * @param string $from
-	 * @param string $till
-	 * @return self
+	 * @return IComparable
 	 */
-	public static function fromString($from, $till)
+	public function getLeft()
 	{
-		return new static(new DateTime($from), self::CLOSED, new DateTime($till), self::OPENED);
+		return $this->left;
 	}
 
 
 
 	/**
-	 * @return string
+	 * @return IComparable
 	 */
-	public function getString()
+	public function getRight()
 	{
-		return $this->__toString();
+		return $this->right;
 	}
 
 
 
 	/**
-	 * @return string
+	 * @param IComparable $left
+	 * @return static
 	 */
-	public function __toString()
+	public function setLeft(IComparable $left)
 	{
-		return $this->getLeft()->format('Y-m-d H:i:s') . '-' . $this->getRight()->format('Y-m-d H:i:s');
-	}
-
-
-
-	/**
-	 * # Example:
-	 *
-	 *     This:  □□□□□□■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□□□□□
-	 *     Other: □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
-	 *
-	 * # False examples:
-	 *
-	 *     This:  □□□□□□■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□□□□□
-	 *     Other: □□□□□□□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□
-	 *
-	 *     This:  □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
-	 *     Other: □□□□□□■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□□□□□
-	 *
-	 * @param DateTimeInterval $other
-	 * @param string $precision
-	 * @return bool
-	 */
-	public function isFollowedBy(DateTimeInterval $other, $precision = self::PRECISION_ON_SECOND)
-	{
-		if ($this->getLeft() > $other->getTill()) {
-			return FALSE;
+		if ($this->right !== NULL && $left->greaterThen($this->right)) {
+			throw new InvalidArgumentException('Left endpoint cannot be greater then Right endpoint.');
 		}
 
-		$modifiedPlus = $this->getRight()->modifyClone("+{$precision}");
-		$modifiedMinus = $other->getFrom()->modifyClone("-{$precision}");
+		$this->left = $left;
 
-		return $modifiedPlus >= $other->getFrom()
-		&& $modifiedPlus <= $other->getTill()
-		&& $modifiedMinus <= $this->getRight()
-		&& $modifiedMinus >= $this->getLeft();
+		return $this;
 	}
 
 
 
 	/**
-	 * # Example:
-	 *
-	 *     This:  □□□□□□■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□□□□□
-	 *     Other: □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
-	 *                    23:59:59 >< 00:00:00
-	 *
-	 * @param DateTimeInterval $other
+	 * @param IComparable $right
+	 * @return Interval
+	 */
+	public function setRight(IComparable $right)
+	{
+		if ($this->left !== NULL && $this->left->greaterThen($right)) {
+			throw new InvalidArgumentException('Right endpoint cannot be less then Left endpoint.');
+		}
+
+		$this->right = $right;
+
+		return $this;
+	}
+
+
+
+	/**
 	 * @return bool
 	 */
-	public function isFollowedByAtMidnight(DateTimeInterval $other)
+	public function isEmpty()
 	{
-		$openingYesterday = $other->getFrom()->modifyClone('-1 day');
+		return $this->isOpened() && $this->left->equal($this->right);
+	}
 
-		return $this->getRight()->format('Y-m-d') === $openingYesterday->format('Y-m-d')
-		&& $this->getRight()->format('H:i:s') === '23:59:59'
-		&& $other->getFrom()->format('H:i:s') === '00:00:00';
+
+
+	/**
+	 * A degenerate interval is any set consisting of a single element.
+	 *
+	 * @return bool
+	 */
+	public function isDegenerate()
+	{
+		return !$this->isClosed() && $this->left->equal($this->right);
+	}
+
+
+
+	/**
+	 * @return bool
+	 */
+	public function isProper()
+	{
+		return !$this->isOpened() && !$this->isDegenerate();
+	}
+
+
+
+	/**
+	 * An open interval does not include its endpoints.
+	 *
+	 * @return bool
+	 */
+	public function isOpened()
+	{
+		return $this->isLeftOpened() && $this->isRightOpened();
+	}
+
+
+
+	/**
+	 * Does not include left endpoint.
+	 *
+	 * @return bool
+	 */
+	public function isLeftOpened()
+	{
+		return $this->leftState === self::OPENED;
+	}
+
+
+
+	/**
+	 * Does not include right endpoint.
+	 *
+	 * @return bool
+	 */
+	public function isRightOpened()
+	{
+		return $this->rightState === self::OPENED;
+	}
+
+
+
+	/**
+	 * @return bool
+	 */
+	public function isClosed()
+	{
+		return $this->isLeftClosed() && !$this->isRightClosed();
+	}
+
+
+
+	/**
+	 * @return bool
+	 */
+	public function isLeftClosed()
+	{
+		return $this->leftState === self::CLOSED;
+	}
+
+
+
+	/**
+	 * @return bool
+	 */
+	public function isRightClosed()
+	{
+		return $this->rightState === self::CLOSED;
+	}
+
+
+
+	/**
+	 * @param IComparable $element
+	 * @return bool
+	 */
+	public function isContainingElement(IComparable $element)
+	{
+		$leftBoundaryCheck = $this->isLeftOpened() && $this->getLeft()->lessThen($element)
+			|| $this->isRightClosed() && $this->getLeft()->lessThenOrEqual($element);
+
+		$rightBoundaryCheck = $this->isRightOpened() && $this->getRight()->greaterThen($element)
+			|| $this->isRightClosed() && $this->getRight()->greaterThenOrEqual($element);
+
+		return $leftBoundaryCheck && $rightBoundaryCheck;
 	}
 
 
@@ -138,15 +243,15 @@ class DateTimeInterval extends Interval
 	 *     This:  □□□□□□■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□□□□□
 	 *     Other: □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
 	 *
-	 * @param DateTimeInterval $other
+	 * @param Interval $other
 	 * @return bool
 	 */
-	public function isColliding(DateTimeInterval $other)
+	public function isColliding(Interval $other)
 	{
 		return $this->isOverlappedFromRightBy($other)
-		|| $other->isOverlappedFromRightBy($this)
-		|| $this->isContaining($other)
-		|| $other->isContaining($this);
+			|| $other->isOverlappedFromRightBy($this)
+			|| $this->isContaining($other)
+			|| $other->isContaining($this);
 	}
 
 
@@ -165,19 +270,19 @@ class DateTimeInterval extends Interval
 	 *     This:  □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
 	 *     Other: □□□□□□□□□□□■■■■■■■■■■■■■■■■■■■■■■■■□□□□□□□□□□
 	 *
-	 * @param DateTimeInterval $other
+	 * @param Interval $other
 	 * @return bool
 	 */
-	public function isContaining(DateTimeInterval $other)
+	public function isContaining(Interval $other)
 	{
 		$a = $this;
 		$b = $other;
 
 		return
 			(
-				$b->getFrom() >= $a->getFrom()
+				$b->getLeft() >= $a->getLeft()
 				&&
-				$b->getTill() <= $a->getTill()
+				$b->getRight() <= $a->getRight()
 			);
 	}
 
@@ -197,29 +302,29 @@ class DateTimeInterval extends Interval
 	 *     This:  □□□□□□□□□□□■■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□
 	 *     Other: □□□□□□□□□□□□□□□□□□□□□□□□■■■■■■■■■■■■□□□□□□□□□
 	 *
-	 * @param DateTimeInterval $other
+	 * @param Interval $other
 	 * @return bool
 	 */
-	public function isOverlappedFromRightBy(DateTimeInterval $other)
+	public function isOverlappedFromRightBy(Interval $other)
 	{
 		$a = $this;
 		$b = $other;
 
 		return
 			(
-				$b->getFrom() > $a->getFrom() && $b->getFrom() < $a->getTill()
+				$b->getLeft() > $a->getLeft() && $b->getLeft() < $a->getRight()
 				&&
-				$b->getTill() > $a->getTill()
+				$b->getRight() > $a->getRight()
 			);
 	}
 
 
 
 	/**
-	 * @param DateTimeInterval $other
+	 * @param Interval $other
 	 * @return static|NULL
 	 */
-	public function getIntersection(DateTimeInterval $other)
+	public function getIntersection(Interval $other)
 	{
 		$a = $this;
 		$b = $other;
@@ -235,38 +340,17 @@ class DateTimeInterval extends Interval
 			//    $b->from   |   | <- $a-till
 
 		} elseif ($a->isOverlappedFromRightBy($b)) {
-			return new static($b->getFrom(), $a->getTill());
+			return new static($b->getLeft(), $a->getRight());
 
 			// A: □□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□
 			// B: □□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□
 			//    $a->from -> |   | <- $b-till
 
 		} elseif ($b->isOverlappedFromRightBy($this)) {
-			return new static($a->getFrom(), $b->getTill());
+			return new static($a->getLeft(), $b->getRight());
 		}
 
 		return NULL;
 	}
 
-
-
-	/**
-	 * @param \DateTime $at
-	 * @return bool
-	 */
-	public function isContainingDateTime(\DateTime $at)
-	{
-		/** @var DateTime $at */
-		$at = DateTime::from($at);
-
-		$leftBoundaryCheck = $this->isLeftOpened() && $this->getLeft()->lessThen($at)
-			|| $this->isRightClosed() && $this->getLeft()->lessThenOrEqual($at);
-
-		$rightBoundaryCheck = $this->isRightOpened() && $this->getRight()->greaterThen($at)
-			|| $this->isRightClosed() && $this->getRight()->greaterThenOrEqual($at);
-
-		return $leftBoundaryCheck && $rightBoundaryCheck;
-	}
-
 }
-

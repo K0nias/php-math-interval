@@ -5,14 +5,39 @@ namespace Achse\Interval\Types;
 use Achse\Interval\Types\Comparison\ComparisonMethods;
 use Achse\Interval\Types\Comparison\IComparable;
 use Achse\Interval\Types\Comparison\Utils;
-use Nette\Utils\DateTime as NDateTime;
+use Nette\Object;
 
 
 
-class DateTime extends NDateTime implements IComparable
+class Integer extends Object implements IComparable
 {
 
 	use ComparisonMethods;
+
+	/**
+	 * @var int
+	 */
+	private $internal;
+
+
+
+	/**
+	 * @param int $internal
+	 */
+	public function __construct($internal)
+	{
+		$this->internal = $internal;
+	}
+
+
+
+	/**
+	 * @return int
+	 */
+	public function toInt()
+	{
+		return $this->internal;
+	}
 
 
 
@@ -25,7 +50,6 @@ class DateTime extends NDateTime implements IComparable
 			throw new \LogicException('You cannot compare sheep with the goat.');
 		}
 
-		return Utils::gmpCmp($this->getTimestamp(), $other->getTimestamp());
+		return Utils::gmpCmp($this->internal, $other->toInt());
 	}
-
 }

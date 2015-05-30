@@ -129,6 +129,28 @@ class SingleDayTimeTest extends TestCase
 		);
 	}
 
+
+
+	public function testFromDateTime()
+	{
+		$time = SingleDayTime::fromDateTime(new DateTime('2015-05-14 09:10:11'));
+		Assert::equal('09:10:11', $time->format('H:i:s'));
+	}
+
+
+
+	public function testFrom()
+	{
+		$time = SingleDayTime::from('2015-05-15 1:2:3');
+		Assert::equal('01:02:03', $time->format('H:i:s'));
+
+		$time = SingleDayTime::from('July 1, 2001 20:21:22');
+		Assert::equal('20:21:22', $time->format('H:i:s'));
+
+		$time = SingleDayTime::from(new SingleDayTime(4, 17, 39));
+		Assert::equal('04:17:39', $time->format('H:i:s'));
+	}
+
 }
 
 
