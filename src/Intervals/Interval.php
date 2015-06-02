@@ -235,39 +235,6 @@ class Interval extends Object
 	 *     This:  □□□□□□□□□□□■■■■■■■■■■■■■■■■■■■■■■■■□□□□□□□□□□
 	 *     Other: □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
 	 *
-	 *     This:  □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
-	 *     Other: □□□□□□□□□□□■■■■■■■■■■■■■■■■■■■■■■■■□□□□□□□□□□
-	 *
-	 *     This:  □□□□□□□□□□□■■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□
-	 *     Other: □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
-	 *
-	 *     This:  □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
-	 *     Other: □□□□□□□□□□□■■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□
-	 *
-	 * # False example:
-	 *
-	 *     This:  □□□□□□■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□□□□□
-	 *     Other: □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
-	 *
-	 * @param Interval $other
-	 * @return bool
-	 */
-	public function isColliding(Interval $other)
-	{
-		return $this->isOverlappedFromRightBy($other)
-		|| $other->isOverlappedFromRightBy($this)
-		|| $this->isContaining($other)
-		|| $other->isContaining($this);
-	}
-
-
-
-	/**
-	 * # Examples:
-	 *
-	 *     This:  □□□□□□□□□□□■■■■■■■■■■■■■■■■■■■■■■■■□□□□□□□□□□
-	 *     Other: □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
-	 *
 	 *     This:  □□□□□□□□□□□■■■■■■■■■■■■■■■■■■■■■■■■□□□□□□□□□□
 	 *     Other: □□□□□□□□□□□■■■■■■■■■■■■■■■■■■■■■■■■□□□□□□□□□□
 	 *
@@ -281,15 +248,10 @@ class Interval extends Object
 	 */
 	public function isContaining(Interval $other)
 	{
-		$a = $this;
-		$b = $other;
-
-		return
-			(
-				$b->getLeft() >= $a->getLeft()
-				&&
-				$b->getRight() <= $a->getRight()
-			);
+		return (
+			$this->isContainingElement($other->getLeft())
+			&& $this->isContainingElement($other->getRight())
+		);
 	}
 
 
@@ -357,6 +319,41 @@ class Interval extends Object
 		}
 
 		return NULL;
+	}
+
+
+
+	/**
+	 * # Examples:
+	 *
+	 *     This:  □□□□□□□□□□□■■■■■■■■■■■■■■■■■■■■■■■■□□□□□□□□□□
+	 *     Other: □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
+	 *
+	 *     This:  □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
+	 *     Other: □□□□□□□□□□□■■■■■■■■■■■■■■■■■■■■■■■■□□□□□□□□□□
+	 *
+	 *     This:  □□□□□□□□□□□■■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□
+	 *     Other: □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
+	 *
+	 *     This:  □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
+	 *     Other: □□□□□□□□□□□■■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□
+	 *
+	 * # False example:
+	 *
+	 *     This:  □□□□□□■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□□□□□
+	 *     Other: □□□□□□□□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□
+	 *
+	 * @param Interval $other
+	 * @return bool
+	 */
+	public function isColliding(Interval $other)
+	{
+		return (
+			$this->isOverlappedFromRightBy($other)
+			|| $other->isOverlappedFromRightBy($this)
+			|| $this->isContaining($other)
+			|| $other->isContaining($this)
+		);
 	}
 
 }

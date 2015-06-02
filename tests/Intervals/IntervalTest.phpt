@@ -43,6 +43,41 @@ class IntervalTest extends TestCase
 		Assert::true($interval->isContainingElement($three));
 	}
 
+	public function testIsContaining() {
+		$one = new Integer(1);
+		$two = new Integer(2);
+		$three = new Integer(3);
+		$four = new Integer(4);
+
+		$intervalOneFourClosed = new Interval($one, Interval::CLOSED, $four, Interval::CLOSED);
+		$intervalOneFourOpened = new Interval($one, Interval::OPENED, $four, Interval::OPENED);
+
+		$intervalTwoThreeClosed = new Interval($two, Interval::CLOSED, $three, Interval::CLOSED);
+		$intervalTwoThreeOpened = new Interval($two, Interval::OPENED, $three, Interval::OPENED);
+
+		// [1, 4] contains (1, 4)
+		Assert::true($intervalOneFourClosed->isContaining($intervalOneFourOpened));
+		// (1, 4) NOT contains [1, 4]
+		Assert::false($intervalOneFourOpened->isContaining($intervalOneFourClosed));
+
+		// [1, 4] contains [2, 3]
+		Assert::true($intervalOneFourClosed->isContaining($intervalTwoThreeClosed));
+		// [2, 3] NOT contains [1, 4]
+		Assert::false($intervalTwoThreeClosed->isContaining($intervalOneFourClosed));
+
+		// [1, 4] contains (2, 3)
+		Assert::true($intervalOneFourClosed->isContaining($intervalTwoThreeOpened));
+		// (2, 3) NOT contains [1, 4]
+		Assert::false($intervalTwoThreeOpened->isContaining($intervalOneFourClosed));
+
+
+		$left = new Interval($one, Interval::CLOSED, $three, Interval::CLOSED);
+		$right = new Interval($three, Interval::CLOSED, $four, Interval::CLOSED);
+
+		Assert::false($left->isContaining($right));
+		Assert::false($right->isContaining($left));
+	}
+
 }
 
 
