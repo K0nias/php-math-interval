@@ -78,6 +78,60 @@ class IntervalTest extends TestCase
 		Assert::false($right->isContaining($left));
 	}
 
+
+
+	public function testIsOverlappedFromRightBy()
+	{
+		$one = new Integer(1);
+		$two = new Integer(2);
+		$three = new Integer(3);
+		$four = new Integer(4);
+
+		$intervalOneTwoClosed = new Interval($one, Interval::CLOSED, $two, Interval::CLOSED);
+		$intervalTwoThreeClosed = new Interval($two, Interval::CLOSED, $three, Interval::CLOSED);
+		$intervalOneTwoOpened = new Interval($one, Interval::OPENED, $two, Interval::OPENED);
+		$intervalTwoThreeOpened = new Interval($two, Interval::OPENED, $three, Interval::OPENED);
+
+
+		Assert::true($intervalOneTwoClosed->isOverlappedFromRightBy($intervalTwoThreeClosed));
+		Assert::false($intervalTwoThreeClosed->isOverlappedFromRightBy($intervalOneTwoClosed));
+
+		// (1, 2) ~ [2, 3]
+		Assert::false($intervalOneTwoOpened->isOverlappedFromRightBy($intervalTwoThreeClosed));
+		// [1, 2] ~ (2, 3)
+		Assert::false($intervalOneTwoClosed->isOverlappedFromRightBy($intervalTwoThreeOpened));
+
+		$intervalOneThreeOpened = new Interval($one, Interval::OPENED, $three, Interval::OPENED);
+		$intervalTwoFourOpened = new Interval($two, Interval::OPENED, $four, Interval::OPENED);
+
+		Assert::true($intervalOneThreeOpened->isOverlappedFromRightBy($intervalTwoFourOpened));
+	}
+
+
+
+	public function testIsColliding()
+	{
+		$one = new Integer(1);
+		$two = new Integer(2);
+		$three = new Integer(3);
+		$four = new Integer(4);
+
+		$intervalOneTwoClosed = new Interval($one, Interval::CLOSED, $two, Interval::CLOSED);
+		$intervalTwoThreeClosed = new Interval($two, Interval::CLOSED, $three, Interval::CLOSED);
+		$intervalOneTwoOpened = new Interval($one, Interval::OPENED, $two, Interval::OPENED);
+		$intervalTwoThreeOpened = new Interval($two, Interval::OPENED, $three, Interval::OPENED);
+		$intervalOneThreeOpened = new Interval($one, Interval::OPENED, $three, Interval::OPENED);
+		$intervalTwoFourOpened = new Interval($two, Interval::OPENED, $four, Interval::OPENED);
+
+		Assert::true($intervalOneTwoClosed->isColliding($intervalTwoThreeClosed));
+		Assert::true($intervalTwoThreeClosed->isColliding($intervalOneTwoClosed));
+
+		Assert::false($intervalOneTwoClosed->isColliding($intervalTwoThreeOpened));
+		Assert::false($intervalOneTwoOpened->isColliding($intervalTwoThreeClosed));
+
+		Assert::true($intervalOneThreeOpened->isColliding($intervalTwoFourOpened));
+		Assert::true($intervalTwoFourOpened->isColliding($intervalOneThreeOpened));
+	}
 }
 
 

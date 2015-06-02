@@ -116,19 +116,5 @@ class DateTimeInterval extends Interval
 			&& $other->getLeft()->format('H:i:s') === '00:00:00';
 	}
 
-
-
-	/**
-	 * @param IComparable $element
-	 * @return bool
-	 */
-	public function isContainingElement(IComparable $element)
-	{
-		/** @var DateTime $element */
-		$element = DateTime::from($element);
-
-		return parent::isContainingElement($element);
-	}
-
 }
 

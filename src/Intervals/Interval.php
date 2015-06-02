@@ -275,15 +275,10 @@ class Interval extends Object
 	 */
 	public function isOverlappedFromRightBy(Interval $other)
 	{
-		$a = $this;
-		$b = $other;
-
-		return
-			(
-				$b->getLeft() > $a->getLeft() && $b->getLeft() < $a->getRight()
-				&&
-				$b->getRight() > $a->getRight()
-			);
+		return (
+			$this->isContainingElement($other->getLeft())
+			&& $other->isContainingElement($this->getRight())
+		);
 	}
 
 
@@ -308,14 +303,14 @@ class Interval extends Object
 			//    $b->from   |   | <- $a-till
 
 		} elseif ($a->isOverlappedFromRightBy($b)) {
-			return new static($b->getLeft(), $a->getRight());
+			return new static($b->getLeft(), $b->leftState, $a->getRight(), $a->rightState);
 
 			// A: □□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□
 			// B: □□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□
 			//    $a->from -> |   | <- $b-till
 
 		} elseif ($b->isOverlappedFromRightBy($this)) {
-			return new static($a->getLeft(), $b->getRight());
+			return new static($a->getLeft(), $a->leftState, $b->getRight(), $b->rightState);
 		}
 
 		return NULL;
@@ -351,8 +346,6 @@ class Interval extends Object
 		return (
 			$this->isOverlappedFromRightBy($other)
 			|| $other->isOverlappedFromRightBy($this)
-			|| $this->isContaining($other)
-			|| $other->isContaining($this)
 		);
 	}
 
