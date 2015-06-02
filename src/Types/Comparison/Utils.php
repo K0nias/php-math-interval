@@ -19,4 +19,16 @@ class Utils extends Object
 		return ($a - $b) ? ($a - $b) / abs($a - $b) : 0;
 	}
 
+
+
+	/**
+	 * @param \DateTime $a
+	 * @param \DateTime $b
+	 * @return bool
+	 */
+	public static function isSameDate(\DateTime $a, \DateTime $b)
+	{
+		return $a->format('Y-m-d') === $b->format('Y-m-d');
+	}
+
 }

@@ -3,6 +3,7 @@
 namespace Achse\Interval\Intervals;
 
 use Achse\Interval\Types\Comparison\IComparable;
+use Achse\Interval\Types\Comparison\Utils;
 use Achse\Interval\Types\DateTime;
 
 
@@ -89,10 +90,12 @@ class DateTimeInterval extends Interval
 		$modifiedPlus = $this->getRight()->modifyClone("+{$precision}");
 		$modifiedMinus = $other->getLeft()->modifyClone("-{$precision}");
 
-		return $modifiedPlus >= $other->getLeft()
+		return (
+			$modifiedPlus >= $other->getLeft()
 			&& $modifiedPlus <= $other->getRight()
 			&& $modifiedMinus <= $this->getRight()
-			&& $modifiedMinus >= $this->getLeft();
+			&& $modifiedMinus >= $this->getLeft()
+		);
 	}
 
 
@@ -109,11 +112,11 @@ class DateTimeInterval extends Interval
 	 */
 	public function isFollowedByAtMidnight(DateTimeInterval $other)
 	{
-		$openingYesterday = $other->getLeft()->modifyClone('-1 day');
-
-		return $this->getRight()->format('Y-m-d') === $openingYesterday->format('Y-m-d')
+		return (
+			Utils::isSameDate($this->getRight(), $other->getLeft()->modifyClone('-1 day'))
 			&& $this->getRight()->format('H:i:s') === '23:59:59'
-			&& $other->getLeft()->format('H:i:s') === '00:00:00';
+			&& $other->getLeft()->format('H:i:s') === '00:00:00'
+		);
 	}
 
 }
