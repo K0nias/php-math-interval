@@ -212,11 +212,17 @@ class Interval extends Object
 	 */
 	public function isContainingElement(IComparable $element)
 	{
-		$leftBoundaryCheck = $this->isLeftOpened() && $this->getLeft()->lessThen($element)
-			|| $this->isRightClosed() && $this->getLeft()->lessThenOrEqual($element);
+		$leftBoundaryCheck = (
+			$this->isLeftOpened() && $this->getLeft()->lessThen($element)
+			||
+			$this->isLeftClosed() && $this->getLeft()->lessThenOrEqual($element)
+		);
 
-		$rightBoundaryCheck = $this->isRightOpened() && $this->getRight()->greaterThen($element)
-			|| $this->isRightClosed() && $this->getRight()->greaterThenOrEqual($element);
+		$rightBoundaryCheck = (
+			$this->isRightOpened() && $this->getRight()->greaterThen($element)
+			||
+			$this->isRightClosed() && $this->getRight()->greaterThenOrEqual($element)
+		);
 
 		return $leftBoundaryCheck && $rightBoundaryCheck;
 	}
@@ -249,9 +255,9 @@ class Interval extends Object
 	public function isColliding(Interval $other)
 	{
 		return $this->isOverlappedFromRightBy($other)
-			|| $other->isOverlappedFromRightBy($this)
-			|| $this->isContaining($other)
-			|| $other->isContaining($this);
+		|| $other->isOverlappedFromRightBy($this)
+		|| $this->isContaining($other)
+		|| $other->isContaining($this);
 	}
 
 
