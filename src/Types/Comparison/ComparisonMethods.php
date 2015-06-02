@@ -15,7 +15,7 @@ trait ComparisonMethods
 	 */
 	public function equal(IComparable $other)
 	{
-		return $this->compare($other) === IComparable::THIS_EQUAL_AS_OTHER;
+		return $this->compare($other) === 0;
 	}
 
 
@@ -26,7 +26,7 @@ trait ComparisonMethods
 	 */
 	public function lessThen(IComparable $other)
 	{
-		return $this->compare($other) === IComparable::THIS_LESS_THEN_OTHER;
+		return $this->compare($other) < 0;
 	}
 
 
@@ -37,9 +37,7 @@ trait ComparisonMethods
 	 */
 	public function lessThenOrEqual(IComparable $other)
 	{
-		$result = $this->compare($other);
-
-		return $result === IComparable::THIS_LESS_THEN_OTHER || $result === IComparable::THIS_EQUAL_AS_OTHER;
+		return $this->compare($other) <= 0;
 	}
 
 
@@ -50,7 +48,7 @@ trait ComparisonMethods
 	 */
 	public function greaterThen(IComparable $other)
 	{
-		return $this->compare($other) === IComparable::THIS_GREATER_THEN_OTHER;
+		return $this->compare($other) > 0;
 	}
 
 
@@ -61,9 +59,7 @@ trait ComparisonMethods
 	 */
 	public function greaterThenOrEqual(IComparable $other)
 	{
-		$result = $this->compare($other);
-
-		return $result === IComparable::THIS_GREATER_THEN_OTHER || $result === IComparable::THIS_EQUAL_AS_OTHER;
+		return $this->compare($other) >= 0;
 	}
 
 }

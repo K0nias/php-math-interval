@@ -25,7 +25,7 @@ class DateTime extends NDateTime implements IComparable
 			throw new \LogicException('You cannot compare sheep with the goat.');
 		}
 
-		return Utils::gmpCmp($this->getTimestamp(), $other->getTimestamp());
+		return Utils::intCmp($this->getTimestamp(), $other->getTimestamp());
 	}
 
 }

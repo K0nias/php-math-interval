@@ -50,6 +50,6 @@ class Integer extends Object implements IComparable
 			throw new \LogicException('You cannot compare sheep with the goat.');
 		}
 
-		return Utils::gmpCmp($this->internal, $other->toInt());
+		return Utils::intCmp($this->internal, $other->toInt());
 	}
 }

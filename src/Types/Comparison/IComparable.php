@@ -7,16 +7,11 @@ namespace Achse\Interval\Types\Comparison;
 interface IComparable
 {
 
-	const THIS_LESS_THEN_OTHER = -1;
-	const THIS_EQUAL_AS_OTHER = 0;
-	const THIS_GREATER_THEN_OTHER = 1;
-
-
 
 	/**
-	 * $this <  $other => -1 (self::THIS_LESS_THEN_OTHER)
-	 * $this == $other =>  0 (self::THIS_EQUAL_AS_OTHER)
-	 * $this >  $other =>  1 (self::THIS_GREATER_THEN_OTHER)
+	 * $this <  $other =>  returns less then 0
+	 * $this == $other =>  returns 0
+	 * $this >  $other =>  returns greater then 0
 	 *
 	 * @param IComparable $other
 	 * @return int (-1, 0, 1)

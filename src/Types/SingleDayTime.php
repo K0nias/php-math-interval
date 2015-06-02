@@ -60,7 +60,7 @@ class SingleDayTime extends Object implements IComparable
 			throw new \LogicException('You cannot compare sheep with the goat.');
 		}
 
-		return Utils::gmpCmp($this->toSeconds(), $other->toSeconds());
+		return Utils::intCmp($this->toSeconds(), $other->toSeconds());
 	}
 
 
