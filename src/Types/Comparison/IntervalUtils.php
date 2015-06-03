@@ -6,8 +6,13 @@ use Nette\Object;
 
 
 
-class Utils extends Object
+class IntervalUtils extends Object
 {
+
+	const PRECISION_ON_SECOND = '1 second';
+	const PRECISION_ON_MINUTE = '1 minute';
+
+
 
 	/**
 	 * @param int $a

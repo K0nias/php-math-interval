@@ -4,7 +4,7 @@ namespace Achse\Interval\Types;
 
 use Achse\Interval\Types\Comparison\ComparisonMethods;
 use Achse\Interval\Types\Comparison\IComparable;
-use Achse\Interval\Types\Comparison\Utils;
+use Achse\Interval\Types\Comparison\IntervalUtils;
 use Nette\Utils\DateTime as NDateTime;
 
 
@@ -25,7 +25,7 @@ class DateTime extends NDateTime implements IComparable
 			throw new \LogicException('You cannot compare sheep with the goat.');
 		}
 
-		return Utils::intCmp($this->getTimestamp(), $other->getTimestamp());
+		return IntervalUtils::intCmp($this->getTimestamp(), $other->getTimestamp());
 	}
 
 }

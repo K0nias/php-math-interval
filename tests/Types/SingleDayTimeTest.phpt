@@ -8,9 +8,9 @@ namespace Achse\Tests\Interval\Types;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
+use Achse\Interval\ModificationNotPossibleException;
 use Achse\Interval\Types\DateTime;
 use Achse\Interval\Types\SingleDayTime;
-use Nette\InvalidArgumentException;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -70,7 +70,7 @@ class SingleDayTimeTest extends TestCase
 			function () {
 				(new SingleDayTime(23, 59, 59))->add(new SingleDayTime(0, 0, 1));
 			},
-			InvalidArgumentException::class
+			ModificationNotPossibleException::class
 		);
 	}
 
@@ -103,14 +103,14 @@ class SingleDayTimeTest extends TestCase
 			function () {
 				(new SingleDayTime(0, 0, 0))->sub(new SingleDayTime(0, 0, 1));
 			},
-			InvalidArgumentException::class
+			ModificationNotPossibleException::class
 		);
 
 		Assert::exception(
 			function () {
 				(new SingleDayTime(23, 59, 58))->sub(new SingleDayTime(23, 59, 59));
 			},
-			InvalidArgumentException::class
+			ModificationNotPossibleException::class
 		);
 	}
 
@@ -136,7 +136,7 @@ class SingleDayTimeTest extends TestCase
 			function () {
 				(new SingleDayTime(5, 14, 58))->modify('-6 hours');
 			},
-			InvalidArgumentException::class
+			ModificationNotPossibleException::class
 		);
 	}
 

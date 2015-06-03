@@ -4,7 +4,7 @@ namespace Achse\Interval\Types;
 
 use Achse\Interval\Types\Comparison\ComparisonMethods;
 use Achse\Interval\Types\Comparison\IComparable;
-use Achse\Interval\Types\Comparison\Utils;
+use Achse\Interval\Types\Comparison\IntervalUtils;
 use Nette\Object;
 
 
@@ -50,7 +50,7 @@ class Integer extends Object implements IComparable
 			throw new \LogicException('You cannot compare sheep with the goat.');
 		}
 
-		return Utils::intCmp($this->internal, $other->toInt());
+		return IntervalUtils::intCmp($this->internal, $other->toInt());
 	}
 
 

@@ -10,6 +10,7 @@ $container = require __DIR__ . '/../bootstrap.php';
 
 use Achse\Interval\Intervals\DateTimeInterval;
 use Achse\Interval\Intervals\Interval;
+use Achse\Interval\Types\Comparison\IntervalUtils;
 use Achse\Interval\Types\DateTime;
 use Tester\Assert;
 use Tester\TestCase;
@@ -23,25 +24,25 @@ class DateTimeIntervalTest extends TestCase
 	{
 		$first = DateTimeInterval::fromString('2014-12-31 00:00:00', '2014-12-31 23:59:59');
 		$second = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-01 02:00:00');
-		Assert::true($first->isFollowedBy($second, DateTimeInterval::PRECISION_ON_SECOND));
-		Assert::false($second->isFollowedBy($first, DateTimeInterval::PRECISION_ON_SECOND));
+		Assert::true($first->isFollowedBy($second, IntervalUtils::PRECISION_ON_SECOND));
+		Assert::false($second->isFollowedBy($first, IntervalUtils::PRECISION_ON_SECOND));
 
 		$first = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-01 01:00:00');
 		$second = DateTimeInterval::fromString('2015-01-01 01:00:01', '2015-02-01 02:00:00');
-		Assert::true($first->isFollowedBy($second, DateTimeInterval::PRECISION_ON_SECOND));
-		Assert::false($second->isFollowedBy($first, DateTimeInterval::PRECISION_ON_SECOND));
+		Assert::true($first->isFollowedBy($second, IntervalUtils::PRECISION_ON_SECOND));
+		Assert::false($second->isFollowedBy($first, IntervalUtils::PRECISION_ON_SECOND));
 
 		$first = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-01 01:00:00');
 		$second = DateTimeInterval::fromString('2015-01-01 01:00:02', '2015-01-01 02:00:00');
-		Assert::false($first->isFollowedBy($second, DateTimeInterval::PRECISION_ON_SECOND));
+		Assert::false($first->isFollowedBy($second, IntervalUtils::PRECISION_ON_SECOND));
 
 		$allDay = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-01 23:59:59');
-		Assert::false($allDay->isFollowedBy($allDay, DateTimeInterval::PRECISION_ON_SECOND));
+		Assert::false($allDay->isFollowedBy($allDay, IntervalUtils::PRECISION_ON_SECOND));
 
 		$first = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-01 01:38:00');
 		$second = DateTimeInterval::fromString('2015-01-01 01:39:00', '2015-01-01 02:00:00');
-		Assert::false($first->isFollowedBy($second, DateTimeInterval::PRECISION_ON_SECOND));
-		Assert::true($first->isFollowedBy($second, DateTimeInterval::PRECISION_ON_MINUTE));
+		Assert::false($first->isFollowedBy($second, IntervalUtils::PRECISION_ON_SECOND));
+		Assert::true($first->isFollowedBy($second, IntervalUtils::PRECISION_ON_MINUTE));
 	}
 
 
@@ -99,16 +100,16 @@ class DateTimeIntervalTest extends TestCase
 		$first = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-02 01:00:00');
 		$second = DateTimeInterval::fromString('2015-01-01 22:30:00', '2015-01-02 02:00:00');
 		$intersection = $first->getIntersection($second);
-		Assert::equal('2015-01-01 22:30:00-2015-01-02 01:00:00', $intersection->getString());
+		Assert::equal('[2015-01-01 22:30:00, 2015-01-02 01:00:00)', $intersection->getString());
 		$intersection = $second->getIntersection($first);
-		Assert::equal('2015-01-01 22:30:00-2015-01-02 01:00:00', $intersection->getString());
+		Assert::equal('[2015-01-01 22:30:00, 2015-01-02 01:00:00)', $intersection->getString());
 
 		$first = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-01 01:00:00');
 		$second = DateTimeInterval::fromString('2015-01-01 00:30:00', '2015-01-01 02:00:00');
 		$intersection = $first->getIntersection($second);
-		Assert::equal('2015-01-01 00:30:00-2015-01-01 01:00:00', $intersection->getString());
+		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 01:00:00)', $intersection->getString());
 		$intersection = $second->getIntersection($first);
-		Assert::equal('2015-01-01 00:30:00-2015-01-01 01:00:00', $intersection->getString());
+		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 01:00:00)', $intersection->getString());
 
 		$one = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-01 01:00:00');
 		$intersection = $one->getIntersection($one);
@@ -122,9 +123,9 @@ class DateTimeIntervalTest extends TestCase
 		$first = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-01 01:00:00');
 		$second = DateTimeInterval::fromString('2015-01-01 00:30:00', '2015-01-01 00:45:00');
 		$intersection = $first->getIntersection($second);
-		Assert::equal('2015-01-01 00:30:00-2015-01-01 00:45:00', $intersection->getString());
+		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 00:45:00)', $intersection->getString());
 		$intersection = $second->getIntersection($first);
-		Assert::equal('2015-01-01 00:30:00-2015-01-01 00:45:00', $intersection->getString());
+		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 00:45:00)', $intersection->getString());
 	}
 
 

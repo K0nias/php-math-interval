@@ -2,9 +2,10 @@
 
 namespace Achse\Interval\Types;
 
+use Achse\Interval\ModificationNotPossibleException;
 use Achse\Interval\Types\Comparison\ComparisonMethods;
 use Achse\Interval\Types\Comparison\IComparable;
-use Achse\Interval\Types\Comparison\Utils;
+use Achse\Interval\Types\Comparison\IntervalUtils;
 use Nette\InvalidArgumentException;
 use Nette\Object;
 
@@ -60,7 +61,7 @@ class SingleDayTime extends Object implements IComparable
 			throw new \LogicException('You cannot compare sheep with the goat.');
 		}
 
-		return Utils::intCmp($this->toSeconds(), $other->toSeconds());
+		return IntervalUtils::intCmp($this->toSeconds(), $other->toSeconds());
 	}
 
 
@@ -156,6 +157,7 @@ class SingleDayTime extends Object implements IComparable
 	/**
 	 * @param string|int|float $modifier
 	 * @return static
+	 * @throws ModificationNotPossibleException
 	 */
 	public function modify($modifier)
 	{
@@ -163,7 +165,7 @@ class SingleDayTime extends Object implements IComparable
 		$modified = $thisDateTime->modifyClone($modifier);
 
 		if ($thisDateTime->format('Y-m-d') !== $modified->format('Y-m-d')) {
-			throw new InvalidArgumentException("Modifying this by '{$modifier}' leaves a single day range.");
+			throw new ModificationNotPossibleException("Modifying this by '{$modifier}' leaves a single day range.");
 		}
 
 		$this->setFromDateTime($modified);
@@ -176,6 +178,7 @@ class SingleDayTime extends Object implements IComparable
 	/**
 	 * @param string $modifier
 	 * @return static
+	 * @throws ModificationNotPossibleException
 	 */
 	public function modifyClone($modifier)
 	{
@@ -283,6 +286,7 @@ class SingleDayTime extends Object implements IComparable
 	/**
 	 * @param SingleDayTime $other
 	 * @param int $sign -1 (sub) or 1 (add)
+	 * @throws ModificationNotPossibleException
 	 */
 	private function addOrSub(SingleDayTime $other, $sign)
 	{
@@ -306,7 +310,7 @@ class SingleDayTime extends Object implements IComparable
 
 		$hours += $sign * ($other->getHours() + $carryHours);
 		if ($hours > 23 || $hours < 0) {
-			throw new InvalidArgumentException(
+			throw new ModificationNotPossibleException(
 				'By ' . ($sign === 1 ? 'adding' : 'subbing') . ' this Time we would get put of one day!'
 			);
 		}

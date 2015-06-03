@@ -227,6 +227,26 @@ class Interval extends Object
 
 
 	/**
+	 * @return boolean
+	 */
+	public function getLeftState()
+	{
+		return $this->leftState;
+	}
+
+
+
+	/**
+	 * @return boolean
+	 */
+	public function getRightState()
+	{
+		return $this->rightState;
+	}
+
+
+
+	/**
 	 * @param IComparable $element
 	 * @return bool
 	 */

@@ -3,18 +3,13 @@
 namespace Achse\Interval\Intervals;
 
 use Achse\Interval\Types\Comparison\IComparable;
-use Achse\Interval\Types\Comparison\Utils;
+use Achse\Interval\Types\Comparison\IntervalUtils;
 use Achse\Interval\Types\DateTime;
 
 
 
 class DateTimeInterval extends Interval
 {
-
-	const PRECISION_ON_SECOND = '1 second';
-	const PRECISION_ON_MINUTE = '1 minute';
-
-
 
 	/**
 	 * @inheritdoc
@@ -44,16 +39,6 @@ class DateTimeInterval extends Interval
 
 
 	/**
-	 * @return string
-	 */
-	public function __toString()
-	{
-		return $this->getLeft()->format('Y-m-d H:i:s') . '-' . $this->getRight()->format('Y-m-d H:i:s');
-	}
-
-
-
-	/**
 	 * # Example:
 	 *
 	 *     This:  □□□□□□■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□□□□□
@@ -71,7 +56,7 @@ class DateTimeInterval extends Interval
 	 * @param string $precision
 	 * @return bool
 	 */
-	public function isFollowedBy(DateTimeInterval $other, $precision = self::PRECISION_ON_SECOND)
+	public function isFollowedBy(DateTimeInterval $other, $precision = IntervalUtils::PRECISION_ON_SECOND)
 	{
 		if ($this->getLeft() > $other->getRight()) {
 			return FALSE;
@@ -106,7 +91,7 @@ class DateTimeInterval extends Interval
 	public function isFollowedByAtMidnight(DateTimeInterval $other)
 	{
 		return (
-			Utils::isSameDate($this->getRight(), $other->getLeft()->modifyClone('-1 day'))
+			IntervalUtils::isSameDate($this->getRight(), $other->getLeft()->modifyClone('-1 day'))
 			&& $this->getRight()->format('H:i:s') === '23:59:59'
 			&& $other->getLeft()->format('H:i:s') === '00:00:00'
 		);
