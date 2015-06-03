@@ -8,8 +8,10 @@ namespace Achse\Tests\Interval\Types;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
+use Achse\Interval\Intervals\IntegerInterval;
 use Achse\Interval\Intervals\Interval;
-use Achse\Interval\Types\Integer as IntervalInteger;
+use Achse\Interval\Types\Integer as IntegerObj;
+use Achse\Interval\Types\Integer;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -19,62 +21,62 @@ class IntervalTest extends TestCase
 {
 
 	/**
-	 * @var Interval
+	 * @var IntegerInterval
 	 */
 	private $intervalOneFourClosed;
 
 	/**
-	 * @var Interval
+	 * @var IntegerInterval
 	 */
 	private $intervalOneFourOpened;
 
 	/**
-	 * @var Interval
+	 * @var IntegerInterval
 	 */
 	private $intervalTwoThreeClosed;
 
 	/**
-	 * @var Interval
+	 * @var IntegerInterval
 	 */
 	private $intervalTwoThreeOpened;
 
 	/**
-	 * @var Interval
+	 * @var IntegerInterval
 	 */
 	private $intervalOneTwoClosed;
 
 	/**
-	 * @var Interval
+	 * @var IntegerInterval
 	 */
 	private $intervalOneThreeOpened;
 
 	/**
-	 * @var Interval
+	 * @var IntegerInterval
 	 */
 	private $intervalTwoFourOpened;
 
 	/**
-	 * @var Interval
+	 * @var IntegerInterval
 	 */
 	private $intervalOneTwoOpened;
 
 	/**
-	 * @var IntervalInteger
+	 * @var IntegerObj
 	 */
 	private $one;
 
 	/**
-	 * @var IntervalInteger
+	 * @var IntegerObj
 	 */
 	private $two;
 
 	/**
-	 * @var IntervalInteger
+	 * @var IntegerObj
 	 */
 	private $three;
 
 	/**
-	 * @var IntervalInteger
+	 * @var IntegerObj
 	 */
 	private $four;
 
@@ -84,22 +86,22 @@ class IntervalTest extends TestCase
 	{
 		parent::setUp();
 
-		$this->one = new IntervalInteger(1);
-		$this->two = new IntervalInteger(2);
-		$this->three = new IntervalInteger(3);
-		$this->four = new IntervalInteger(4);
+		$this->one = new IntegerObj(1);
+		$this->two = new IntegerObj(2);
+		$this->three = new IntegerObj(3);
+		$this->four = new IntegerObj(4);
 
-		$this->intervalOneFourClosed = new Interval($this->one, Interval::CLOSED, $this->four, Interval::CLOSED);
-		$this->intervalOneFourOpened = new Interval($this->one, Interval::OPENED, $this->four, Interval::OPENED);
-		$this->intervalTwoThreeClosed = new Interval($this->two, Interval::CLOSED, $this->three, Interval::CLOSED);
-		$this->intervalTwoThreeOpened = new Interval($this->two, Interval::OPENED, $this->three, Interval::OPENED);
-		$this->intervalOneTwoClosed = new Interval($this->one, Interval::CLOSED, $this->two, Interval::CLOSED);
-		$this->intervalTwoThreeClosed = new Interval($this->two, Interval::CLOSED, $this->three, Interval::CLOSED);
-		$this->intervalOneTwoOpened = new Interval($this->one, Interval::OPENED, $this->two, Interval::OPENED);
-		$this->intervalTwoThreeOpened = new Interval($this->two, Interval::OPENED, $this->three, Interval::OPENED);
-		$this->intervalOneThreeOpened = new Interval($this->one, Interval::OPENED, $this->three, Interval::OPENED);
-		$this->intervalTwoFourOpened = new Interval($this->two, Interval::OPENED, $this->four, Interval::OPENED);
-		$this->intervalOneTwoOpened = new Interval($this->one, Interval::OPENED, $this->two, Interval::OPENED);
+		$this->intervalOneFourClosed = new IntegerInterval($this->one, Interval::CLOSED, $this->four, Interval::CLOSED);
+		$this->intervalOneFourOpened = new IntegerInterval($this->one, Interval::OPENED, $this->four, Interval::OPENED);
+		$this->intervalTwoThreeClosed = new IntegerInterval($this->two, Interval::CLOSED, $this->three, Interval::CLOSED);
+		$this->intervalTwoThreeOpened = new IntegerInterval($this->two, Interval::OPENED, $this->three, Interval::OPENED);
+		$this->intervalOneTwoClosed = new IntegerInterval($this->one, Interval::CLOSED, $this->two, Interval::CLOSED);
+		$this->intervalTwoThreeClosed = new IntegerInterval($this->two, Interval::CLOSED, $this->three, Interval::CLOSED);
+		$this->intervalOneTwoOpened = new IntegerInterval($this->one, Interval::OPENED, $this->two, Interval::OPENED);
+		$this->intervalTwoThreeOpened = new IntegerInterval($this->two, Interval::OPENED, $this->three, Interval::OPENED);
+		$this->intervalOneThreeOpened = new IntegerInterval($this->one, Interval::OPENED, $this->three, Interval::OPENED);
+		$this->intervalTwoFourOpened = new IntegerInterval($this->two, Interval::OPENED, $this->four, Interval::OPENED);
+		$this->intervalOneTwoOpened = new IntegerInterval($this->one, Interval::OPENED, $this->two, Interval::OPENED);
 
 	}
 
@@ -190,7 +192,7 @@ class IntervalTest extends TestCase
 
 	public function testGetIntersection()
 	{
-		$intervalTwoTwoClosed = new Interval($this->two, Interval::CLOSED, $this->two, Interval::CLOSED);
+		$intervalTwoTwoClosed = new IntegerInterval($this->two, Interval::CLOSED, $this->two, Interval::CLOSED);
 
 		$intersection = $this->intervalOneTwoClosed->getIntersection($this->intervalTwoThreeClosed);
 		$this->assertInterval($intervalTwoTwoClosed, $intersection);
@@ -201,7 +203,7 @@ class IntervalTest extends TestCase
 		Assert::null($this->intervalOneTwoClosed->getIntersection($this->intervalTwoThreeOpened));
 		Assert::null($this->intervalOneTwoOpened->getIntersection($this->intervalTwoThreeClosed));
 
-		$intervalTwoThreeOpened = new Interval($this->two, Interval::OPENED, $this->three, Interval::OPENED);
+		$intervalTwoThreeOpened = new IntegerInterval($this->two, Interval::OPENED, $this->three, Interval::OPENED);
 
 		$intersection = $this->intervalOneThreeOpened->getIntersection($this->intervalTwoFourOpened);
 		$this->assertInterval($intervalTwoThreeOpened, $intersection);
@@ -213,10 +215,10 @@ class IntervalTest extends TestCase
 
 
 	/**
-	 * @param Interval $expected
-	 * @param Interval $actual
+	 * @param IntegerInterval $expected
+	 * @param IntegerInterval $actual
 	 */
-	private function assertInterval(Interval $expected, Interval $actual)
+	private function assertInterval(IntegerInterval $expected, IntegerInterval $actual)
 	{
 		Assert::equal($expected->getLeft()->toInt(), $actual->getLeft()->toInt());
 		Assert::equal($expected->isLeftClosed(), $actual->isLeftClosed());

@@ -55,6 +55,26 @@ class Interval extends Object
 
 
 	/**
+	 * @return string
+	 */
+	public function getString()
+	{
+		return $this->__toString();
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->getLeftBracket() . $this->getLeft() . ', ' . $this->getRight() . $this->getRightBracket();
+	}
+
+
+
+	/**
 	 * @return IComparable
 	 */
 	public function getLeft()
@@ -347,6 +367,26 @@ class Interval extends Object
 			$this->isOverlappedFromRightBy($other)
 			|| $other->isOverlappedFromRightBy($this)
 		);
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	private function getLeftBracket()
+	{
+		return $this->isLeftOpened() ? '(' : '[';
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	private function getRightBracket()
+	{
+		return $this->isRightOpened() ? ')' : ']';
 	}
 
 }

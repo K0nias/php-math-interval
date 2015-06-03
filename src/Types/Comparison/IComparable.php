@@ -58,4 +58,11 @@ interface IComparable
 	 */
 	public function greaterThenOrEqual(IComparable $other);
 
+
+
+	/**
+	 * @return string
+	 */
+	public function __toString();
+
 }

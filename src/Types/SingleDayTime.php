@@ -271,6 +271,16 @@ class SingleDayTime extends Object implements IComparable
 
 
 	/**
+	 * @inheritdoc
+	 */
+	public function __toString()
+	{
+		return $this->toInternalDateTime()->format('H:i:s');
+	}
+
+
+
+	/**
 	 * @param SingleDayTime $other
 	 * @param int $sign -1 (sub) or 1 (add)
 	 */

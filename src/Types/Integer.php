@@ -52,4 +52,14 @@ class Integer extends Object implements IComparable
 
 		return Utils::intCmp($this->internal, $other->toInt());
 	}
+
+
+
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->toInt();
+	}
 }

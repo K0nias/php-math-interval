@@ -32,23 +32,13 @@ class DateTimeInterval extends Interval
 
 
 	/**
-	 * @param string $from
+	 * @param string $since
 	 * @param string $till
 	 * @return self
 	 */
-	public static function fromString($from, $till)
+	public static function fromString($since, $till)
 	{
-		return new static(new DateTime($from), self::CLOSED, new DateTime($till), self::OPENED);
-	}
-
-
-
-	/**
-	 * @return string
-	 */
-	public function getString()
-	{
-		return $this->__toString();
+		return new static(new DateTime($since), self::CLOSED, new DateTime($till), self::OPENED);
 	}
 
 
@@ -117,6 +107,26 @@ class DateTimeInterval extends Interval
 			&& $this->getRight()->format('H:i:s') === '23:59:59'
 			&& $other->getLeft()->format('H:i:s') === '00:00:00'
 		);
+	}
+
+
+
+	/**
+	 * @return DateTime
+	 */
+	public function getLeft()
+	{
+		return parent::getLeft();
+	}
+
+
+
+	/**
+	 * @return DateTime
+	 */
+	public function getRight()
+	{
+		return parent::getRight();
 	}
 
 }
