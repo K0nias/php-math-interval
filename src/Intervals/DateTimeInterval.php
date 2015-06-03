@@ -77,14 +77,17 @@ class DateTimeInterval extends Interval
 			return FALSE;
 		}
 
+		/** @var DateTime $modifiedPlus */
 		$modifiedPlus = $this->getRight()->modifyClone("+{$precision}");
+
+		/** @var DateTime $modifiedMinus */
 		$modifiedMinus = $other->getLeft()->modifyClone("-{$precision}");
 
 		return (
-			$modifiedPlus >= $other->getLeft()
-			&& $modifiedPlus <= $other->getRight()
-			&& $modifiedMinus <= $this->getRight()
-			&& $modifiedMinus >= $this->getLeft()
+			$modifiedPlus->greaterThenOrEqual($other->getLeft())
+			&& $modifiedPlus->lessThenOrEqual($other->getRight())
+			&& $modifiedMinus->lessThenOrEqual($this->getRight())
+			&& $modifiedMinus->greaterThenOrEqual($this->getLeft())
 		);
 	}
 

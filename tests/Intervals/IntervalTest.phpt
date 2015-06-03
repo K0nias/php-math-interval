@@ -61,6 +61,16 @@ class IntervalTest extends TestCase
 	private $intervalOneTwoOpened;
 
 	/**
+	 * @var IntegerInterval
+	 */
+	private $intervalThreeFourOpened;
+
+	/**
+	 * @var IntegerInterval
+	 */
+	private $intervalThreeFourClosed;
+
+	/**
 	 * @var IntegerObj
 	 */
 	private $one;
@@ -102,6 +112,8 @@ class IntervalTest extends TestCase
 		$this->intervalOneThreeOpened = new IntegerInterval($this->one, Interval::OPENED, $this->three, Interval::OPENED);
 		$this->intervalTwoFourOpened = new IntegerInterval($this->two, Interval::OPENED, $this->four, Interval::OPENED);
 		$this->intervalOneTwoOpened = new IntegerInterval($this->one, Interval::OPENED, $this->two, Interval::OPENED);
+		$this->intervalThreeFourOpened = new IntegerInterval($this->three, Interval::OPENED, $this->four, Interval::OPENED);
+		$this->intervalThreeFourClosed = new IntegerInterval($this->three, Interval::CLOSED, $this->four, Interval::CLOSED);
 
 	}
 
@@ -149,8 +161,13 @@ class IntervalTest extends TestCase
 		Assert::false($this->intervalTwoThreeOpened->isContaining($this->intervalOneFourClosed));
 
 
-		$left = new Interval($this->one, Interval::CLOSED, $this->three, Interval::CLOSED);
-		$right = new Interval($this->three, Interval::CLOSED, $this->four, Interval::CLOSED);
+		// (1, 4) NOT contains [3, 4]
+		Assert::false($this->intervalOneFourOpened->isContaining($this->intervalThreeFourClosed));
+		// (1, 4) NOT contains [1, 2]
+		Assert::false($this->intervalOneFourOpened->isContaining($this->intervalOneTwoClosed));
+
+		$left = new IntegerInterval($this->one, Interval::CLOSED, $this->three, Interval::CLOSED);
+		$right = new IntegerInterval($this->three, Interval::CLOSED, $this->four, Interval::CLOSED);
 
 		Assert::false($left->isContaining($right));
 		Assert::false($right->isContaining($left));

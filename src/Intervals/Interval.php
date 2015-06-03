@@ -269,8 +269,17 @@ class Interval extends Object
 	public function isContaining(Interval $other)
 	{
 		return (
-			$this->isContainingElement($other->getLeft())
-			&& $this->isContainingElement($other->getRight())
+			(
+				$this->isContainingElement($other->getLeft())
+				||
+				$other->isLeftOpened() && $this->isElementLeftOpenedBorder($other->getLeft())
+			)
+			&&
+			(
+				$this->isContainingElement($other->getRight())
+				||
+				$other->isRightOpened() && $this->isElementRightOpenedBorder($other->getRight())
+			)
 		);
 	}
 
@@ -387,6 +396,28 @@ class Interval extends Object
 	private function getRightBracket()
 	{
 		return $this->isRightOpened() ? ')' : ']';
+	}
+
+
+
+	/**
+	 * @param IComparable $element
+	 * @return bool
+	 */
+	private function isElementLeftOpenedBorder(IComparable $element)
+	{
+		return $this->isLeftOpened() && $this->getLeft()->equal($element);
+	}
+
+
+
+	/**
+	 * @param IComparable $element
+	 * @return bool
+	 */
+	private function isElementRightOpenedBorder(IComparable $element)
+	{
+		return $this->isRightOpened() && $this->getRight()->equal($element);
 	}
 
 }
