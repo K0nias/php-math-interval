@@ -1,12 +1,12 @@
 <?php
 
-namespace Achse\Interval\Intervals;
+namespace Achse\Math\Interval\Intervals;
 
-use Achse\Interval\ModificationNotPossibleException;
-use Achse\Interval\Types\Comparison\IComparable;
-use Achse\Interval\Types\Comparison\IntervalUtils;
-use Achse\Interval\Types\DateTime;
-use Achse\Interval\Types\SingleDayTime;
+use Achse\Math\Interval\ModificationNotPossibleException;
+use Achse\Math\Interval\Types\Comparison\IComparable;
+use Achse\Math\Interval\Types\Comparison\IntervalUtils;
+use Achse\Math\Interval\Types\DateTime;
+use Achse\Math\Interval\Types\SingleDayTime;
 use Nette\InvalidArgumentException;
 
 

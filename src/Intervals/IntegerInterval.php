@@ -1,8 +1,8 @@
 <?php
 
-namespace Achse\Interval\Intervals;
+namespace Achse\Math\Interval\Intervals;
 
-use Achse\Interval\Types\Integer as IntervalInteger;
+use Achse\Math\Interval\Types\Integer as IntervalInteger;
 
 
 

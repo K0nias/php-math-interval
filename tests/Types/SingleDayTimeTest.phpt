@@ -8,9 +8,9 @@ namespace Achse\Tests\Interval\Types;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
-use Achse\Interval\ModificationNotPossibleException;
-use Achse\Interval\Types\DateTime;
-use Achse\Interval\Types\SingleDayTime;
+use Achse\Math\Interval\ModificationNotPossibleException;
+use Achse\Math\Interval\Types\DateTime;
+use Achse\Math\Interval\Types\SingleDayTime;
 use Tester\Assert;
 use Tester\TestCase;
 

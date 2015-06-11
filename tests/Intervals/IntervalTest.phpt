@@ -8,10 +8,10 @@ namespace Achse\Tests\Interval\Types;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
-use Achse\Interval\Intervals\IntegerInterval;
-use Achse\Interval\Intervals\Interval;
-use Achse\Interval\Types\Integer as IntegerObj;
-use Achse\Interval\Types\Integer;
+use Achse\Math\Interval\Intervals\IntegerInterval;
+use Achse\Math\Interval\Intervals\Interval;
+use Achse\Math\Interval\Types\Integer as IntegerObj;
+use Achse\Math\Interval\Types\Integer;
 use Tester\Assert;
 use Tester\TestCase;
 

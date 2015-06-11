@@ -1,11 +1,11 @@
 <?php
 
-namespace Achse\Interval\Types;
+namespace Achse\Math\Interval\Types;
 
-use Achse\Interval\ModificationNotPossibleException;
-use Achse\Interval\Types\Comparison\ComparisonMethods;
-use Achse\Interval\Types\Comparison\IComparable;
-use Achse\Interval\Types\Comparison\IntervalUtils;
+use Achse\Math\Interval\ModificationNotPossibleException;
+use Achse\Math\Interval\Types\Comparison\ComparisonMethods;
+use Achse\Math\Interval\Types\Comparison\IComparable;
+use Achse\Math\Interval\Types\Comparison\IntervalUtils;
 use Nette\InvalidArgumentException;
 use Nette\Object;
 

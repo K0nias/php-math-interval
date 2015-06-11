@@ -1,5 +1,5 @@
 {
-	"name": "achse/php-interval",
+	"name": "achse/php-math-interval",
 	"description": "",
 	"type": "library",
 	"license": [
@@ -20,7 +20,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Achse\\Interval\\": "src/"
+			"Achse\\Math\\Interval\\": "src/"
 		},
 		"classmap": [
 			"src/Exceptions.php"

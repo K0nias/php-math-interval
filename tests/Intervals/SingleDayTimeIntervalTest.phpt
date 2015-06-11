@@ -8,10 +8,10 @@ namespace Achse\Tests\Interval\Types;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
-use Achse\Interval\Intervals\DateTimeInterval;
-use Achse\Interval\Intervals\Interval;
-use Achse\Interval\Intervals\SingleDayTimeInterval;
-use Achse\Interval\Types\DateTime;
+use Achse\Math\Interval\Intervals\DateTimeInterval;
+use Achse\Math\Interval\Intervals\Interval;
+use Achse\Math\Interval\Intervals\SingleDayTimeInterval;
+use Achse\Math\Interval\Types\DateTime;
 use Nette\InvalidArgumentException;
 use Tester\Assert;
 use Tester\TestCase;

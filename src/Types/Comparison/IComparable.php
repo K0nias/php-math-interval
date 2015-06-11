@@ -1,6 +1,6 @@
 <?php
 
-namespace Achse\Interval\Types\Comparison;
+namespace Achse\Math\Interval\Types\Comparison;
 
 
 

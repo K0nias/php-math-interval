@@ -2,7 +2,7 @@
 
 namespace Achse\Tests\Interval\Types;
 
-use Achse\Interval\Types\Comparison\IComparable;
+use Achse\Math\Interval\Types\Comparison\IComparable;
 use Nette;
 use Tester\Assert;
 

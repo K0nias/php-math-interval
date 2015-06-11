@@ -8,7 +8,7 @@ namespace Achse\Tests\Interval\Types;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
-use Achse\Interval\Types\DateTime;
+use Achse\Math\Interval\Types\DateTime;
 use Tester\TestCase;
 
 

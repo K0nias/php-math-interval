@@ -1,6 +1,6 @@
 <?php
 
-namespace Achse\Interval;
+namespace Achse\Math\Interval;
 
 class ModificationNotPossibleException extends \Exception
 {

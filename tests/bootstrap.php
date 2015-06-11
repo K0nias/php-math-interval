@@ -1,6 +1,6 @@
 <?php
 
-namespace Achse\Interval\Test;
+namespace Achse\Math\Interval\Test;
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/Types/TestComparison.php';
