@@ -448,7 +448,7 @@ class Interval extends Object
 	 */
 	public function getDifference(Interval $other)
 	{
-		if (($other = $this->getIntersection($other)) == NULL) {
+		if (($other = $this->getIntersection($other)) === NULL) {
 			return $this;
 		}
 
