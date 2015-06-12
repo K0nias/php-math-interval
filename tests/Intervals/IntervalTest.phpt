@@ -71,6 +71,11 @@ class IntervalTest extends TestCase
 	private $intervalThreeFourClosed;
 
 	/**
+	 * @var IntegerInterval
+	 */
+	private $intervalTwoFourClosed;
+
+	/**
 	 * @var IntegerObj
 	 */
 	private $one;
@@ -114,6 +119,7 @@ class IntervalTest extends TestCase
 		$this->intervalOneTwoOpened = new IntegerInterval($this->one, Interval::OPENED, $this->two, Interval::OPENED);
 		$this->intervalThreeFourOpened = new IntegerInterval($this->three, Interval::OPENED, $this->four, Interval::OPENED);
 		$this->intervalThreeFourClosed = new IntegerInterval($this->three, Interval::CLOSED, $this->four, Interval::CLOSED);
+		$this->intervalTwoFourClosed = new IntegerInterval($this->two, Interval::CLOSED, $this->four, Interval::CLOSED);
 
 	}
 
@@ -231,6 +237,45 @@ class IntervalTest extends TestCase
 
 
 
+	public function testGetDifference()
+	{
+		// [1, 4] \ [2, 4]
+		$diff = $this->intervalOneFourClosed->getDifference($this->intervalTwoFourClosed);
+		Assert::count(1, $diff);
+		Assert::equal('[1, 2)', (string) reset($diff));
+
+		// [1, 4] \ [1, 2]
+		$diff = $this->intervalOneFourClosed->getDifference($this->intervalOneTwoClosed);
+		Assert::count(1, $diff);
+		Assert::equal('(2, 4]', (string) reset($diff));
+
+		// [1, 4] \ (2, 4)
+		$diff = $this->intervalOneFourClosed->getDifference($this->intervalTwoFourOpened);
+		Assert::count(2, $diff);
+		Assert::equal('[1, 2]', (string) $diff[0]);
+		Assert::equal('[4, 4]', (string) $diff[1]);
+
+		// [1, 4] \ (1, 2)
+		$diff = $this->intervalOneFourClosed->getDifference($this->intervalOneTwoOpened);
+		Assert::count(2, $diff);
+		Assert::equal('[1, 1]', (string) $diff[0]);
+		Assert::equal('[2, 4]', (string) $diff[1]);
+
+		// [1, 4] \ [2, 3]
+		$diff = $this->intervalOneFourClosed->getDifference($this->intervalTwoThreeClosed);
+		Assert::count(2, $diff);
+		Assert::equal('[1, 2)', (string) $diff[0]);
+		Assert::equal('(3, 4]', (string) $diff[1]);
+
+		// [1, 4] \ (2, 3)
+		$diff = $this->intervalOneFourClosed->getDifference($this->intervalTwoThreeOpened);
+		Assert::count(2, $diff);
+		Assert::equal('[1, 2]', (string) $diff[0]);
+		Assert::equal('[3, 4]', (string) $diff[1]);
+	}
+
+
+
 	/**
 	 * @param IntegerInterval $expected
 	 * @param IntegerInterval $actual
@@ -241,8 +286,9 @@ class IntervalTest extends TestCase
 		Assert::equal($expected->isLeftClosed(), $actual->isLeftClosed());
 
 		Assert::equal($expected->getRight()->toInt(), $actual->getRight()->toInt());
-		Assert::equal($expected->isLeftOpened(), $actual->isLeftOpened());
+		Assert::equal($expected->isRightClosed(), $actual->isRightClosed());
 	}
+	
 }
 
 

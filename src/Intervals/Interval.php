@@ -440,4 +440,33 @@ class Interval extends Object
 		return $this->isRightOpened() && $this->getRight()->equal($element);
 	}
 
+
+
+	/**
+	 * @param Interval $other
+	 * @return Interval[]
+	 */
+	public function getDifference(Interval $other)
+	{
+		if (($other = $this->getIntersection($other)) == NULL) {
+			return $this;
+		}
+
+		if ($this->isContaining($other)) {
+			$result = [];
+
+			if (!$other->getLeft()->equal($this->getLeft()) || $other->getLeftState() !== $this->getLeftState()) {
+				$result[] = new static($this->getLeft(), $this->getLeftState(), $other->getLeft(), !$other->getLeftState());
+			}
+
+			if (!$other->getRight()->equal($this->getRight()) || $other->getRightState() !== $this->getRightState()) {
+				$result[] = new static($other->getRight(), !$other->getRightState(), $this->getRight(), $this->getRightState());
+			}
+
+			return $result;
+		}
+
+		return NULL;
+	}
+
 }
