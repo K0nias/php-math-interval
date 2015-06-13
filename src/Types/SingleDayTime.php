@@ -243,7 +243,7 @@ class SingleDayTime extends Object implements IComparable
 
 
 	/**
-	 * @param int|string|SingleDayTime $time
+	 * @param int|string|\DateTime|SingleDayTime $time
 	 * @return SingleDayTime
 	 */
 	public static function from($time)
