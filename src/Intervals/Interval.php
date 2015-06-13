@@ -38,14 +38,14 @@ class Interval extends Object
 
 	/**
 	 * @param IComparable $left
-	 * @param bool $stateA
+	 * @param bool $stateLeft
 	 * @param IComparable $right
-	 * @param bool $stateB
+	 * @param bool $stateRight
 	 */
-	public function __construct(IComparable $left, $stateA, IComparable $right, $stateB)
+	public function __construct(IComparable $left, $stateLeft, IComparable $right, $stateRight)
 	{
-		$this->leftState = $stateA;
-		$this->rightState = $stateB;
+		$this->leftState = $stateLeft;
+		$this->rightState = $stateRight;
 
 		$this->setLeft($left);
 		$this->setRight($right);

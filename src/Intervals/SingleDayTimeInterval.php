@@ -19,6 +19,24 @@ class SingleDayTimeInterval extends Interval
 {
 
 	/**
+	 * @inheritdoc
+	 */
+	public function __construct(IComparable $left, $stateLeft, IComparable $right, $stateRight)
+	{
+		if (!($left instanceof SingleDayTime)) {
+			throw new InvalidArgumentException('\$left have to be instance of Achse\Math\Interval\SingleDayTime.');
+		}
+
+		if (!($right instanceof SingleDayTime)) {
+			throw new InvalidArgumentException('\$right have to be instance of Achse\Math\Interval\SingleDayTime.');
+		}
+
+		parent::__construct($left, $stateLeft, $right, $stateRight);
+	}
+
+
+
+	/**
 	 * @param string $from
 	 * @param string $till
 	 * @return SingleDayTimeInterval
@@ -56,9 +74,10 @@ class SingleDayTimeInterval extends Interval
 			throw new InvalidArgumentException('Given day does not hits given interval. No intersection possible.');
 		}
 
-		return new static(
-			$intersection->getLeft(), $intersection->getLeftState(), $intersection->getRight(), $intersection->getRightState()
-		);
+		$left = SingleDayTime::fromDateTime($intersection->getLeft());
+		$right = SingleDayTime::fromDateTime($intersection->getRight());
+
+		return new static($left, $intersection->getLeftState(), $right, $intersection->getRightState());
 	}
 
 

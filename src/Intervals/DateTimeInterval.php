@@ -5,11 +5,28 @@ namespace Achse\Math\Interval\Intervals;
 use Achse\Math\Interval\Types\Comparison\IComparable;
 use Achse\Math\Interval\Types\Comparison\IntervalUtils;
 use Achse\Math\Interval\Types\DateTime;
+use Nette\InvalidArgumentException;
 
 
 
 class DateTimeInterval extends Interval
 {
+
+	/**
+	 * @inheritdoc
+	 */
+	public function __construct(IComparable $left, $stateLeft, IComparable $right, $stateRight)
+	{
+		if (!($left instanceof DateTime)) {
+			throw new InvalidArgumentException('\$left have to be instance of Achse\Math\Interval\DateTime.');
+		}
+
+		if (!($right instanceof DateTime)) {
+			throw new InvalidArgumentException('\$right have to be instance of Achse\Math\Interval\DateTime.');
+		}
+
+		parent::__construct($left, $stateLeft, $right, $stateRight);
+	}
 
 	/**
 	 * @param string $since
