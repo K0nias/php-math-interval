@@ -19,24 +19,6 @@ class SingleDayTimeInterval extends Interval
 {
 
 	/**
-	 * @param IComparable $left
-	 * @param bool $stateA
-	 * @param IComparable $right
-	 * @param bool $stateB
-	 */
-	public function __construct(IComparable $left, $stateA, IComparable $right, $stateB)
-	{
-		/** @var DateTime $left */
-		$left = SingleDayTime::from($left);
-		/** @var DateTime $right */
-		$right = SingleDayTime::from($right);
-
-		parent::__construct($left, $stateA, $right, $stateB);
-	}
-
-
-
-	/**
 	 * @param string $from
 	 * @param string $till
 	 * @return SingleDayTimeInterval
