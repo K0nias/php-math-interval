@@ -12,12 +12,9 @@ class DateTimeInterval extends Interval
 {
 
 	/**
-	 * @param \DateTime $left
-	 * @param bool $stateA
-	 * @param \DateTime $right
-	 * @param bool $stateB
+	 * @inheritdoc
 	 */
-	public function __construct(\DateTime $left, $stateA, \DateTime $right, $stateB)
+	public function __construct(IComparable $left, $stateA, IComparable $right, $stateB)
 	{
 		/** @var DateTime $left */
 		$left = DateTime::from($left);
