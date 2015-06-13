@@ -12,21 +12,6 @@ class DateTimeInterval extends Interval
 {
 
 	/**
-	 * @inheritdoc
-	 */
-	public function __construct(IComparable $left, $stateA, IComparable $right, $stateB)
-	{
-		/** @var DateTime $left */
-		$left = DateTime::from($left);
-		/** @var DateTime $right */
-		$right = DateTime::from($right);
-
-		parent::__construct($left, $stateA, $right, $stateB);
-	}
-
-
-
-	/**
 	 * @param string $since
 	 * @param string $till
 	 * @return self
