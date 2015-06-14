@@ -6,11 +6,12 @@
 
 namespace Achse\Tests\Interval\Types;
 
-$container = require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../bootstrap.php';
 
+use Achse\Math\Interval\Boundaries\Boundary;
+use Achse\Math\Interval\Factories\DateTimeBoundaryFactory;
 use Achse\Math\Interval\Intervals\DateTimeInterval;
-use Achse\Math\Interval\Intervals\Interval;
-use Achse\Math\Interval\Types\Comparison\IntervalUtils;
+use Achse\Math\Interval\Utils\IntervalUtils;
 use Achse\Math\Interval\Types\DateTime;
 use Tester\Assert;
 use Tester\TestCase;
@@ -100,20 +101,20 @@ class DateTimeIntervalTest extends TestCase
 		$first = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-02 01:00:00');
 		$second = DateTimeInterval::fromString('2015-01-01 22:30:00', '2015-01-02 02:00:00');
 		$intersection = $first->getIntersection($second);
-		Assert::equal('[2015-01-01 22:30:00, 2015-01-02 01:00:00)', $intersection->getString());
+		Assert::equal('[2015-01-01 22:30:00, 2015-01-02 01:00:00)', (string) $intersection);
 		$intersection = $second->getIntersection($first);
-		Assert::equal('[2015-01-01 22:30:00, 2015-01-02 01:00:00)', $intersection->getString());
+		Assert::equal('[2015-01-01 22:30:00, 2015-01-02 01:00:00)', (string) $intersection);
 
 		$first = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-01 01:00:00');
 		$second = DateTimeInterval::fromString('2015-01-01 00:30:00', '2015-01-01 02:00:00');
 		$intersection = $first->getIntersection($second);
-		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 01:00:00)', $intersection->getString());
+		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 01:00:00)', (string) $intersection);
 		$intersection = $second->getIntersection($first);
-		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 01:00:00)', $intersection->getString());
+		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 01:00:00)', (string) $intersection);
 
 		$one = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-01 01:00:00');
 		$intersection = $one->getIntersection($one);
-		Assert::equal($one->getString(), $intersection->getString());
+		Assert::equal((string) $one, (string) $intersection);
 
 		$first = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-01 01:00:00');
 		$second = DateTimeInterval::fromString('2015-01-01 05:00:00', '2015-01-01 10:00:00');
@@ -123,9 +124,9 @@ class DateTimeIntervalTest extends TestCase
 		$first = DateTimeInterval::fromString('2015-01-01 00:00:00', '2015-01-01 01:00:00');
 		$second = DateTimeInterval::fromString('2015-01-01 00:30:00', '2015-01-01 00:45:00');
 		$intersection = $first->getIntersection($second);
-		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 00:45:00)', $intersection->getString());
+		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 00:45:00)', (string) $intersection);
 		$intersection = $second->getIntersection($first);
-		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 00:45:00)', $intersection->getString());
+		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 00:45:00)', (string) $intersection);
 	}
 
 
@@ -133,22 +134,26 @@ class DateTimeIntervalTest extends TestCase
 	public function testIsFollowedByAtMidnight()
 	{
 		$first = new DateTimeInterval(
-			new DateTime('2015-03-04 20:00:00'), Interval::CLOSED, new DateTime('2015-03-04 23:59:59'), Interval::OPENED
+			DateTimeBoundaryFactory::create('2015-03-04 20:00:00', Boundary::CLOSED),
+			DateTimeBoundaryFactory::create('2015-03-04 23:59:59', Boundary::OPENED)
 		);
 
 		$second = new DateTimeInterval(
-			new DateTime('2015-03-05 00:00:00'), Interval::CLOSED, new DateTime('2015-03-05 04:00:00'), Interval::OPENED
+			DateTimeBoundaryFactory::create('2015-03-05 00:00:00', Boundary::CLOSED),
+			DateTimeBoundaryFactory::create('2015-03-05 04:00:00', Boundary::OPENED)
 		);
 
 		Assert::true($first->isFollowedByAtMidnight($second));
 		Assert::false($second->isFollowedByAtMidnight($first));
 
 		$first = new DateTimeInterval(
-			new DateTime('2015-03-03 20:00:00'), Interval::CLOSED, new DateTime('2015-03-03 23:59:59'), Interval::OPENED
+			DateTimeBoundaryFactory::create('2015-03-03 20:00:00', Boundary::CLOSED),
+			DateTimeBoundaryFactory::create('2015-03-03 23:59:59', Boundary::OPENED)
 		);
 
 		$secondShiftedByDay = new DateTimeInterval(
-			new DateTime('2015-03-05 00:00:00'), Interval::CLOSED, new DateTime('2015-03-05 04:00:00'), Interval::OPENED
+			DateTimeBoundaryFactory::create('2015-03-05 00:00:00', Boundary::CLOSED),
+			DateTimeBoundaryFactory::create('2015-03-05 04:00:00', Boundary::OPENED)
 		);
 
 		Assert::false($first->isFollowedByAtMidnight($secondShiftedByDay));
@@ -159,8 +164,10 @@ class DateTimeIntervalTest extends TestCase
 	public function testIsContainingDateTime()
 	{
 		$interval = new DateTimeInterval(
-			new DateTime('2015-03-05 00:00:00'), Interval::CLOSED, new DateTime('2015-03-05 04:00:00'), Interval::OPENED
+			DateTimeBoundaryFactory::create('2015-03-05 00:00:00', Boundary::CLOSED),
+			DateTimeBoundaryFactory::create('2015-03-05 04:00:00', Boundary::OPENED)
 		);
+
 		Assert::true($interval->isContainingElement(new DateTime('2015-03-05 02:00:00')));
 		Assert::false($interval->isContainingElement(new DateTime('2015-03-05 04:00:00')));
 		Assert::false($interval->isContainingElement(new DateTime('2015-03-05 05:00:00')));

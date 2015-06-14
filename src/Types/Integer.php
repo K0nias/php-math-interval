@@ -4,7 +4,8 @@ namespace Achse\Math\Interval\Types;
 
 use Achse\Math\Interval\Types\Comparison\ComparisonMethods;
 use Achse\Math\Interval\Types\Comparison\IComparable;
-use Achse\Math\Interval\Types\Comparison\IntervalUtils;
+use Achse\Math\Interval\Utils\IntervalUtils;
+use Nette\InvalidArgumentException;
 use Nette\Object;
 
 
@@ -61,5 +62,16 @@ class Integer extends Object implements IComparable
 	public function __toString()
 	{
 		return (string) $this->toInt();
+	}
+
+
+
+	public static function fromString($string)
+	{
+		if (!is_numeric($string)) {
+			throw new InvalidArgumentException("'$string' in not numeric.");
+		}
+
+		return new static((int) $string);
 	}
 }

@@ -4,7 +4,7 @@ namespace Achse\Math\Interval\Types;
 
 use Achse\Math\Interval\Types\Comparison\ComparisonMethods;
 use Achse\Math\Interval\Types\Comparison\IComparable;
-use Achse\Math\Interval\Types\Comparison\IntervalUtils;
+use Achse\Math\Interval\Utils\IntervalUtils;
 use Nette\Utils\DateTime as NDateTime;
 
 

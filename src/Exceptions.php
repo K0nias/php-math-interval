@@ -6,3 +6,10 @@ class ModificationNotPossibleException extends \Exception
 {
 
 }
+
+
+
+class IntervalParseErrorException extends \Exception
+{
+
+}
