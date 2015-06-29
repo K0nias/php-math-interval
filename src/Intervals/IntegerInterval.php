@@ -31,7 +31,7 @@ class IntegerInterval extends Interval
 
 
 	/**
-	 * @return IntervalInteger
+	 * @return IntegerBoundary
 	 */
 	public function getLeft()
 	{
@@ -41,7 +41,7 @@ class IntegerInterval extends Interval
 
 
 	/**
-	 * @return IntervalInteger
+	 * @return IntegerBoundary
 	 */
 	public function getRight()
 	{

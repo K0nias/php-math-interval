@@ -94,7 +94,7 @@ class Interval extends Object
 	 */
 	public function setRight(Boundary $right)
 	{
-		if ($this->left !== NULL && $this->left->isGreaterThenOrEqual($right)) {
+		if ($this->left !== NULL && $this->left->isGreaterThen($right)) {
 			throw new InvalidArgumentException('Right endpoint cannot be less then Left endpoint.');
 		}
 
@@ -251,7 +251,7 @@ class Interval extends Object
 			)
 			&&
 			(
-				$this->isContainingElement($other->getRight())
+				$this->isContainingElement($other->getRight()->getValue())
 				||
 				$other->isRightOpened() && $this->isElementRightOpenedBorder($other->getRight()->getValue())
 			)
@@ -360,7 +360,7 @@ class Interval extends Object
 	 */
 	private function getLeftBracket()
 	{
-		return $this->isLeftOpened() ? Boundary::STRING_OPENED_LEFT : Boundary::STRING_OPENED_LEFT;
+		return $this->isLeftOpened() ? Boundary::STRING_OPENED_LEFT : Boundary::STRING_CLOSED_LEFT;
 	}
 
 

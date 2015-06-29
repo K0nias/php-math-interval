@@ -208,6 +208,7 @@ class IntervalTest extends TestCase
 
 		$intervalTwoThreeOpened = IntegerIntervalStringParser::parse('(2, 2)');
 
+		// (1, 3) ∩ (2, 4) ⟺ (2, 3)
 		$intersection = $this->intervalOneThreeOpened->getIntersection($this->intervalTwoFourOpened);
 		$this->assertInterval($intervalTwoThreeOpened, $intersection);
 
@@ -262,11 +263,13 @@ class IntervalTest extends TestCase
 	 */
 	private function assertInterval(IntegerInterval $expected, IntegerInterval $actual)
 	{
-		Assert::equal($expected->getLeft()->toInt(), $actual->getLeft()->toInt());
-		Assert::equal($expected->isLeftClosed(), $actual->isLeftClosed());
+//		Assert::equal($expected->getLeft()->getValue()->toInt(), $actual->getLeft()->getValue()->toInt());
+//		Assert::equal($expected->isLeftClosed(), $actual->isLeftClosed());
+//
+//		Assert::equal($expected->getRight()->getValue()->toInt(), $actual->getRight()->getValue()->toInt());
+//		Assert::equal($expected->isRightClosed(), $actual->isRightClosed());
 
-		Assert::equal($expected->getRight()->toInt(), $actual->getRight()->toInt());
-		Assert::equal($expected->isRightClosed(), $actual->isRightClosed());
+		Assert::equal((string) $expected, (string) $actual);
 	}
 	
 }

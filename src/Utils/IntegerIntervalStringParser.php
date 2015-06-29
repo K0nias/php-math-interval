@@ -33,8 +33,7 @@ class IntegerIntervalStringParser extends Object
 	{
 		list ($left, $right) = self::parseBoundariesStringsFromString($string);
 
-		return new IntegerInterval(self::parseBoundary($left), self::parseBoundary($right)
-		);
+		return new IntegerInterval(self::parseBoundary($left), self::parseBoundary($right));
 	}
 
 

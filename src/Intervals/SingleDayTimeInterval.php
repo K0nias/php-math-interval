@@ -3,6 +3,7 @@
 namespace Achse\Math\Interval\Intervals;
 
 use Achse\Math\Interval\Boundaries\Boundary;
+use Achse\Math\Interval\Boundaries\DateTimeBoundary;
 use Achse\Math\Interval\Boundaries\SingleDayTimeBoundary;
 use Achse\Math\Interval\ModificationNotPossibleException;
 use Achse\Math\Interval\Utils\IntervalUtils;
@@ -20,12 +21,12 @@ class SingleDayTimeInterval extends Interval
 	 */
 	public function __construct(Boundary $left, Boundary $right)
 	{
-		if (!($left->getValue() instanceof SingleDayTime)) {
-			throw new InvalidArgumentException('\$left->getValue() have to be instance of Achse\Math\Interval\SingleDayTime.');
+		if (!($left instanceof SingleDayTimeBoundary)) {
+			throw new InvalidArgumentException('\$left have to be instance of ' . SingleDayTimeBoundary::class . '.');
 		}
 
-		if (!($right->getValue() instanceof SingleDayTime)) {
-			throw new InvalidArgumentException('\$right->getValue() have to be instance of Achse\Math\Interval\SingleDayTime.');
+		if (!($right instanceof SingleDayTimeBoundary)) {
+			throw new InvalidArgumentException('\$right have to be instance of ' . SingleDayTimeBoundary::class . '.');
 		}
 
 		parent::__construct($left, $right);
@@ -64,8 +65,8 @@ class SingleDayTimeInterval extends Interval
 		$ends->setTime(23, 59, 59);
 
 		$thisDayInterval = new DateTimeInterval(
-			new Boundary($start, Boundary::CLOSED),
-			new Boundary($ends, Boundary::OPENED)
+			new DateTimeBoundary($start, Boundary::CLOSED),
+			new DateTimeBoundary($ends, Boundary::OPENED)
 		);
 
 		/** @var DateTimeInterval $intersection */
