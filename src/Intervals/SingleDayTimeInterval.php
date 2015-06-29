@@ -42,8 +42,8 @@ class SingleDayTimeInterval extends Interval
 	public static function fromString($from, $till)
 	{
 		return new static(
-			new Boundary(SingleDayTime::from($from), Boundary::CLOSED),
-			new Boundary(SingleDayTime::from($till), Boundary::OPENED)
+			new SingleDayTimeBoundary(SingleDayTime::from($from), Boundary::CLOSED),
+			new SingleDayTimeBoundary(SingleDayTime::from($till), Boundary::OPENED)
 		);
 	}
 
@@ -66,11 +66,11 @@ class SingleDayTimeInterval extends Interval
 
 		$thisDayInterval = new DateTimeInterval(
 			new DateTimeBoundary($start, Boundary::CLOSED),
-			new DateTimeBoundary($ends, Boundary::OPENED)
+			new DateTimeBoundary($ends, Boundary::CLOSED)
 		);
 
 		/** @var DateTimeInterval $intersection */
-		$intersection = $interval->getIntersection($thisDayInterval);
+		$intersection = $thisDayInterval->getIntersection($interval);
 
 		if ($intersection === NULL) {
 			throw new InvalidArgumentException('Given day does not hits given interval. No intersection possible.');
@@ -81,7 +81,7 @@ class SingleDayTimeInterval extends Interval
 
 		return new static(
 			new SingleDayTimeBoundary($left, $intersection->getLeft()->getState()),
-			new SingleDayTimeBoundary($right, $intersection->getLeft()->getState())
+			new SingleDayTimeBoundary($right, $intersection->getRight()->getState())
 		);
 	}
 

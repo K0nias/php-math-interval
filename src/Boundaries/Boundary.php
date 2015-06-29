@@ -80,7 +80,7 @@ class Boundary extends Object implements IComparable
 	 */
 	public function compare(IComparable $other)
 	{
-		if (!$other instanceof static) {
+		if (!$other instanceof self) { // intentionally self
 			throw new \LogicException('You cannot compare sheep with the goat.');
 		}
 

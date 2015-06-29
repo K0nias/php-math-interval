@@ -206,7 +206,7 @@ class IntervalTest extends TestCase
 		Assert::null($this->intervalOneTwoClosed->getIntersection($this->intervalTwoThreeOpened));
 		Assert::null($this->intervalOneTwoOpened->getIntersection($this->intervalTwoThreeClosed));
 
-		$intervalTwoThreeOpened = IntegerIntervalStringParser::parse('(2, 2)');
+		$intervalTwoThreeOpened = IntegerIntervalStringParser::parse('(2, 3)');
 
 		// (1, 3) ∩ (2, 4) ⟺ (2, 3)
 		$intersection = $this->intervalOneThreeOpened->getIntersection($this->intervalTwoFourOpened);

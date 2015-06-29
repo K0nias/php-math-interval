@@ -38,10 +38,10 @@ class SingleDayTimeIntervalTest extends TestCase
 		);
 
 		$interval = SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTime('2015-05-10'));
-		Assert::equal('[12:13:14, 23:59:59)', (string) $interval);
+		Assert::equal('[12:13:14, 23:59:59]', (string) $interval);
 
 		$interval = SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTime('2015-05-11'));
-		Assert::equal('[00:00:00, 23:59:59)', (string) $interval);
+		Assert::equal('[00:00:00, 23:59:59]', (string) $interval);
 
 		$interval = SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTime('2015-05-12'));
 		Assert::equal('[00:00:00, 21:22:23)', (string) $interval);

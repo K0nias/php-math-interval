@@ -13,24 +13,6 @@ class IntegerInterval extends Interval
 {
 
 	/**
-	 * @inheritdoc
-	 */
-	public function __construct(Boundary $left, Boundary $right)
-	{
-		if (!($left instanceof IntegerBoundary)) {
-			throw new InvalidArgumentException('\$left have to be instance of ' . IntegerBoundary::class);
-		}
-
-		if (!($right instanceof IntegerBoundary)) {
-			throw new InvalidArgumentException('\$right have to be instance of ' . IntegerBoundary::class);
-		}
-
-		parent::__construct($left, $right);
-	}
-
-
-
-	/**
 	 * @return IntegerBoundary
 	 */
 	public function getLeft()
