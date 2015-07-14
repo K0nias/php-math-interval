@@ -6,7 +6,7 @@
 
 namespace Achse\Tests\Interval\Types;
 
-$container = require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../bootstrap.php';
 
 use Achse\Math\Interval\ModificationNotPossibleException;
 use Achse\Math\Interval\Types\DateTime;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Achse\Math\Interval\Types\Comparison;
+namespace Achse\Math\Interval\Utils;
 
 use Nette\Object;
 

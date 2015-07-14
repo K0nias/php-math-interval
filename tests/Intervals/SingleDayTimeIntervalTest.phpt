@@ -6,10 +6,11 @@
 
 namespace Achse\Tests\Interval\Types;
 
-$container = require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../bootstrap.php';
 
+use Achse\Math\Interval\Boundaries\Boundary;
+use Achse\Math\Interval\Factories\DateTimeBoundaryFactory;
 use Achse\Math\Interval\Intervals\DateTimeInterval;
-use Achse\Math\Interval\Intervals\Interval;
 use Achse\Math\Interval\Intervals\SingleDayTimeInterval;
 use Achse\Math\Interval\Types\DateTime;
 use Nette\InvalidArgumentException;
@@ -24,7 +25,7 @@ class SingleDayTimeIntervalTest extends TestCase
 	public function testFromString()
 	{
 		$interval = SingleDayTimeInterval::fromString('01:02:03', '04:05:06');
-		Assert::equal('[01:02:03, 04:05:06)', $interval->getString());
+		Assert::equal('[01:02:03, 04:05:06)', (string) $interval);
 	}
 
 
@@ -32,17 +33,18 @@ class SingleDayTimeIntervalTest extends TestCase
 	public function testFromDateTimeInterval()
 	{
 		$dateTimeInterval = new DateTimeInterval(
-			new DateTime('2015-05-10 12:13:14'), Interval::CLOSED, new DateTime('2015-05-12 21:22:23'), Interval::OPENED
+			DateTimeBoundaryFactory::create('2015-05-10 12:13:14', Boundary::CLOSED),
+			DateTimeBoundaryFactory::create('2015-05-12 21:22:23', Boundary::OPENED)
 		);
 
 		$interval = SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTime('2015-05-10'));
-		Assert::equal('[12:13:14, 23:59:59)', $interval->getString());
+		Assert::equal('[12:13:14, 23:59:59]', (string) $interval);
 
 		$interval = SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTime('2015-05-11'));
-		Assert::equal('[00:00:00, 23:59:59)', $interval->getString());
+		Assert::equal('[00:00:00, 23:59:59]', (string) $interval);
 
 		$interval = SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTime('2015-05-12'));
-		Assert::equal('[00:00:00, 21:22:23)', $interval->getString());
+		Assert::equal('[00:00:00, 21:22:23)', (string) $interval);
 
 		Assert::exception(
 			function () use ($dateTimeInterval) {

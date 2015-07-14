@@ -2,36 +2,34 @@
 
 namespace Achse\Math\Interval\Intervals;
 
+use Achse\Math\Interval\Boundaries\Boundary;
+use Achse\Math\Interval\Boundaries\DateTimeBoundary;
+use Achse\Math\Interval\Boundaries\SingleDayTimeBoundary;
 use Achse\Math\Interval\ModificationNotPossibleException;
-use Achse\Math\Interval\Types\Comparison\IComparable;
-use Achse\Math\Interval\Types\Comparison\IntervalUtils;
+use Achse\Math\Interval\Utils\IntervalUtils;
 use Achse\Math\Interval\Types\DateTime;
 use Achse\Math\Interval\Types\SingleDayTime;
 use Nette\InvalidArgumentException;
 
 
 
-/**
- * Classes like this are here because of absence generic in PHP
- * so this provides a tool to work with concrete IComparable type.
- */
 class SingleDayTimeInterval extends Interval
 {
 
 	/**
 	 * @inheritdoc
 	 */
-	public function __construct(IComparable $left, $stateLeft, IComparable $right, $stateRight)
+	public function __construct(Boundary $left, Boundary $right)
 	{
-		if (!($left instanceof SingleDayTime)) {
-			throw new InvalidArgumentException('\$left have to be instance of Achse\Math\Interval\SingleDayTime.');
+		if (!($left instanceof SingleDayTimeBoundary)) {
+			throw new InvalidArgumentException('\$left have to be instance of ' . SingleDayTimeBoundary::class . '.');
 		}
 
-		if (!($right instanceof SingleDayTime)) {
-			throw new InvalidArgumentException('\$right have to be instance of Achse\Math\Interval\SingleDayTime.');
+		if (!($right instanceof SingleDayTimeBoundary)) {
+			throw new InvalidArgumentException('\$right have to be instance of ' . SingleDayTimeBoundary::class . '.');
 		}
 
-		parent::__construct($left, $stateLeft, $right, $stateRight);
+		parent::__construct($left, $right);
 	}
 
 
@@ -44,7 +42,8 @@ class SingleDayTimeInterval extends Interval
 	public static function fromString($from, $till)
 	{
 		return new static(
-			SingleDayTime::from($from), Interval::CLOSED, SingleDayTime::from($till), Interval::OPENED
+			new SingleDayTimeBoundary(SingleDayTime::from($from), Boundary::CLOSED),
+			new SingleDayTimeBoundary(SingleDayTime::from($till), Boundary::OPENED)
 		);
 	}
 
@@ -65,19 +64,25 @@ class SingleDayTimeInterval extends Interval
 		$ends = DateTime::from($date);
 		$ends->setTime(23, 59, 59);
 
-		$thisDayInterval = new DateTimeInterval($start, Interval::CLOSED, $ends, Interval::OPENED);
+		$thisDayInterval = new DateTimeInterval(
+			new DateTimeBoundary($start, Boundary::CLOSED),
+			new DateTimeBoundary($ends, Boundary::CLOSED)
+		);
 
 		/** @var DateTimeInterval $intersection */
-		$intersection = $interval->getIntersection($thisDayInterval);
+		$intersection = $thisDayInterval->getIntersection($interval);
 
 		if ($intersection === NULL) {
 			throw new InvalidArgumentException('Given day does not hits given interval. No intersection possible.');
 		}
 
-		$left = SingleDayTime::fromDateTime($intersection->getLeft());
-		$right = SingleDayTime::fromDateTime($intersection->getRight());
+		$left = SingleDayTime::fromDateTime($intersection->getLeft()->getValue());
+		$right = SingleDayTime::fromDateTime($intersection->getRight()->getValue());
 
-		return new static($left, $intersection->getLeftState(), $right, $intersection->getRightState());
+		return new static(
+			new SingleDayTimeBoundary($left, $intersection->getLeft()->getState()),
+			new SingleDayTimeBoundary($right, $intersection->getRight()->getState())
+		);
 	}
 
 
@@ -88,8 +93,8 @@ class SingleDayTimeInterval extends Interval
 	public function isFollowedBy(SingleDayTimeInterval $other, $precision = IntervalUtils::PRECISION_ON_SECOND)
 	{
 		try {
-			$this->getRight()->modifyClone("+{$precision}");
-			$other->getLeft()->modifyClone("-{$precision}");
+			$this->getRight()->getValue()->modifyClone("+{$precision}");
+			$other->getLeft()->getValue()->modifyClone("-{$precision}");
 		} catch (ModificationNotPossibleException $e) {
 			return FALSE;
 		}
@@ -103,7 +108,7 @@ class SingleDayTimeInterval extends Interval
 
 
 	/**
-	 * @return SingleDayTime
+	 * @return SingleDayTimeBoundary
 	 */
 	public function getLeft()
 	{
@@ -113,7 +118,7 @@ class SingleDayTimeInterval extends Interval
 
 
 	/**
-	 * @return SingleDayTime
+	 * @return SingleDayTimeBoundary
 	 */
 	public function getRight()
 	{
@@ -128,10 +133,14 @@ class SingleDayTimeInterval extends Interval
 	 */
 	public function toDateTimeInterval(\DateTime $day)
 	{
-		return new DateTimeInterval(
-			$this->getLeft()->toDateTime($day), $this->getLeftState(),
-			$this->getRight()->toDateTime($day), $this->getRightState()
+		$left = new SingleDayTimeBoundary(
+			$this->getLeft()->getValue()->toDateTime($day), $this->getLeft()->getState()
 		);
+		$right = new SingleDayTimeBoundary(
+			$this->getRight()->getValue()->toDateTime($day), $this->getRight()->getState()
+		);
+
+		return new DateTimeInterval($left, $right);
 	}
 
 }

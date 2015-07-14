@@ -5,7 +5,7 @@ namespace Achse\Math\Interval\Types;
 use Achse\Math\Interval\ModificationNotPossibleException;
 use Achse\Math\Interval\Types\Comparison\ComparisonMethods;
 use Achse\Math\Interval\Types\Comparison\IComparable;
-use Achse\Math\Interval\Types\Comparison\IntervalUtils;
+use Achse\Math\Interval\Utils\IntervalUtils;
 use Nette\InvalidArgumentException;
 use Nette\Object;
 
@@ -243,7 +243,7 @@ class SingleDayTime extends Object implements IComparable
 
 
 	/**
-	 * @param int|string|\DateTime|SingleDayTime $time
+	 * @param \DateTime|SingleDayTime|string|int $time
 	 * @return SingleDayTime
 	 */
 	public static function from($time)

@@ -6,12 +6,16 @@
 
 namespace Achse\Tests\Interval\Types;
 
-$container = require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../bootstrap.php';
 
+use Achse\Math\Interval\Boundaries\Boundary;
+use Achse\Math\Interval\Boundaries\IntegerBoundary;
+use Achse\Math\Interval\Factories\IntegerBoundaryFactory;
 use Achse\Math\Interval\Intervals\IntegerInterval;
 use Achse\Math\Interval\Intervals\Interval;
 use Achse\Math\Interval\Types\Integer as IntegerObj;
 use Achse\Math\Interval\Types\Integer;
+use Achse\Math\Interval\Utils\IntegerIntervalStringParser;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -75,75 +79,54 @@ class IntervalTest extends TestCase
 	 */
 	private $intervalTwoFourClosed;
 
-	/**
-	 * @var IntegerObj
-	 */
-	private $one;
-
-	/**
-	 * @var IntegerObj
-	 */
-	private $two;
-
-	/**
-	 * @var IntegerObj
-	 */
-	private $three;
-
-	/**
-	 * @var IntegerObj
-	 */
-	private $four;
-
 
 
 	protected function setUp()
 	{
 		parent::setUp();
 
-		$this->one = new IntegerObj(1);
-		$this->two = new IntegerObj(2);
-		$this->three = new IntegerObj(3);
-		$this->four = new IntegerObj(4);
+		$this->intervalOneFourClosed = IntegerIntervalStringParser::parse('[1, 4]');
+		$this->intervalOneFourOpened = IntegerIntervalStringParser::parse('(1, 4)');
 
-		$this->intervalOneFourClosed = new IntegerInterval($this->one, Interval::CLOSED, $this->four, Interval::CLOSED);
-		$this->intervalOneFourOpened = new IntegerInterval($this->one, Interval::OPENED, $this->four, Interval::OPENED);
-		$this->intervalTwoThreeClosed = new IntegerInterval($this->two, Interval::CLOSED, $this->three, Interval::CLOSED);
-		$this->intervalTwoThreeOpened = new IntegerInterval($this->two, Interval::OPENED, $this->three, Interval::OPENED);
-		$this->intervalOneTwoClosed = new IntegerInterval($this->one, Interval::CLOSED, $this->two, Interval::CLOSED);
-		$this->intervalTwoThreeClosed = new IntegerInterval($this->two, Interval::CLOSED, $this->three, Interval::CLOSED);
-		$this->intervalOneTwoOpened = new IntegerInterval($this->one, Interval::OPENED, $this->two, Interval::OPENED);
-		$this->intervalTwoThreeOpened = new IntegerInterval($this->two, Interval::OPENED, $this->three, Interval::OPENED);
-		$this->intervalOneThreeOpened = new IntegerInterval($this->one, Interval::OPENED, $this->three, Interval::OPENED);
-		$this->intervalTwoFourOpened = new IntegerInterval($this->two, Interval::OPENED, $this->four, Interval::OPENED);
-		$this->intervalOneTwoOpened = new IntegerInterval($this->one, Interval::OPENED, $this->two, Interval::OPENED);
-		$this->intervalThreeFourOpened = new IntegerInterval($this->three, Interval::OPENED, $this->four, Interval::OPENED);
-		$this->intervalThreeFourClosed = new IntegerInterval($this->three, Interval::CLOSED, $this->four, Interval::CLOSED);
-		$this->intervalTwoFourClosed = new IntegerInterval($this->two, Interval::CLOSED, $this->four, Interval::CLOSED);
+		$this->intervalTwoThreeClosed = IntegerIntervalStringParser::parse('[2, 3]');
+		$this->intervalTwoThreeOpened = IntegerIntervalStringParser::parse('(2, 3)');
 
+		$this->intervalOneTwoClosed = IntegerIntervalStringParser::parse('[1, 2]');
+		$this->intervalOneTwoOpened = IntegerIntervalStringParser::parse('(1, 2)');
+
+		$this->intervalTwoThreeClosed = IntegerIntervalStringParser::parse('[2, 3]');
+		$this->intervalTwoThreeOpened = IntegerIntervalStringParser::parse('(2, 3)');
+
+		$this->intervalThreeFourClosed = IntegerIntervalStringParser::parse('[3, 4]');
+		$this->intervalThreeFourOpened = IntegerIntervalStringParser::parse('(3, 4)');
+
+		$this->intervalTwoFourClosed = IntegerIntervalStringParser::parse('[2, 4]');
+		$this->intervalTwoFourOpened = IntegerIntervalStringParser::parse('(2, 4)');
+
+		$this->intervalOneThreeOpened = IntegerIntervalStringParser::parse('(1, 3)');
 	}
 
 
 
 	public function testIsContainingElement()
 	{
-		$interval = new Interval($this->one, Interval::CLOSED, $this->two, Interval::CLOSED);
-		Assert::true($interval->isContainingElement($this->one));
-		Assert::true($interval->isContainingElement($this->two));
+		$interval = IntegerIntervalStringParser::parse('[1, 2]');
+		Assert::true($interval->isContainingElement(new Integer(1)));
+		Assert::true($interval->isContainingElement(new Integer(2)));
 
-		$interval = new Interval($this->one, Interval::OPENED, $this->two, Interval::OPENED);
-		Assert::false($interval->isContainingElement($this->one));
-		Assert::false($interval->isContainingElement($this->two));
+		$interval = IntegerIntervalStringParser::parse('(1, 2)');
+		Assert::false($interval->isContainingElement(new Integer(1)));
+		Assert::false($interval->isContainingElement(new Integer(2)));
 
-		$interval = new Interval($this->one, Interval::CLOSED, $this->three, Interval::OPENED);
-		Assert::true($interval->isContainingElement($this->one));
-		Assert::true($interval->isContainingElement($this->two));
-		Assert::false($interval->isContainingElement($this->three));
+		$interval = IntegerIntervalStringParser::parse('[1, 3)');
+		Assert::true($interval->isContainingElement(new Integer(1)));
+		Assert::true($interval->isContainingElement(new Integer(2)));
+		Assert::false($interval->isContainingElement(new Integer(3)));
 
-		$interval = new Interval($this->one, Interval::OPENED, $this->three, Interval::CLOSED);
-		Assert::false($interval->isContainingElement($this->one));
-		Assert::true($interval->isContainingElement($this->two));
-		Assert::true($interval->isContainingElement($this->three));
+		$interval = IntegerIntervalStringParser::parse('(1, 3]');
+		Assert::false($interval->isContainingElement(new Integer(1)));
+		Assert::true($interval->isContainingElement(new Integer(2)));
+		Assert::true($interval->isContainingElement(new Integer(3)));
 	}
 
 
@@ -172,8 +155,8 @@ class IntervalTest extends TestCase
 		// (1, 4) NOT contains [1, 2]
 		Assert::false($this->intervalOneFourOpened->isContaining($this->intervalOneTwoClosed));
 
-		$left = new IntegerInterval($this->one, Interval::CLOSED, $this->three, Interval::CLOSED);
-		$right = new IntegerInterval($this->three, Interval::CLOSED, $this->four, Interval::CLOSED);
+		$left = IntegerIntervalStringParser::parse('[1, 3]');
+		$right = IntegerIntervalStringParser::parse('[3, 4]');
 
 		Assert::false($left->isContaining($right));
 		Assert::false($right->isContaining($left));
@@ -190,9 +173,6 @@ class IntervalTest extends TestCase
 		Assert::false($this->intervalOneTwoOpened->isOverlappedFromRightBy($this->intervalTwoThreeClosed));
 		// [1, 2] ~ (2, 3)
 		Assert::false($this->intervalOneTwoClosed->isOverlappedFromRightBy($this->intervalTwoThreeOpened));
-
-		$this->intervalOneThreeOpened = new Interval($this->one, Interval::OPENED, $this->three, Interval::OPENED);
-		$this->intervalTwoFourOpened = new Interval($this->two, Interval::OPENED, $this->four, Interval::OPENED);
 
 		Assert::true($this->intervalOneThreeOpened->isOverlappedFromRightBy($this->intervalTwoFourOpened));
 	}
@@ -215,7 +195,7 @@ class IntervalTest extends TestCase
 
 	public function testGetIntersection()
 	{
-		$intervalTwoTwoClosed = new IntegerInterval($this->two, Interval::CLOSED, $this->two, Interval::CLOSED);
+		$intervalTwoTwoClosed = IntegerIntervalStringParser::parse('[2, 2]');
 
 		$intersection = $this->intervalOneTwoClosed->getIntersection($this->intervalTwoThreeClosed);
 		$this->assertInterval($intervalTwoTwoClosed, $intersection);
@@ -226,8 +206,9 @@ class IntervalTest extends TestCase
 		Assert::null($this->intervalOneTwoClosed->getIntersection($this->intervalTwoThreeOpened));
 		Assert::null($this->intervalOneTwoOpened->getIntersection($this->intervalTwoThreeClosed));
 
-		$intervalTwoThreeOpened = new IntegerInterval($this->two, Interval::OPENED, $this->three, Interval::OPENED);
+		$intervalTwoThreeOpened = IntegerIntervalStringParser::parse('(2, 3)');
 
+		// (1, 3) ∩ (2, 4) ⟺ (2, 3)
 		$intersection = $this->intervalOneThreeOpened->getIntersection($this->intervalTwoFourOpened);
 		$this->assertInterval($intervalTwoThreeOpened, $intersection);
 
@@ -282,11 +263,13 @@ class IntervalTest extends TestCase
 	 */
 	private function assertInterval(IntegerInterval $expected, IntegerInterval $actual)
 	{
-		Assert::equal($expected->getLeft()->toInt(), $actual->getLeft()->toInt());
-		Assert::equal($expected->isLeftClosed(), $actual->isLeftClosed());
+//		Assert::equal($expected->getLeft()->getValue()->toInt(), $actual->getLeft()->getValue()->toInt());
+//		Assert::equal($expected->isLeftClosed(), $actual->isLeftClosed());
+//
+//		Assert::equal($expected->getRight()->getValue()->toInt(), $actual->getRight()->getValue()->toInt());
+//		Assert::equal($expected->isRightClosed(), $actual->isRightClosed());
 
-		Assert::equal($expected->getRight()->toInt(), $actual->getRight()->toInt());
-		Assert::equal($expected->isRightClosed(), $actual->isRightClosed());
+		Assert::equal((string) $expected, (string) $actual);
 	}
 	
 }

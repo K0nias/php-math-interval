@@ -2,7 +2,9 @@
 
 namespace Achse\Math\Interval\Intervals;
 
+use Achse\Math\Interval\Boundaries\Boundary;
 use Achse\Math\Interval\Types\Comparison\IComparable;
+use Achse\Math\Interval\Utils\IntegerIntervalStringParser;
 use Nette\InvalidArgumentException;
 use Nette\Object;
 
@@ -11,55 +13,28 @@ use Nette\Object;
 class Interval extends Object
 {
 
-	const OPENED = TRUE;
-	const CLOSED = FALSE;
+	const STRING_DELIMITER = ',';
 
 	/**
-	 * @var IComparable
+	 * @var Boundary
 	 */
 	private $left;
 
 	/**
-	 * @var IComparable
+	 * @var Boundary
 	 */
 	private $right;
 
-	/**
-	 * @var bool
-	 */
-	private $leftState;
-
-	/**
-	 * @var bool
-	 */
-	private $rightState;
-
 
 
 	/**
-	 * @param IComparable $left
-	 * @param bool $stateLeft
-	 * @param IComparable $right
-	 * @param bool $stateRight
+	 * @param Boundary $left
+	 * @param Boundary $right
 	 */
-	public function __construct(IComparable $left, $stateLeft, IComparable $right, $stateRight)
+	public function __construct(Boundary $left, Boundary $right)
 	{
-		$this->leftState = $stateLeft;
-		$this->rightState = $stateRight;
-
 		$this->setLeft($left);
 		$this->setRight($right);
-
-	}
-
-
-
-	/**
-	 * @return string
-	 */
-	public function getString()
-	{
-		return $this->__toString();
 	}
 
 
@@ -69,13 +44,17 @@ class Interval extends Object
 	 */
 	public function __toString()
 	{
-		return $this->getLeftBracket() . $this->getLeft() . ', ' . $this->getRight() . $this->getRightBracket();
+		return (
+			$this->getLeftBracket() . $this->getLeft()->getValue()
+			. self::STRING_DELIMITER . ' '
+			. $this->getRight()->getValue() . $this->getRightBracket()
+		);
 	}
 
 
 
 	/**
-	 * @return IComparable
+	 * @return Boundary
 	 */
 	public function getLeft()
 	{
@@ -85,7 +64,7 @@ class Interval extends Object
 
 
 	/**
-	 * @return IComparable
+	 * @return Boundary
 	 */
 	public function getRight()
 	{
@@ -95,35 +74,31 @@ class Interval extends Object
 
 
 	/**
-	 * @param IComparable $left
+	 * @param Boundary $left
 	 * @return static
 	 */
-	public function setLeft(IComparable $left)
+	public function setLeft(Boundary $left)
 	{
-		if ($this->right !== NULL && $left->greaterThen($this->right)) {
+		if ($this->right !== NULL && $left->isGreaterThenOrEqual($this->right)) {
 			throw new InvalidArgumentException('Left endpoint cannot be greater then Right endpoint.');
 		}
 
 		$this->left = $left;
-
-		return $this;
 	}
 
 
 
 	/**
-	 * @param IComparable $right
+	 * @param Boundary $right
 	 * @return Interval
 	 */
-	public function setRight(IComparable $right)
+	public function setRight(Boundary $right)
 	{
-		if ($this->left !== NULL && $this->left->greaterThen($right)) {
+		if ($this->left !== NULL && $this->left->isGreaterThen($right)) {
 			throw new InvalidArgumentException('Right endpoint cannot be less then Left endpoint.');
 		}
 
 		$this->right = $right;
-
-		return $this;
 	}
 
 
@@ -133,7 +108,7 @@ class Interval extends Object
 	 */
 	public function isEmpty()
 	{
-		return $this->isOpened() && $this->left->equal($this->right);
+		return $this->isOpened() && $this->left->isEqual($this->right);
 	}
 
 
@@ -145,7 +120,7 @@ class Interval extends Object
 	 */
 	public function isDegenerate()
 	{
-		return !$this->isClosed() && $this->left->equal($this->right);
+		return !$this->isClosed() && $this->left->isEqual($this->right);
 	}
 
 
@@ -179,7 +154,7 @@ class Interval extends Object
 	 */
 	public function isLeftOpened()
 	{
-		return $this->leftState === self::OPENED;
+		return $this->getLeft()->isOpened();
 	}
 
 
@@ -191,7 +166,7 @@ class Interval extends Object
 	 */
 	public function isRightOpened()
 	{
-		return $this->rightState === self::OPENED;
+		return $this->getRight()->isOpened();
 	}
 
 
@@ -211,7 +186,7 @@ class Interval extends Object
 	 */
 	public function isLeftClosed()
 	{
-		return $this->leftState === self::CLOSED;
+		return $this->getLeft()->isClosed();
 	}
 
 
@@ -221,27 +196,7 @@ class Interval extends Object
 	 */
 	public function isRightClosed()
 	{
-		return $this->rightState === self::CLOSED;
-	}
-
-
-
-	/**
-	 * @return boolean
-	 */
-	public function getLeftState()
-	{
-		return $this->leftState;
-	}
-
-
-
-	/**
-	 * @return boolean
-	 */
-	public function getRightState()
-	{
-		return $this->rightState;
+		return $this->getRight()->isClosed();
 	}
 
 
@@ -253,15 +208,15 @@ class Interval extends Object
 	public function isContainingElement(IComparable $element)
 	{
 		$leftBoundaryCheck = (
-			$this->isLeftOpened() && $this->getLeft()->lessThen($element)
+			$this->isLeftOpened() && $this->getLeft()->getValue()->isLessThen($element)
 			||
-			$this->isLeftClosed() && $this->getLeft()->lessThenOrEqual($element)
+			$this->isLeftClosed() && $this->getLeft()->getValue()->isLessThenOrEqual($element)
 		);
 
 		$rightBoundaryCheck = (
-			$this->isRightOpened() && $this->getRight()->greaterThen($element)
+			$this->isRightOpened() && $this->getRight()->getValue()->isGreaterThen($element)
 			||
-			$this->isRightClosed() && $this->getRight()->greaterThenOrEqual($element)
+			$this->isRightClosed() && $this->getRight()->getValue()->isGreaterThenOrEqual($element)
 		);
 
 		return $leftBoundaryCheck && $rightBoundaryCheck;
@@ -290,15 +245,15 @@ class Interval extends Object
 	{
 		return (
 			(
-				$this->isContainingElement($other->getLeft())
+				$this->isContainingElement($other->getLeft()->getValue())
 				||
-				$other->isLeftOpened() && $this->isElementLeftOpenedBorder($other->getLeft())
+				$other->isLeftOpened() && $this->isElementLeftOpenedBorder($other->getLeft()->getValue())
 			)
 			&&
 			(
-				$this->isContainingElement($other->getRight())
+				$this->isContainingElement($other->getRight()->getValue())
 				||
-				$other->isRightOpened() && $this->isElementRightOpenedBorder($other->getRight())
+				$other->isRightOpened() && $this->isElementRightOpenedBorder($other->getRight()->getValue())
 			)
 		);
 	}
@@ -325,8 +280,8 @@ class Interval extends Object
 	public function isOverlappedFromRightBy(Interval $other)
 	{
 		return (
-			$this->isContainingElement($other->getLeft())
-			&& $other->isContainingElement($this->getRight())
+			$this->isContainingElement($other->getLeft()->getValue())
+			&& $other->isContainingElement($this->getRight()->getValue())
 		);
 	}
 
@@ -352,14 +307,14 @@ class Interval extends Object
 			//    $b->from   |   | <- $a-till
 
 		} elseif ($a->isOverlappedFromRightBy($b)) {
-			return new static($b->getLeft(), $b->leftState, $a->getRight(), $a->rightState);
+			return new static($b->getLeft(), $a->getRight());
 
 			// A: □□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□
 			// B: □□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□
 			//    $a->from -> |   | <- $b-till
 
 		} elseif ($b->isOverlappedFromRightBy($this)) {
-			return new static($a->getLeft(), $a->leftState, $b->getRight(), $b->rightState);
+			return new static($a->getLeft(), $b->getRight());
 		}
 
 		return NULL;
@@ -405,7 +360,7 @@ class Interval extends Object
 	 */
 	private function getLeftBracket()
 	{
-		return $this->isLeftOpened() ? '(' : '[';
+		return $this->isLeftOpened() ? Boundary::STRING_OPENED_LEFT : Boundary::STRING_CLOSED_LEFT;
 	}
 
 
@@ -415,7 +370,7 @@ class Interval extends Object
 	 */
 	private function getRightBracket()
 	{
-		return $this->isRightOpened() ? ')' : ']';
+		return $this->isRightOpened() ? Boundary::STRING_OPENED_RIGHT : Boundary::STRING_CLOSED_RIGHT;
 	}
 
 
@@ -426,7 +381,7 @@ class Interval extends Object
 	 */
 	private function isElementLeftOpenedBorder(IComparable $element)
 	{
-		return $this->isLeftOpened() && $this->getLeft()->equal($element);
+		return $this->isLeftOpened() && $this->getLeft()->getValue()->isEqual($element);
 	}
 
 
@@ -437,7 +392,7 @@ class Interval extends Object
 	 */
 	private function isElementRightOpenedBorder(IComparable $element)
 	{
-		return $this->isRightOpened() && $this->getRight()->equal($element);
+		return $this->isRightOpened() && $this->getRight()->getValue()->isEqual($element);
 	}
 
 
@@ -455,12 +410,18 @@ class Interval extends Object
 		if ($this->isContaining($other)) {
 			$result = [];
 
-			if (!$other->getLeft()->equal($this->getLeft()) || $other->getLeftState() !== $this->getLeftState()) {
-				$result[] = new static($this->getLeft(), $this->getLeftState(), $other->getLeft(), !$other->getLeftState());
+			if (!$other->getLeft()->isEqual($this->getLeft())) { // intentionally not only values but also states
+				$result[] = new static(
+					$this->getLeft(),
+					new Boundary($other->getLeft()->getValue(), !$other->getLeft()->getState())
+				);
 			}
 
-			if (!$other->getRight()->equal($this->getRight()) || $other->getRightState() !== $this->getRightState()) {
-				$result[] = new static($other->getRight(), !$other->getRightState(), $this->getRight(), $this->getRightState());
+			if (!$other->getRight()->isEqual($this->getRight())) { // intentionally not only values but also states
+				$result[] = new static(
+					new Boundary($other->getRight()->getValue(), !$other->getRight()->getState()),
+					$this->getRight()
+				);
 			}
 
 			return $result;

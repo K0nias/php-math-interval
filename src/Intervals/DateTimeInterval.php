@@ -2,8 +2,10 @@
 
 namespace Achse\Math\Interval\Intervals;
 
-use Achse\Math\Interval\Types\Comparison\IComparable;
-use Achse\Math\Interval\Types\Comparison\IntervalUtils;
+use Achse\Math\Interval\Boundaries\Boundary;
+use Achse\Math\Interval\Boundaries\DateTimeBoundary;
+use Achse\Math\Interval\Factories\DateTimeBoundaryFactory;
+use Achse\Math\Interval\Utils\IntervalUtils;
 use Achse\Math\Interval\Types\DateTime;
 use Nette\InvalidArgumentException;
 
@@ -15,18 +17,20 @@ class DateTimeInterval extends Interval
 	/**
 	 * @inheritdoc
 	 */
-	public function __construct(IComparable $left, $stateLeft, IComparable $right, $stateRight)
+	public function __construct(Boundary $left, Boundary $right)
 	{
-		if (!($left instanceof DateTime)) {
-			throw new InvalidArgumentException('\$left have to be instance of Achse\Math\Interval\DateTime.');
+		if (!($left instanceof DateTimeBoundary)) {
+			throw new InvalidArgumentException('\$left have to be instance of ' . DateTimeBoundary::class);
 		}
 
-		if (!($right instanceof DateTime)) {
-			throw new InvalidArgumentException('\$right have to be instance of Achse\Math\Interval\DateTime.');
+		if (!($right instanceof DateTimeBoundary)) {
+			throw new InvalidArgumentException('\$right have to be instance of ' . DateTimeBoundary::class);
 		}
 
-		parent::__construct($left, $stateLeft, $right, $stateRight);
+		parent::__construct($left, $right);
 	}
+
+
 
 	/**
 	 * @param string $since
@@ -35,7 +39,10 @@ class DateTimeInterval extends Interval
 	 */
 	public static function fromString($since, $till)
 	{
-		return new static(new DateTime($since), self::CLOSED, new DateTime($till), self::OPENED);
+		return new static(
+			DateTimeBoundaryFactory::create($since, Boundary::CLOSED),
+			DateTimeBoundaryFactory::create($till, Boundary::OPENED)
+		);
 	}
 
 
@@ -60,21 +67,21 @@ class DateTimeInterval extends Interval
 	 */
 	public function isFollowedBy(DateTimeInterval $other, $precision = IntervalUtils::PRECISION_ON_SECOND)
 	{
-		if ($this->getLeft() > $other->getRight()) {
+		if ($this->getLeft() > $other->getRight()) { // intentionally compares boundaries
 			return FALSE;
 		}
 
 		/** @var DateTime $modifiedPlus */
-		$modifiedPlus = $this->getRight()->modifyClone("+{$precision}");
+		$modifiedPlus = $this->getRight()->getValue()->modifyClone("+{$precision}");
 
 		/** @var DateTime $modifiedMinus */
-		$modifiedMinus = $other->getLeft()->modifyClone("-{$precision}");
+		$modifiedMinus = $other->getLeft()->getValue()->modifyClone("-{$precision}");
 
 		return (
-			$modifiedPlus->greaterThenOrEqual($other->getLeft())
-			&& $modifiedPlus->lessThenOrEqual($other->getRight())
-			&& $modifiedMinus->lessThenOrEqual($this->getRight())
-			&& $modifiedMinus->greaterThenOrEqual($this->getLeft())
+			$modifiedPlus->isGreaterThenOrEqual($other->getLeft()->getValue())
+			&& $modifiedPlus->isLessThenOrEqual($other->getRight()->getValue())
+			&& $modifiedMinus->isLessThenOrEqual($this->getRight()->getValue())
+			&& $modifiedMinus->isGreaterThenOrEqual($this->getLeft()->getValue())
 		);
 	}
 
@@ -93,16 +100,16 @@ class DateTimeInterval extends Interval
 	public function isFollowedByAtMidnight(DateTimeInterval $other)
 	{
 		return (
-			IntervalUtils::isSameDate($this->getRight(), $other->getLeft()->modifyClone('-1 day'))
-			&& $this->getRight()->format('H:i:s') === '23:59:59'
-			&& $other->getLeft()->format('H:i:s') === '00:00:00'
+			IntervalUtils::isSameDate($this->getRight()->getValue(), $other->getLeft()->getValue()->modifyClone('-1 day'))
+			&& $this->getRight()->getValue()->format('H:i:s') === '23:59:59'
+			&& $other->getLeft()->getValue()->format('H:i:s') === '00:00:00'
 		);
 	}
 
 
 
 	/**
-	 * @return DateTime
+	 * @return DateTimeBoundary
 	 */
 	public function getLeft()
 	{
@@ -112,7 +119,7 @@ class DateTimeInterval extends Interval
 
 
 	/**
-	 * @return DateTime
+	 * @return DateTimeBoundary
 	 */
 	public function getRight()
 	{
