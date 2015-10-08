@@ -79,6 +79,11 @@ class IntervalTest extends TestCase
 	 */
 	private $intervalTwoFourClosed;
 
+	/**
+	 * @var IntegerInterval
+	 */
+	private $intervalZeroToFiveClosed;
+
 
 
 	protected function setUp()
@@ -104,6 +109,8 @@ class IntervalTest extends TestCase
 		$this->intervalTwoFourOpened = IntegerIntervalStringParser::parse('(2, 4)');
 
 		$this->intervalOneThreeOpened = IntegerIntervalStringParser::parse('(1, 3)');
+
+		$this->intervalZeroToFiveClosed = IntegerIntervalStringParser::parse('[0, 5]');
 	}
 
 
@@ -220,6 +227,18 @@ class IntervalTest extends TestCase
 
 	public function testGetDifference()
 	{
+		// [1, 4] \ [0, 5]
+		$diff = $this->intervalOneFourClosed->getDifference($this->intervalZeroToFiveClosed);
+		Assert::count(0, $diff);
+
+		// [1, 4] \ [1, 4]
+		$diff = $this->intervalOneFourClosed->getDifference($this->intervalOneFourClosed);
+		Assert::count(0, $diff);
+
+		// (1, 4) \ (1, 4)
+		$diff = $this->intervalOneFourOpened->getDifference($this->intervalOneFourOpened);
+		Assert::count(0, $diff);
+
 		// [1, 4] \ [2, 4]
 		$diff = $this->intervalOneFourClosed->getDifference($this->intervalTwoFourClosed);
 		Assert::count(1, $diff);
@@ -265,7 +284,7 @@ class IntervalTest extends TestCase
 	{
 		Assert::equal((string) $expected, (string) $actual);
 	}
-	
+
 }
 
 
