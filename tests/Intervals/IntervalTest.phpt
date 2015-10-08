@@ -263,12 +263,6 @@ class IntervalTest extends TestCase
 	 */
 	private function assertInterval(IntegerInterval $expected, IntegerInterval $actual)
 	{
-//		Assert::equal($expected->getLeft()->getValue()->toInt(), $actual->getLeft()->getValue()->toInt());
-//		Assert::equal($expected->isLeftClosed(), $actual->isLeftClosed());
-//
-//		Assert::equal($expected->getRight()->getValue()->toInt(), $actual->getRight()->getValue()->toInt());
-//		Assert::equal($expected->isRightClosed(), $actual->isRightClosed());
-
 		Assert::equal((string) $expected, (string) $actual);
 	}
 	

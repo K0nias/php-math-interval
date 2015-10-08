@@ -407,27 +407,23 @@ class Interval extends Object
 			return [$this];
 		}
 
-		if ($this->isContaining($other)) {
-			$result = [];
+		$result = [];
 
-			if (!$other->getLeft()->isEqual($this->getLeft())) { // intentionally not only values but also states
-				$result[] = new static(
-					$this->getLeft(),
-					new Boundary($other->getLeft()->getValue(), !$other->getLeft()->getState())
-				);
-			}
-
-			if (!$other->getRight()->isEqual($this->getRight())) { // intentionally not only values but also states
-				$result[] = new static(
-					new Boundary($other->getRight()->getValue(), !$other->getRight()->getState()),
-					$this->getRight()
-				);
-			}
-
-			return $result;
+		if (!$other->getLeft()->isEqual($this->getLeft())) { // intentionally not only values but also states
+			$result[] = new static(
+				$this->getLeft(),
+				new Boundary($other->getLeft()->getValue(), !$other->getLeft()->getState())
+			);
 		}
 
-		return NULL;
+		if (!$other->getRight()->isEqual($this->getRight())) { // intentionally not only values but also states
+			$result[] = new static(
+				new Boundary($other->getRight()->getValue(), !$other->getRight()->getState()),
+				$this->getRight()
+			);
+		}
+
+		return $result;
 	}
 
 }
