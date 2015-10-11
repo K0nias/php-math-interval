@@ -121,4 +121,24 @@ class Boundary extends Object implements IComparable
 		);
 	}
 
+
+
+	/**
+	 * @param IComparable $value
+	 */
+	public function setValue(IComparable $value)
+	{
+		$this->element = $value;
+	}
+
+
+
+	/**
+	 * @param bool $state
+	 */
+	public function setState($state)
+	{
+		$this->state = $state;
+	}
+
 }
