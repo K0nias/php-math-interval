@@ -143,5 +143,17 @@ class SingleDayTimeInterval extends Interval
 		return new DateTimeInterval($left, $right);
 	}
 
+
+
+	/**
+	 * @param IComparable $element
+	 * @param bool $state
+	 * @return SingleDayTimeBoundary
+	 */
+	protected function buildBoundary(IComparable $element, $state)
+	{
+		return new SingleDayTimeBoundary($element, $state);
+	}
+
 }
 

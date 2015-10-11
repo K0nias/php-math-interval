@@ -411,18 +411,30 @@ class Interval extends Object
 		if (!$other->getLeft()->isEqual($this->getLeft())) { // intentionally not only values but also states
 			$result[] = new static(
 				$this->getLeft(),
-				new Boundary($other->getLeft()->getValue(), !$other->getLeft()->getState())
+				$this->buildBoundary($other->getLeft()->getValue(), !$other->getLeft()->getState())
 			);
 		}
 
 		if (!$other->getRight()->isEqual($this->getRight())) { // intentionally not only values but also states
 			$result[] = new static(
-				new Boundary($other->getRight()->getValue(), !$other->getRight()->getState()),
+				$this->buildBoundary($other->getRight()->getValue(), !$other->getRight()->getState()),
 				$this->getRight()
 			);
 		}
 
 		return $result;
+	}
+
+
+
+	/**
+	 * @param IComparable $element
+	 * @param bool $state
+	 * @return Boundary
+	 */
+	protected function buildBoundary(IComparable $element, $state)
+	{
+		return new Boundary($element, $state);
 	}
 
 }

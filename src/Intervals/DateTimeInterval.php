@@ -5,6 +5,7 @@ namespace Achse\Math\Interval\Intervals;
 use Achse\Math\Interval\Boundaries\Boundary;
 use Achse\Math\Interval\Boundaries\DateTimeBoundary;
 use Achse\Math\Interval\Factories\DateTimeBoundaryFactory;
+use Achse\Math\Interval\Types\Comparison\IComparable;
 use Achse\Math\Interval\Utils\IntervalUtils;
 use Achse\Math\Interval\Types\DateTime;
 use Nette\InvalidArgumentException;
@@ -109,6 +110,18 @@ class DateTimeInterval extends Interval
 	public function getRight()
 	{
 		return parent::getRight();
+	}
+
+
+
+	/**
+	 * @param IComparable $element
+	 * @param bool $state
+	 * @return DateTimeBoundary
+	 */
+	protected function buildBoundary(IComparable $element, $state)
+	{
+		return new DateTimeBoundary($element, $state);
 	}
 
 }
