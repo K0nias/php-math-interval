@@ -133,10 +133,10 @@ class SingleDayTimeInterval extends Interval
 	 */
 	public function toDateTimeInterval(\DateTime $day)
 	{
-		$left = new SingleDayTimeBoundary(
+		$left = new DateTimeBoundary(
 			$this->getLeft()->getValue()->toDateTime($day), $this->getLeft()->getState()
 		);
-		$right = new SingleDayTimeBoundary(
+		$right = new DateTimeBoundary(
 			$this->getRight()->getValue()->toDateTime($day), $this->getRight()->getState()
 		);
 

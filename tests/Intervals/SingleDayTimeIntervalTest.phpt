@@ -9,6 +9,7 @@ namespace Achse\Tests\Interval\Types;
 require __DIR__ . '/../bootstrap.php';
 
 use Achse\Math\Interval\Boundaries\Boundary;
+use Achse\Math\Interval\Boundaries\DateTimeBoundary;
 use Achse\Math\Interval\Factories\DateTimeBoundaryFactory;
 use Achse\Math\Interval\Intervals\DateTimeInterval;
 use Achse\Math\Interval\Intervals\SingleDayTimeInterval;
@@ -61,6 +62,18 @@ class SingleDayTimeIntervalTest extends TestCase
 		$toMidnight = SingleDayTimeInterval::fromString('23:50:00', '23:59:59');
 		$fromMidnight = SingleDayTimeInterval::fromString('00:00:00', '00:05:00');
 		Assert::false($toMidnight->isFollowedBy($fromMidnight));
+	}
+
+
+
+	public function testToDateTimeInterval()
+	{
+		$singleDayInterval = SingleDayTimeInterval::fromString('01:02:03', '04:05:06');
+		$dateTimeInterval = $singleDayInterval->toDaTeTimeInterval(new DateTime('2015-10-11 20:21:22'));
+		Assert::type(DateTimeInterval::class, $dateTimeInterval);
+		Assert::type(DateTimeBoundary::class, $dateTimeInterval->getLeft());
+		Assert::type(DateTimeBoundary::class, $dateTimeInterval->getRight());
+		Assert::equal('[2015-10-11 01:02:03, 2015-10-11 04:05:06)', (string) $dateTimeInterval);
 	}
 
 }
