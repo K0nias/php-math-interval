@@ -10,6 +10,7 @@ use Achse\Math\Interval\Utils\IntervalUtils;
 use Achse\Math\Interval\Types\DateTime;
 use Achse\Math\Interval\Types\SingleDayTime;
 use Nette\InvalidArgumentException;
+use Achse\Math\Interval\Types\Comparison\IComparable;
 
 
 
