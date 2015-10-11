@@ -8,12 +8,7 @@ namespace Achse\Tests\Interval\Types;
 
 require __DIR__ . '/../bootstrap.php';
 
-use Achse\Math\Interval\Boundaries\Boundary;
-use Achse\Math\Interval\Boundaries\IntegerBoundary;
-use Achse\Math\Interval\Factories\IntegerBoundaryFactory;
 use Achse\Math\Interval\Intervals\IntegerInterval;
-use Achse\Math\Interval\Intervals\Interval;
-use Achse\Math\Interval\Types\Integer as IntegerObj;
 use Achse\Math\Interval\Types\Integer;
 use Achse\Math\Interval\Utils\IntegerIntervalStringParser;
 use Tester\Assert;
