@@ -1,19 +1,17 @@
 <?php
 
-namespace Achse\Math\Interval\Utils;
+namespace Achse\Math\Interval\Utils\StringParser;
 
 use Achse\Math\Interval\Boundaries\Boundary;
-use Achse\Math\Interval\Boundaries\IntegerBoundary;
 use Achse\Math\Interval\IntervalParseErrorException;
-use Achse\Math\Interval\Intervals\IntegerInterval;
 use Achse\Math\Interval\Intervals\Interval;
-use Achse\Math\Interval\Types\Integer;
+use Nette\NotImplementedException;
 use Nette\Object;
 use Nette\Utils\Strings;
 
 
 
-class IntegerIntervalStringParser extends Object
+abstract class IntervalStringParser extends Object
 {
 
 	private static $parenthesisToStateTranslationTable = [
@@ -27,13 +25,11 @@ class IntegerIntervalStringParser extends Object
 
 	/**
 	 * @param string $string
-	 * @return IntegerInterval
+	 * @return Interval
 	 */
 	public static function parse($string)
 	{
-		list ($left, $right) = self::parseBoundariesStringsFromString($string);
-
-		return new IntegerInterval(self::parseBoundary($left), self::parseBoundary($right));
+		throw new NotImplementedException('Not implemented in this abstract class. Implement this in child.');
 	}
 
 
@@ -43,7 +39,7 @@ class IntegerIntervalStringParser extends Object
 	 * @return string[]
 	 * @throws IntervalParseErrorException
 	 */
-	private static function parseBoundariesStringsFromString($string)
+	protected static function parseBoundariesStringsFromString($string)
 	{
 		$boundaries = explode(',', $string);
 
@@ -64,7 +60,7 @@ class IntegerIntervalStringParser extends Object
 	 * @return Boundary
 	 * @throws IntervalParseErrorException
 	 */
-	private static function parseBoundaryDataFromString($string)
+	protected static function parseBoundaryDataFromString($string)
 	{
 		$letters = Strings::split($string, '//u', PREG_SPLIT_NO_EMPTY);
 
@@ -84,7 +80,7 @@ class IntegerIntervalStringParser extends Object
 	 * @param int $character
 	 * @return bool
 	 */
-	private static function isCharacterBoundaryType($character)
+	protected static function isCharacterBoundaryType($character)
 	{
 		return isset(self::$parenthesisToStateTranslationTable[$character]);
 	}
@@ -95,7 +91,7 @@ class IntegerIntervalStringParser extends Object
 	 * @param int $character
 	 * @return bool
 	 */
-	private static function getTypeByCharacter($character)
+	protected static function getTypeByCharacter($character)
 	{
 		return self::$parenthesisToStateTranslationTable[$character];
 	}
@@ -107,7 +103,7 @@ class IntegerIntervalStringParser extends Object
 	 * @return array
 	 * @throws IntervalParseErrorException
 	 */
-	private static function getElementAndStateData($letters)
+	protected static function getElementAndStateData($letters)
 	{
 		$firstCharacter = reset($letters);
 		$lastCharacter = end($letters);
@@ -131,12 +127,11 @@ class IntegerIntervalStringParser extends Object
 
 	/**
 	 * @param string $string
-	 * @return IntegerBoundary
+	 * @return Boundary
 	 */
-	private static function parseBoundary($string)
+	protected static function parseBoundary($string)
 	{
-		list($elementString, $state) = self::parseBoundaryDataFromString($string);
-
-		return new IntegerBoundary(Integer::fromString($elementString), $state);
+		throw new NotImplementedException('Not implemented in this abstract class. Implement this in child.');
 	}
+
 }

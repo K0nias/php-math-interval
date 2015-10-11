@@ -4,7 +4,6 @@ namespace Achse\Math\Interval\Intervals;
 
 use Achse\Math\Interval\Boundaries\Boundary;
 use Achse\Math\Interval\Types\Comparison\IComparable;
-use Achse\Math\Interval\Utils\IntegerIntervalStringParser;
 use Nette\InvalidArgumentException;
 use Nette\Object;
 

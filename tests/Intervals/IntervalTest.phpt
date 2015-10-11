@@ -10,7 +10,7 @@ require __DIR__ . '/../bootstrap.php';
 
 use Achse\Math\Interval\Intervals\IntegerInterval;
 use Achse\Math\Interval\Types\Integer;
-use Achse\Math\Interval\Utils\IntegerIntervalStringParser;
+use Achse\Math\Interval\Utils\StringParser\IntegerIntervalStringParser;
 use Tester\Assert;
 use Tester\TestCase;
 

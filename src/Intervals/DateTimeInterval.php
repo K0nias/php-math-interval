@@ -33,21 +33,6 @@ class DateTimeInterval extends Interval
 
 
 	/**
-	 * @param string $since
-	 * @param string $till
-	 * @return self
-	 */
-	public static function fromString($since, $till)
-	{
-		return new static(
-			DateTimeBoundaryFactory::create($since, Boundary::CLOSED),
-			DateTimeBoundaryFactory::create($till, Boundary::OPENED)
-		);
-	}
-
-
-
-	/**
 	 * # Example:
 	 *
 	 *     This:  □□□□□□■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□□□□□
