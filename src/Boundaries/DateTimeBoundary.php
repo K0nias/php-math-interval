@@ -4,6 +4,7 @@ namespace Achse\Math\Interval\Boundaries;
 
 use Achse\Math\Interval\Types\Comparison\IComparable;
 use Achse\Math\Interval\Types\DateTime;
+use LogicException;
 
 
 
@@ -13,7 +14,7 @@ class DateTimeBoundary extends Boundary
 	public function __construct(IComparable $element, $state)
 	{
 		if (!$element instanceof DateTime) {
-			throw new \LogicException(
+			throw new LogicException(
 				'You have to provide Achse\Interval\Types\DateTime as element. ' . get_class($element) . ' given.'
 			);
 		}

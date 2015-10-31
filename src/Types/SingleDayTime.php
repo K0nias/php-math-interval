@@ -6,6 +6,7 @@ use Achse\Math\Interval\ModificationNotPossibleException;
 use Achse\Math\Interval\Types\Comparison\ComparisonMethods;
 use Achse\Math\Interval\Types\Comparison\IComparable;
 use Achse\Math\Interval\Utils\IntervalUtils;
+use LogicException;
 use Nette\InvalidArgumentException;
 use Nette\Object;
 
@@ -58,7 +59,7 @@ class SingleDayTime extends Object implements IComparable
 	public function compare(IComparable $other)
 	{
 		if (!$other instanceof static) {
-			throw new \LogicException('You cannot compare sheep with the goat.');
+			throw new LogicException('You cannot compare sheep with the goat.');
 		}
 
 		return IntervalUtils::intCmp($this->toSeconds(), $other->toSeconds());
@@ -243,7 +244,7 @@ class SingleDayTime extends Object implements IComparable
 
 
 	/**
-	 * @param \DateTime|SingleDayTime|string|int $time
+	 * @param \DateTime|SingleDayTime|string|int|NULL $time
 	 * @return SingleDayTime
 	 */
 	public static function from($time)

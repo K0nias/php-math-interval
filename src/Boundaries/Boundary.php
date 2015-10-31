@@ -4,6 +4,7 @@ namespace Achse\Math\Interval\Boundaries;
 
 use Achse\Math\Interval\Types\Comparison\ComparisonMethods;
 use Achse\Math\Interval\Types\Comparison\IComparable;
+use LogicException;
 use Nette\Object;
 
 
@@ -81,7 +82,7 @@ class Boundary extends Object implements IComparable
 	public function compare(IComparable $other)
 	{
 		if (!$other instanceof self) { // intentionally self
-			throw new \LogicException('You cannot compare sheep with the goat.');
+			throw new LogicException('You cannot compare sheep with the goat.');
 		}
 
 		$comparison = $this->element->compare($other->element);
