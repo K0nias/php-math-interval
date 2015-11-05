@@ -24,7 +24,7 @@ trait ComparisonMethods
 	 * @param IComparable $other
 	 * @return bool
 	 */
-	public function isLessThen(IComparable $other)
+	public function isLessThan(IComparable $other)
 	{
 		return $this->compare($other) < 0;
 	}
@@ -35,7 +35,7 @@ trait ComparisonMethods
 	 * @param IComparable $other
 	 * @return bool
 	 */
-	public function isLessThenOrEqual(IComparable $other)
+	public function isLessThanOrEqual(IComparable $other)
 	{
 		return $this->compare($other) <= 0;
 	}
@@ -46,7 +46,7 @@ trait ComparisonMethods
 	 * @param IComparable $other
 	 * @return bool
 	 */
-	public function isGreaterThen(IComparable $other)
+	public function isGreaterThan(IComparable $other)
 	{
 		return $this->compare($other) > 0;
 	}
@@ -57,7 +57,7 @@ trait ComparisonMethods
 	 * @param IComparable $other
 	 * @return bool
 	 */
-	public function isGreaterThenOrEqual(IComparable $other)
+	public function isGreaterThanOrEqual(IComparable $other)
 	{
 		return $this->compare($other) >= 0;
 	}
