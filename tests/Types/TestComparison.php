@@ -17,11 +17,11 @@ trait TestComparison
 	 */
 	public function assertForComparison(IComparable $five, IComparable $six)
 	{
-		Assert::true($five->isLessThen($six));
-		Assert::true($five->isLessThenOrEqual($six));
+		Assert::true($five->isLessThan($six));
+		Assert::true($five->isLessThanOrEqual($six));
 
-		Assert::false($six->isLessThen($five));
-		Assert::false($six->isLessThenOrEqual($five));
+		Assert::false($six->isLessThan($five));
+		Assert::false($six->isLessThanOrEqual($five));
 
 		Assert::false($five->isEqual($six));
 		Assert::false($six->isEqual($five));

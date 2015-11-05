@@ -207,15 +207,15 @@ class Interval extends Object
 	public function isContainingElement(IComparable $element)
 	{
 		$leftBoundaryCheck = (
-			$this->isLeftOpened() && $this->getLeft()->getValue()->isLessThen($element)
+			$this->isLeftOpened() && $this->getLeft()->getValue()->isLessThan($element)
 			||
-			$this->isLeftClosed() && $this->getLeft()->getValue()->isLessThenOrEqual($element)
+			$this->isLeftClosed() && $this->getLeft()->getValue()->isLessThanOrEqual($element)
 		);
 
 		$rightBoundaryCheck = (
-			$this->isRightOpened() && $this->getRight()->getValue()->isGreaterThen($element)
+			$this->isRightOpened() && $this->getRight()->getValue()->isGreaterThan($element)
 			||
-			$this->isRightClosed() && $this->getRight()->getValue()->isGreaterThenOrEqual($element)
+			$this->isRightClosed() && $this->getRight()->getValue()->isGreaterThanOrEqual($element)
 		);
 
 		return $leftBoundaryCheck && $rightBoundaryCheck;

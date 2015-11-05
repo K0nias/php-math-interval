@@ -32,7 +32,7 @@ interface IComparable
 	 * @param IComparable $other
 	 * @return bool
 	 */
-	public function isLessThen(IComparable $other);
+	public function isLessThan(IComparable $other);
 
 
 
@@ -40,7 +40,7 @@ interface IComparable
 	 * @param IComparable $other
 	 * @return bool
 	 */
-	public function isLessThenOrEqual(IComparable $other);
+	public function isLessThanOrEqual(IComparable $other);
 
 
 
@@ -48,7 +48,7 @@ interface IComparable
 	 * @param IComparable $other
 	 * @return bool
 	 */
-	public function isGreaterThen(IComparable $other);
+	public function isGreaterThan(IComparable $other);
 
 
 
@@ -56,7 +56,7 @@ interface IComparable
 	 * @param IComparable $other
 	 * @return bool
 	 */
-	public function isGreaterThenOrEqual(IComparable $other);
+	public function isGreaterThanOrEqual(IComparable $other);
 
 
 
