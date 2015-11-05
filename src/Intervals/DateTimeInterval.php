@@ -64,10 +64,10 @@ class DateTimeInterval extends Interval
 		$modifiedMinus = $other->getLeft()->getValue()->modifyClone("-{$precision}");
 
 		return (
-			$modifiedPlus->isGreaterThenOrEqual($other->getLeft()->getValue())
-			&& $modifiedPlus->isLessThenOrEqual($other->getRight()->getValue())
-			&& $modifiedMinus->isLessThenOrEqual($this->getRight()->getValue())
-			&& $modifiedMinus->isGreaterThenOrEqual($this->getLeft()->getValue())
+			$modifiedPlus->isGreaterThanOrEqual($other->getLeft()->getValue())
+			&& $modifiedPlus->isLessThanOrEqual($other->getRight()->getValue())
+			&& $modifiedMinus->isLessThanOrEqual($this->getRight()->getValue())
+			&& $modifiedMinus->isGreaterThanOrEqual($this->getLeft()->getValue())
 		);
 	}
 

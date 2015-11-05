@@ -78,7 +78,7 @@ class Interval extends Object
 	 */
 	public function setLeft(Boundary $left)
 	{
-		if ($this->right !== NULL && $left->isGreaterThenOrEqual($this->right)) {
+		if ($this->right !== NULL && $left->isGreaterThanOrEqual($this->right)) {
 			throw new InvalidArgumentException('Left endpoint cannot be greater then Right endpoint.');
 		}
 
@@ -93,7 +93,7 @@ class Interval extends Object
 	 */
 	public function setRight(Boundary $right)
 	{
-		if ($this->left !== NULL && $this->left->isGreaterThen($right)) {
+		if ($this->left !== NULL && $this->left->isGreaterThan($right)) {
 			throw new InvalidArgumentException('Right endpoint cannot be less then Left endpoint.');
 		}
 
