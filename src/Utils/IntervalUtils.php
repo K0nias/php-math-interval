@@ -15,25 +15,25 @@ class IntervalUtils extends Object
 
 
 	/**
-	 * @param int $a
-	 * @param int $b
+	 * @param int $first
+	 * @param int $second
 	 * @return int
 	 */
-	public static function intCmp($a, $b)
+	public static function intCmp($first, $second)
 	{
-		return ($a - $b) ? ($a - $b) / abs($a - $b) : 0;
+		return ($first - $second) ? (int) (($first - $second) / abs($first - $second)) : 0;
 	}
 
 
 
 	/**
-	 * @param \DateTime $a
-	 * @param \DateTime $b
+	 * @param \DateTime $first
+	 * @param \DateTime $second
 	 * @return bool
 	 */
-	public static function isSameDate(\DateTime $a, \DateTime $b)
+	public static function isSameDate(\DateTime $first, \DateTime $second)
 	{
-		return $a->format('Y-m-d') === $b->format('Y-m-d');
+		return $first->format('Y-m-d') === $second->format('Y-m-d');
 	}
 
 }
