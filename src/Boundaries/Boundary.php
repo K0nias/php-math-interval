@@ -142,4 +142,17 @@ class Boundary extends Object implements IComparable
 		$this->state = $state;
 	}
 
+
+
+	/**
+	 * @param IComparable $element
+	 * @param string $type
+	 */
+	protected function validateElement(IComparable $element, $type)
+	{
+		if (!$element instanceof $type) {
+			throw new LogicException("You have to provide {$type} as element. " . get_class($element) . ' given.');
+		}
+	}
+
 }
