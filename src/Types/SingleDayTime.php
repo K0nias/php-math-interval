@@ -116,7 +116,7 @@ class SingleDayTime extends Object implements IComparable
 		if ($hours > 23) {
 			throw new InvalidArgumentException('Hours have to be less then 24.');
 		}
-		$this->hours = $hours;
+		$this->hours = (int) $hours;
 
 		return $this;
 	}
@@ -132,7 +132,7 @@ class SingleDayTime extends Object implements IComparable
 		if ($minutes > 59) {
 			throw new InvalidArgumentException('Minutes have to be less then 60.');
 		}
-		$this->minutes = $minutes;
+		$this->minutes = (int) $minutes;
 
 		return $this;
 	}
