@@ -11,6 +11,14 @@ trait ComparisonMethods
 
 	/**
 	 * @param IComparable $other
+	 * @return int (-1, 0, 1)
+	 */
+	abstract public function compare(IComparable $other);
+
+
+
+	/**
+	 * @param IComparable $other
 	 * @return bool
 	 */
 	public function isEqual(IComparable $other)
