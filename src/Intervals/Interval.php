@@ -398,6 +398,24 @@ class Interval extends Object
 
 
 	/**
+	 * @param Boundary $left
+	 * @param Boundary $right
+	 * @param string $type
+	 */
+	protected function validateBoundaryChecks(Boundary $left, Boundary $right, $type)
+	{
+		if (!($left instanceof $type)) {
+			throw new InvalidArgumentException("\$left have to be instance of {$type}.");
+		}
+
+		if (!($right instanceof $type)) {
+			throw new InvalidArgumentException("\$right have to be instance of {$type}.");
+		}
+	}
+
+
+
+	/**
 	 * @return string
 	 */
 	private function getLeftBracket()

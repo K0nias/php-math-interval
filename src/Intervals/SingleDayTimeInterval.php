@@ -22,13 +22,7 @@ class SingleDayTimeInterval extends Interval
 	 */
 	public function __construct(Boundary $left, Boundary $right)
 	{
-		if (!($left instanceof SingleDayTimeBoundary)) {
-			throw new InvalidArgumentException('\$left have to be instance of ' . SingleDayTimeBoundary::class . '.');
-		}
-
-		if (!($right instanceof SingleDayTimeBoundary)) {
-			throw new InvalidArgumentException('\$right have to be instance of ' . SingleDayTimeBoundary::class . '.');
-		}
+		$this->validateBoundaryChecks($left, $right, SingleDayTimeBoundary::class);
 
 		parent::__construct($left, $right);
 	}
