@@ -355,48 +355,6 @@ class Interval extends Object
 
 
 	/**
-	 * @return string
-	 */
-	private function getLeftBracket()
-	{
-		return $this->isLeftOpened() ? Boundary::STRING_OPENED_LEFT : Boundary::STRING_CLOSED_LEFT;
-	}
-
-
-
-	/**
-	 * @return string
-	 */
-	private function getRightBracket()
-	{
-		return $this->isRightOpened() ? Boundary::STRING_OPENED_RIGHT : Boundary::STRING_CLOSED_RIGHT;
-	}
-
-
-
-	/**
-	 * @param IComparable $element
-	 * @return bool
-	 */
-	private function isElementLeftOpenedBorder(IComparable $element)
-	{
-		return $this->isLeftOpened() && $this->getLeft()->getValue()->isEqual($element);
-	}
-
-
-
-	/**
-	 * @param IComparable $element
-	 * @return bool
-	 */
-	private function isElementRightOpenedBorder(IComparable $element)
-	{
-		return $this->isRightOpened() && $this->getRight()->getValue()->isEqual($element);
-	}
-
-
-
-	/**
 	 * @param Interval $other
 	 * @return Interval[]
 	 */
@@ -435,6 +393,48 @@ class Interval extends Object
 	protected function buildBoundary(IComparable $element, $state)
 	{
 		return new Boundary($element, $state);
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	private function getLeftBracket()
+	{
+		return $this->isLeftOpened() ? Boundary::STRING_OPENED_LEFT : Boundary::STRING_CLOSED_LEFT;
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	private function getRightBracket()
+	{
+		return $this->isRightOpened() ? Boundary::STRING_OPENED_RIGHT : Boundary::STRING_CLOSED_RIGHT;
+	}
+
+
+
+	/**
+	 * @param IComparable $element
+	 * @return bool
+	 */
+	private function isElementLeftOpenedBorder(IComparable $element)
+	{
+		return $this->isLeftOpened() && $this->getLeft()->getValue()->isEqual($element);
+	}
+
+
+
+	/**
+	 * @param IComparable $element
+	 * @return bool
+	 */
+	private function isElementRightOpenedBorder(IComparable $element)
+	{
+		return $this->isRightOpened() && $this->getRight()->getValue()->isEqual($element);
 	}
 
 }

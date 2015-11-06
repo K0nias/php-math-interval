@@ -310,15 +310,11 @@ class SingleDayTime extends Object implements IComparable
 		}
 
 		$hours += $sign * ($other->getHours() + $carryHours);
-		if ($hours > 23 || $hours < 0) {
-			throw new ModificationNotPossibleException(
-				'By ' . ($sign === 1 ? 'adding' : 'subbing') . ' this Time we would get put of one day!'
-			);
-		}
+		$this->validateModification($hours, $sign);
 
 		$this->seconds = $seconds;
-		$this->minutes = $minutes;
-		$this->hours = $hours;
+		$this->minutes = (int) $minutes;
+		$this->hours = (int) $hours;
 	}
 
 
@@ -341,6 +337,22 @@ class SingleDayTime extends Object implements IComparable
 		$this->setSeconds((float) $modified->format('s'));
 		$this->setMinutes((int) $modified->format('i'));
 		$this->setHours((int) $modified->format('H'));
+	}
+
+
+
+	/**
+	 * @param int $hours
+	 * @param int $sign
+	 * @throws ModificationNotPossibleException
+	 */
+	private function validateModification($hours, $sign)
+	{
+		if ($hours > 23 || $hours < 0) {
+			throw new ModificationNotPossibleException(
+				'By ' . ($sign === 1 ? 'adding' : 'subbing') . ' this Time we would get put of one day!'
+			);
+		}
 	}
 
 }

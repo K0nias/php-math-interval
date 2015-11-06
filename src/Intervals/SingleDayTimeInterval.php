@@ -57,18 +57,7 @@ class SingleDayTimeInterval extends Interval
 	 */
 	public static function fromDateTimeInterval(DateTimeInterval $interval, \DateTime $date)
 	{
-		/** @var DateTime $start */
-		$start = DateTime::from($date);
-		$start->setTime(0, 0, 0);
-
-		/** @var DateTime $ends */
-		$ends = DateTime::from($date);
-		$ends->setTime(23, 59, 59);
-
-		$thisDayInterval = new DateTimeInterval(
-			new DateTimeBoundary($start, Boundary::CLOSED),
-			new DateTimeBoundary($ends, Boundary::CLOSED)
-		);
+		$thisDayInterval = self::buildWholeDayInterval($date);
 
 		/** @var DateTimeInterval $intersection */
 		$intersection = $thisDayInterval->getIntersection($interval);
@@ -154,6 +143,30 @@ class SingleDayTimeInterval extends Interval
 	protected function buildBoundary(IComparable $element, $state)
 	{
 		return new SingleDayTimeBoundary($element, $state);
+	}
+
+
+
+	/**
+	 * @param \DateTime $date
+	 * @return DateTimeInterval
+	 */
+	protected static function buildWholeDayInterval(\DateTime $date)
+	{
+		/** @var DateTime $start */
+		$start = DateTime::from($date);
+		$start->setTime(0, 0, 0);
+
+		/** @var DateTime $ends */
+		$ends = DateTime::from($date);
+		$ends->setTime(23, 59, 59);
+
+		$thisDayInterval = new DateTimeInterval(
+			new DateTimeBoundary($start, Boundary::CLOSED),
+			new DateTimeBoundary($ends, Boundary::CLOSED)
+		);
+
+		return $thisDayInterval;
 	}
 
 }

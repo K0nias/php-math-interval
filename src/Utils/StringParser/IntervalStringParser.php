@@ -105,8 +105,12 @@ abstract class IntervalStringParser extends Object
 	 */
 	protected static function getElementAndStateData($letters)
 	{
-		$firstCharacter = reset($letters);
-		$lastCharacter = end($letters);
+		if (($firstCharacter = reset($letters)) === FALSE || ($lastCharacter = end($letters)) === FALSE) {
+			throw new IntervalParseErrorException('No letters given.');
+		}
+
+		/** @var int $firstCharacter */
+		/** @var int $lastCharacter */
 
 		if (self::isCharacterBoundaryType($firstCharacter)) {
 			array_shift($letters);
