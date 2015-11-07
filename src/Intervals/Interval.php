@@ -107,7 +107,7 @@ class Interval extends Object
 	 */
 	public function isEmpty()
 	{
-		return $this->isOpened() && $this->left->isEqual($this->right);
+		return $this->isLeftOpened() && $this->left->getValue()->isEqual($this->right->getValue());
 	}
 
 
@@ -119,7 +119,7 @@ class Interval extends Object
 	 */
 	public function isDegenerate()
 	{
-		return !$this->isClosed() && $this->left->isEqual($this->right);
+		return $this->isClosed() && $this->left->isEqual($this->right);
 	}
 
 
@@ -129,7 +129,7 @@ class Interval extends Object
 	 */
 	public function isProper()
 	{
-		return !$this->isOpened() && !$this->isDegenerate();
+		return !$this->isEmpty() && !$this->isDegenerate();
 	}
 
 
@@ -175,7 +175,7 @@ class Interval extends Object
 	 */
 	public function isClosed()
 	{
-		return $this->isLeftClosed() && !$this->isRightClosed();
+		return $this->isLeftClosed() && $this->isRightClosed();
 	}
 
 

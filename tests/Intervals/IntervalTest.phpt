@@ -110,6 +110,60 @@ class IntervalTest extends TestCase
 
 
 
+	public function testOpenedClosed()
+	{
+		Assert::true($this->intervalOneFourClosed->isClosed());
+		Assert::false($this->intervalOneFourClosed->isOpened());
+
+		Assert::false($this->intervalOneFourOpened->isClosed());
+		Assert::true($this->intervalOneFourOpened->isOpened());
+
+		Assert::false((IntegerIntervalStringParser::parse('[1, 2)')->isOpened()));
+		Assert::false((IntegerIntervalStringParser::parse('[1, 2)')->isClosed()));
+
+		Assert::false((IntegerIntervalStringParser::parse('(1, 2]')->isOpened()));
+		Assert::false((IntegerIntervalStringParser::parse('(1, 2]')->isClosed()));
+	}
+
+
+
+	public function testIsDegenerate()
+	{
+		Assert::true((IntegerIntervalStringParser::parse('[1, 1]')->isDegenerate()));
+
+		Assert::false((IntegerIntervalStringParser::parse('(1, 1)')->isDegenerate()));
+		Assert::false((IntegerIntervalStringParser::parse('(1, 1]')->isDegenerate()));
+
+		Assert::false($this->intervalOneFourClosed->isDegenerate());
+		Assert::false($this->intervalOneFourOpened->isDegenerate());
+	}
+
+
+
+	public function testIsProper()
+	{
+		Assert::false((IntegerIntervalStringParser::parse('[1, 1]')->isProper()));
+		Assert::false((IntegerIntervalStringParser::parse('(1, 1)')->isProper()));
+		Assert::false((IntegerIntervalStringParser::parse('(1, 1]')->isProper()));
+
+		Assert::true($this->intervalOneFourClosed->isProper());
+		Assert::true($this->intervalOneFourOpened->isProper());
+	}
+
+
+
+	public function testIsEmpty()
+	{
+		Assert::true((IntegerIntervalStringParser::parse('(1, 1)')->isEmpty()));
+		Assert::true((IntegerIntervalStringParser::parse('(1, 1]')->isEmpty()));
+		Assert::false((IntegerIntervalStringParser::parse('[1, 1]')->isEmpty()));
+
+		Assert::false($this->intervalOneFourClosed->isEmpty());
+		Assert::false($this->intervalOneFourOpened->isEmpty());
+	}
+
+
+
 	public function testIsContainingElement()
 	{
 		$interval = IntegerIntervalStringParser::parse('[1, 2]');
