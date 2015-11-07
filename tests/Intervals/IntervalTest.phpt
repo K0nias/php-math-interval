@@ -8,12 +8,7 @@ namespace Achse\Tests\Interval\Types;
 
 require __DIR__ . '/../bootstrap.php';
 
-use Achse\Math\Interval\Boundaries\Boundary;
-use Achse\Math\Interval\Boundaries\IntegerBoundary;
-use Achse\Math\Interval\Factories\DateTimeIntervalFactory;
-use Achse\Math\Interval\Intervals\DateTimeInterval;
 use Achse\Math\Interval\Intervals\IntegerInterval;
-use Achse\Math\Interval\Types\DateTime;
 use Achse\Math\Interval\Types\Integer;
 use Achse\Math\Interval\Utils\StringParser\IntegerIntervalStringParser;
 use Tester\Assert;
@@ -134,11 +129,6 @@ class IntervalTest extends TestCase
 		Assert::false($interval->isContainingElement(new Integer(1)));
 		Assert::true($interval->isContainingElement(new Integer(2)));
 		Assert::true($interval->isContainingElement(new Integer(3)));
-
-
-		$left = new IntegerBoundary(new DateTime('2015-10-07 12:00:00'), Boundary::CLOSED);
-		$right = new IntegerBoundary(new DateTime('2015-10-07 14:00:00'), Boundary::OPENED);
-		$interval = new DateTimeInterval($left, $right);
 	}
 
 
