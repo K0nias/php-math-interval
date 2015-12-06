@@ -5,6 +5,7 @@ php:
 
 before_script:
   - rm -R -f ./tests/tmp/*
+  - sudo pip install codecov
   - composer self-update || echo "[ERROR] update-composer failed!"
   - composer install --no-interaction --optimize-autoloader
 
@@ -12,3 +13,6 @@ script:
   - ./vendor/bin/tester -s -j 32 -c ./tests/php.ini ./tests --coverage coverage.xml --coverage-src src
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --access-token="$SCRUTINIZER_TOKEN" --format=php-clover coverage.xml
+
+after_success:
+  - codecov
