@@ -1,6 +1,7 @@
 ![](https://travis-ci.org/Achse/php-math-interval.svg?branch=master)
 ![](https://scrutinizer-ci.com/g/Achse/php-math-interval/badges/quality-score.png?b=master)
 ![](https://scrutinizer-ci.com/g/Achse/php-math-interval/badges/coverage.png?b=master)
+[![codecov.io](https://codecov.io/github/Achse/php-math-interval/coverage.svg?branch=master)](https://codecov.io/github/Achse/php-math-interval?branch=master)
 
 ## Installation 
 ```
