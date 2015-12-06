@@ -8,7 +8,9 @@ namespace Achse\Tests\Interval\Intervals;
 
 require __DIR__ . '/../bootstrap.php';
 
+use Achse\Math\Interval\IntervalRangesInvalidException;
 use Achse\Math\Interval\Intervals\IntegerInterval;
+use Achse\Math\Interval\Intervals\Interval;
 use Achse\Math\Interval\Types\Integer;
 use Achse\Math\Interval\Utils\StringParser\IntegerIntervalStringParser;
 use Tester\Assert;
@@ -106,6 +108,19 @@ class IntervalTest extends TestCase
 		$this->intervalOneThreeOpened = IntegerIntervalStringParser::parse('(1, 3)');
 
 		$this->intervalZeroToFiveClosed = IntegerIntervalStringParser::parse('[0, 5]');
+	}
+
+
+
+	public function testErrors()
+	{
+		Assert::exception(
+			function () {
+				IntegerIntervalStringParser::parse('[5, 0]');
+			},
+			IntervalRangesInvalidException::class,
+			'Right endpoint cannot be less then Left endpoint.'
+		);
 	}
 
 

@@ -125,6 +125,7 @@ class Boundary extends Object implements IComparable
 
 
 	/**
+	 * @deprecated Boundary should be immutable type.
 	 * @param IComparable $value
 	 */
 	public function setValue(IComparable $value)
@@ -135,6 +136,7 @@ class Boundary extends Object implements IComparable
 
 
 	/**
+	 * @deprecated Boundary should be immutable type.
 	 * @param bool $state
 	 */
 	public function setState($state)

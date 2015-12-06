@@ -72,7 +72,9 @@ class SingleDayTimeInterval extends Interval
 
 
 	/**
-	 * @inheritdoc
+	 * @param SingleDayTimeInterval $other
+	 * @param string $precision
+	 * @return bool
 	 */
 	public function isFollowedBy(SingleDayTimeInterval $other, $precision = IntervalUtils::PRECISION_ON_SECOND)
 	{

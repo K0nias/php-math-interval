@@ -13,3 +13,17 @@ class IntervalParseErrorException extends \Exception
 {
 
 }
+
+
+
+class IntervalRangesInvalidException extends \InvalidArgumentException
+{
+
+}
+
+
+
+class InvalidBoundaryTypeException extends \InvalidArgumentException
+{
+
+}

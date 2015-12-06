@@ -3,8 +3,9 @@
 namespace Achse\Math\Interval\Intervals;
 
 use Achse\Math\Interval\Boundaries\Boundary;
+use Achse\Math\Interval\IntervalRangesInvalidException;
+use Achse\Math\Interval\InvalidBoundaryTypeException;
 use Achse\Math\Interval\Types\Comparison\IComparable;
-use Nette\InvalidArgumentException;
 use Nette\Object;
 
 
@@ -79,7 +80,7 @@ class Interval extends Object
 	public function setLeft(Boundary $left)
 	{
 		if ($this->right !== NULL && $left->isGreaterThanOrEqual($this->right)) {
-			throw new InvalidArgumentException('Left endpoint cannot be greater then Right endpoint.');
+			throw new IntervalRangesInvalidException('Left endpoint cannot be greater then Right endpoint.');
 		}
 
 		$this->left = $left;
@@ -94,7 +95,7 @@ class Interval extends Object
 	public function setRight(Boundary $right)
 	{
 		if ($this->left !== NULL && $this->left->isGreaterThan($right)) {
-			throw new InvalidArgumentException('Right endpoint cannot be less then Left endpoint.');
+			throw new IntervalRangesInvalidException('Right endpoint cannot be less then Left endpoint.');
 		}
 
 		$this->right = $right;
@@ -405,11 +406,11 @@ class Interval extends Object
 	protected function validateBoundaryChecks(Boundary $left, Boundary $right, $type)
 	{
 		if (!($left instanceof $type)) {
-			throw new InvalidArgumentException("\$left have to be instance of {$type}.");
+			throw new InvalidBoundaryTypeException("\$left have to be instance of {$type}.");
 		}
 
 		if (!($right instanceof $type)) {
-			throw new InvalidArgumentException("\$right have to be instance of {$type}.");
+			throw new InvalidBoundaryTypeException("\$right have to be instance of {$type}.");
 		}
 	}
 
