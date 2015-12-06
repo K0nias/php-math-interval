@@ -14,6 +14,7 @@ use Achse\Math\Interval\Factories\DateTimeBoundaryFactory;
 use Achse\Math\Interval\Intervals\DateTimeInterval;
 use Achse\Math\Interval\Intervals\SingleDayTimeInterval;
 use Achse\Math\Interval\Types\DateTime;
+use Achse\Math\Interval\Utils\StringParser\SingleDayTimeIntervalStringParser;
 use Nette\InvalidArgumentException;
 use Tester\Assert;
 use Tester\TestCase;
@@ -57,11 +58,32 @@ class SingleDayTimeIntervalTest extends TestCase
 
 
 
-	public function testIsFollowedBy()
+	/**
+	 * @dataProvider getDataForIsFollowedByTest
+	 *
+	 * @param string $expected
+	 * @param string $firstString
+	 * @param string $secondString
+	 */
+	public function testIsFollowedBy($expected, $firstString, $secondString)
 	{
-		$toMidnight = SingleDayTimeInterval::fromString('23:50:00', '23:59:59');
-		$fromMidnight = SingleDayTimeInterval::fromString('00:00:00', '00:05:00');
-		Assert::false($toMidnight->isFollowedBy($fromMidnight));
+		$first = SingleDayTimeIntervalStringParser::parse($firstString);
+		$second = SingleDayTimeIntervalStringParser::parse($secondString);
+		Assert::same($expected, $first->isFollowedBy($second));
+	}
+
+
+
+	/**
+	 * @return bool[][]|string[][]
+	 */
+	public function getDataForIsFollowedByTest()
+	{
+		return [
+			[FALSE, '[23:50:00, 23:59:59]', '[00:00:00, 00:05:00]'],
+			[FALSE, '[00:00:00, 00:05:00]', '[23:50:00, 23:59:59]'],
+			[TRUE, '[01:00:00, 02:00:00]', '[02:00:01, 23:59:59]'],
+		];
 	}
 
 
