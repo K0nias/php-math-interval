@@ -4,7 +4,7 @@
  * @testCase
  */
 
-namespace Tests\Factories;
+namespace Achse\Tests\Interval\Factories;
 
 require_once __DIR__ . '/../bootstrap.php';
 

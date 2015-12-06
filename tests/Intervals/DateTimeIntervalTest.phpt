@@ -4,7 +4,7 @@
  * @testCase
  */
 
-namespace Achse\Tests\Interval\Types;
+namespace Achse\Tests\Interval\Intervals;
 
 require __DIR__ . '/../bootstrap.php';
 
