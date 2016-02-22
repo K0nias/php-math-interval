@@ -3,7 +3,7 @@
 	"description": "",
 	"type": "library",
 	"license": [
-		"New BSD"
+		"BSD-3-Clause"
 	],
 	"authors": [
 		{
