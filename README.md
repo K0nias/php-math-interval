@@ -1,3 +1,5 @@
+[![Downloads this Month](https://img.shields.io/packagist/dm/achse/php-math-interval.svg)](https://packagist.org/packages/achse/php-math-interval)
+[![Latest Stable Version](https://poser.pugx.org/achse/php-math-interval/v/stable)](https://github.com/achse/php-math-interval/releases)
 ![](https://travis-ci.org/Achse/php-math-interval.svg?branch=master)
 ![](https://scrutinizer-ci.com/g/Achse/php-math-interval/badges/quality-score.png?b=master)
 ![](https://scrutinizer-ci.com/g/Achse/php-math-interval/badges/coverage.png?b=master)
