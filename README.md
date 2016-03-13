@@ -5,7 +5,7 @@
 ![](https://scrutinizer-ci.com/g/Achse/php-math-interval/badges/coverage.png?b=master)
 [![codecov.io](https://codecov.io/github/Achse/php-math-interval/coverage.svg?branch=master)](https://codecov.io/github/Achse/php-math-interval?branch=master)
 
-## Installation 
+## Installation
 ```
 composer require achse/php-math-interval @dev
 ```
@@ -45,9 +45,9 @@ Library contains intervals for those types:
 * `DateTime` - classic DateTime from `Nette\Utils` but implements `IComparable`,
 * `SingeDayTime` - represents "clock-time" from *00:00:00* to *23:59:59*.
 
-**Other types:** `Interval` (its `Boundary`) can contains any type that implements `IComparable`, but if you want 
+**Other types:** `Interval` (its `Boundary`) can contains any type that implements `IComparable`, but if you want
 to have type-hinting you have to write your own `XyInterval` and `XyBoundary` class and probably also `Factory` classes.
 
 ## Motivation, main purpose
 This library was created for working properly with *opening hours* of restaurants. If you miss some type or method od
-simply just some feature, don't hesitate to send pull request. I'll be really happy. :) 
+simply just some feature, don't hesitate to send pull request. I'll be really happy. :)
