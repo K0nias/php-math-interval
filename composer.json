@@ -1,9 +1,12 @@
 {
 	"name": "achse/php-math-interval",
-	"description": "",
+	"description": "Implementation of mathematical Intervals in PHP. Creation of this was motivated by working with opening hours and other time intervals.",
 	"type": "library",
-	"license": [
-		"BSD-3-Clause"
+	"license": "MIT",
+	"keywords": [
+		"utils",
+		"interval",
+		"datetime"
 	],
 	"authors": [
 		{
