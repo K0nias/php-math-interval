@@ -16,3 +16,5 @@ script:
 
 after_success:
   - codecov
+  - composer require satooshi/php-coveralls
+  - php vendor/bin/coveralls -c tests/.coveralls.yml -v
