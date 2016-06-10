@@ -2,11 +2,8 @@
 
 namespace Achse\Math\Interval\Utils\StringParser;
 
-use Achse\Math\Interval\Boundaries\DateTimeBoundary;
 use Achse\Math\Interval\Boundaries\SingleDayTimeBoundary;
-use Achse\Math\Interval\Intervals\DateTimeInterval;
 use Achse\Math\Interval\Intervals\SingleDayTimeInterval;
-use Achse\Math\Interval\Types\DateTime;
 use Achse\Math\Interval\Types\SingleDayTime;
 
 
