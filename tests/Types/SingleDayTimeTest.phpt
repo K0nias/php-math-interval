@@ -162,6 +162,77 @@ class SingleDayTimeTest extends TestCase
 		Assert::equal('04:17:39', $time->format('H:i:s'));
 	}
 
+
+
+	/**
+	 * @dataProvider getDataForFormat
+	 *
+	 * @param string $expected
+	 * @param string $dayTime
+	 * @param string $format
+	 */
+	public function testFormat($expected, $dayTime, $format)
+	{
+		$time = SingleDayTime::from($dayTime);
+		Assert::equal($expected, $time->format($format));
+	}
+
+
+
+	/**
+	 * @return array
+	 */
+	public function getDataForFormat()
+	{
+		return [
+			['', '18:19:20', ''],
+			['18:19:20', '18:19:20', 'H:i:s'],
+			['18:19:20', '2015-12-24 18:19:20', 'H:i:s'],
+
+			[
+				'pm, PM, 763, 6, 18, 06, 18, 19, 20, 000000',
+				'2015-12-24 18:19:20',
+				'a, A, B, g, G, h, H, i, s, u'
+			],
+
+			['Y-m-d 18:19:20', '2015-12-24 18:19:20', '\Y-\m-\d H:i:s'],
+		];
+	}
+
+
+
+	/**
+	 * @dataProvider getDataForFormatFail
+	 *
+	 * @param string $dayTime
+	 * @param string $format
+	 */
+	public function testFormatFail($dayTime, $format)
+	{
+		$time = SingleDayTime::from($dayTime);
+		Assert::exception(
+			function () use ($time, $format) {
+				$time->format($format);
+			},
+			\LogicException::class
+		);
+	}
+
+
+
+	/**
+	 * @return array
+	 */
+	public function getDataForFormatFail()
+	{
+		return array_map(
+			function ($symbol) {
+				return ['2015-12-24 10:11:12', $symbol];
+			},
+			SingleDayTime::NOT_ALLOWED_FORMAT_SYMBOLS
+		);
+	}
+
 }
 
 

@@ -2,6 +2,7 @@
 
 namespace Achse\Math\Interval\Types;
 
+use Achse\DateTimeFormatTools\Tools;
 use Achse\Math\Interval\ModificationNotPossibleException;
 use Achse\Math\Interval\Types\Comparison\ComparisonMethods;
 use Achse\Math\Interval\Types\Comparison\IComparable;
@@ -16,6 +17,50 @@ class SingleDayTime extends Object implements IComparable
 {
 
 	use ComparisonMethods;
+
+	/**
+	 * @internal
+	 */
+	const ALLOWED_FORMAT_SYMBOLS = ['a', 'A', 'B', 'g', 'G', 'h', 'H', 'i', 's', 'u'];
+
+	/**
+	 * @internal
+	 */
+	const NOT_ALLOWED_FORMAT_SYMBOLS = [
+		// day
+		'd',
+		'D',
+		'j',
+		'l',
+		'N',
+		'S',
+		'w',
+		'z',
+		// Week 
+		'W',
+		// Month
+		'F',
+		'm',
+		'M',
+		'n',
+		't',
+		// Year
+		'L',
+		'o',
+		'Y',
+		'y',
+		// Timezone
+		'e',
+		'I',
+		'O',
+		'P',
+		'T',
+		'Z',
+		// Full DateTime
+		'c',
+		'r',
+		'U',
+	];
 
 	/**
 	 * @internal
@@ -218,12 +263,17 @@ class SingleDayTime extends Object implements IComparable
 
 
 	/**
-	 * @param $format
+	 * @param string $format
 	 * @return string
 	 */
 	public function format($format)
 	{
-		// Todo: remove DateTime dependency OR make NOT possible to get anything of self::INTERNAL_DATE go out
+		if (Tools::isAnyOfSymbolsInPattern(self::NOT_ALLOWED_FORMAT_SYMBOLS, $format)) {
+			throw new LogicException(
+				sprintf('Invalid pattern. Only [%s] symbols are allowed.', implode(', ', self::ALLOWED_FORMAT_SYMBOLS))
+			);
+		}
+
 		return $this->toInternalDateTime()->format($format);
 	}
 

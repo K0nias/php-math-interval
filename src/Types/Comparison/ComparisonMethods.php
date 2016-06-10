@@ -2,10 +2,6 @@
 
 namespace Achse\Math\Interval\Types\Comparison;
 
-use Nette;
-
-
-
 trait ComparisonMethods
 {
 
