@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @testCase
+ */
+
+declare(strict_types = 1);
+
+namespace Achse\Tests\Interval\Utils\StringParser;
+
+require_once __DIR__ . '/../bootstrap.php';
+
+use Achse\Math\Interval\Utils\IntervalUtils;
+use Tester\Assert;
+use Tester\TestCase;
+
+
+
+class IntervalUtilsTest extends TestCase
+{
+
+	/**
+	 * @dataProvider getDataForNumberCmp
+	 *
+	 * @param int|float $expected
+	 * @param int|float $first
+	 * @param int|float $second
+	 */
+	public function testNumberCmp($expected, $first, $second)
+	{
+		Assert::equal($expected, IntervalUtils::numberCmp($first, $second));
+	}
+
+
+
+	/**
+	 * @return array
+	 */
+	public function getDataForNumberCmp()
+	{
+		return [
+			[0, 0, 0],
+			[-1, 1, 2],
+			[1, 2, 1],
+
+			[1, 1.00000000000001, 1],
+			[-1, 1, 1.00000000000001],
+
+			// intentionally, this is beyond limit of precisiIntervalStringParseron
+			[0, 1, 1.000000000000000000000000000000000000000000000000000000001],
+		];
+	}
+
+}
+
+
+
+(new IntervalUtilsTest())->run();

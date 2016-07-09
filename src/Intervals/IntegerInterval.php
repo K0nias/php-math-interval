@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Achse\Math\Interval\Intervals;
 
 use Achse\Comparable\IComparable;
@@ -26,7 +28,7 @@ class IntegerInterval extends Interval
 	/**
 	 * @return IntegerBoundary
 	 */
-	public function getLeft()
+	public function getLeft() : Boundary
 	{
 		return parent::getLeft();
 	}
@@ -36,7 +38,7 @@ class IntegerInterval extends Interval
 	/**
 	 * @return IntegerBoundary
 	 */
-	public function getRight()
+	public function getRight() : Boundary
 	{
 		return parent::getRight();
 	}
@@ -48,7 +50,7 @@ class IntegerInterval extends Interval
 	 * @param bool $state
 	 * @return IntegerBoundary
 	 */
-	protected function buildBoundary(IComparable $element, $state)
+	protected function buildBoundary(IComparable $element, bool $state) : Boundary
 	{
 		return new IntegerBoundary($element, $state);
 	}

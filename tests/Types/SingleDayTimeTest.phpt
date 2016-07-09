@@ -4,6 +4,8 @@
  * @testCase
  */
 
+declare(strict_types = 1);
+
 namespace Achse\Tests\Interval\Types;
 
 require __DIR__ . '/../bootstrap.php';
@@ -11,6 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 use Achse\Math\Interval\ModificationNotPossibleException;
 use Achse\Math\Interval\Types\DateTime;
 use Achse\Math\Interval\Types\SingleDayTime;
+use LogicException;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -171,7 +174,7 @@ class SingleDayTimeTest extends TestCase
 	 * @param string $dayTime
 	 * @param string $format
 	 */
-	public function testFormat($expected, $dayTime, $format)
+	public function testFormat(string $expected, string $dayTime, string $format)
 	{
 		$time = SingleDayTime::from($dayTime);
 		Assert::equal($expected, $time->format($format));
@@ -182,7 +185,7 @@ class SingleDayTimeTest extends TestCase
 	/**
 	 * @return array
 	 */
-	public function getDataForFormat()
+	public function getDataForFormat() : array
 	{
 		return [
 			['', '18:19:20', ''],
@@ -207,14 +210,14 @@ class SingleDayTimeTest extends TestCase
 	 * @param string $dayTime
 	 * @param string $format
 	 */
-	public function testFormatFail($dayTime, $format)
+	public function testFormatFail(string $dayTime, string $format)
 	{
 		$time = SingleDayTime::from($dayTime);
 		Assert::exception(
 			function () use ($time, $format) {
 				$time->format($format);
 			},
-			\LogicException::class
+			LogicException::class
 		);
 	}
 
@@ -223,7 +226,7 @@ class SingleDayTimeTest extends TestCase
 	/**
 	 * @return array
 	 */
-	public function getDataForFormatFail()
+	public function getDataForFormatFail() : array
 	{
 		return array_map(
 			function ($symbol) {

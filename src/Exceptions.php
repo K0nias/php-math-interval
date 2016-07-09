@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Achse\Math\Interval;
 
 class ModificationNotPossibleException extends \Exception

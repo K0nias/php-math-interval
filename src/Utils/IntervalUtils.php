@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Achse\Math\Interval\Utils;
 
 use Nette\Object;
@@ -15,11 +17,11 @@ class IntervalUtils extends Object
 
 
 	/**
-	 * @param int $first
-	 * @param int $second
+	 * @param int|float $first
+	 * @param int|float $second
 	 * @return int
 	 */
-	public static function intCmp($first, $second)
+	public static function numberCmp($first, $second) : int
 	{
 		return ($first - $second) ? (int) (($first - $second) / abs($first - $second)) : 0;
 	}
@@ -31,7 +33,7 @@ class IntervalUtils extends Object
 	 * @param \DateTime $second
 	 * @return bool
 	 */
-	public static function isSameDate(\DateTime $first, \DateTime $second)
+	public static function isSameDate(\DateTime $first, \DateTime $second) : bool
 	{
 		return $first->format('Y-m-d') === $second->format('Y-m-d');
 	}

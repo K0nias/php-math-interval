@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Achse\Math\Interval\Intervals;
 
 use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Boundaries\Boundary;
 use Achse\Math\Interval\Boundaries\DateTimeBoundary;
-use Achse\Math\Interval\Utils\IntervalUtils;
 use Achse\Math\Interval\Types\DateTime;
+use Achse\Math\Interval\Utils\IntervalUtils;
 
 
 
@@ -43,7 +45,7 @@ class DateTimeInterval extends Interval
 	 * @param string $precision
 	 * @return bool
 	 */
-	public function isFollowedBy(DateTimeInterval $other, $precision = IntervalUtils::PRECISION_ON_SECOND)
+	public function isFollowedBy(DateTimeInterval $other, string $precision = IntervalUtils::PRECISION_ON_SECOND) : bool
 	{
 		if ($this->getLeft() > $other->getRight()) { // intentionally compares boundaries
 			return FALSE;
@@ -75,11 +77,14 @@ class DateTimeInterval extends Interval
 	 * @param DateTimeInterval $other
 	 * @return bool
 	 */
-	public function isFollowedByAtMidnight(DateTimeInterval $other)
+	public function isFollowedByAtMidnight(DateTimeInterval $other) : bool
 	{
 		return (
-			IntervalUtils::isSameDate($this->getRight()->getValue(), $other->getLeft()->getValue()
-				->modifyClone('-1 day'))
+			IntervalUtils::isSameDate(
+				$this->getRight()->getValue(),
+				$other->getLeft()->getValue()
+					->modifyClone('-1 day')
+			)
 			&& $this->getRight()->getValue()->format('H:i:s') === '23:59:59'
 			&& $other->getLeft()->getValue()->format('H:i:s') === '00:00:00'
 		);
@@ -90,7 +95,7 @@ class DateTimeInterval extends Interval
 	/**
 	 * @return DateTimeBoundary
 	 */
-	public function getLeft()
+	public function getLeft() : Boundary
 	{
 		return parent::getLeft();
 	}
@@ -100,7 +105,7 @@ class DateTimeInterval extends Interval
 	/**
 	 * @return DateTimeBoundary
 	 */
-	public function getRight()
+	public function getRight() : Boundary
 	{
 		return parent::getRight();
 	}
@@ -112,7 +117,7 @@ class DateTimeInterval extends Interval
 	 * @param bool $state
 	 * @return DateTimeBoundary
 	 */
-	protected function buildBoundary(IComparable $element, $state)
+	protected function buildBoundary(IComparable $element, bool $state) : Boundary
 	{
 		return new DateTimeBoundary($element, $state);
 	}

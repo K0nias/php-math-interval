@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Achse\Math\Interval\Types;
 
 use Achse\Comparable\ComparisonMethods;
@@ -67,6 +69,8 @@ class SingleDayTime extends Object implements IComparable
 	 */
 	const INTERNAL_DATE = '2000-01-01';
 
+	const FLOAT_SECONDS_PRECISION = 0.00001;
+
 	/**
 	 * @var int
 	 */
@@ -89,7 +93,7 @@ class SingleDayTime extends Object implements IComparable
 	 * @param int $minutes
 	 * @param float $seconds
 	 */
-	public function __construct($hours, $minutes, $seconds)
+	public function __construct(int $hours, int $minutes, float $seconds)
 	{
 		$this->setHours($hours);
 		$this->setMinutes($minutes);
@@ -107,7 +111,7 @@ class SingleDayTime extends Object implements IComparable
 			throw new LogicException('You cannot compare sheep with the goat.');
 		}
 
-		return IntervalUtils::intCmp($this->toSeconds(), $other->toSeconds());
+		return IntervalUtils::numberCmp($this->toSeconds(), $other->toSeconds());
 	}
 
 
@@ -115,7 +119,7 @@ class SingleDayTime extends Object implements IComparable
 	/**
 	 * @return float
 	 */
-	public function toSeconds()
+	public function toSeconds() : float
 	{
 		return $this->hours * 3600 + $this->minutes * 60 + $this->seconds;
 	}
@@ -125,7 +129,7 @@ class SingleDayTime extends Object implements IComparable
 	/**
 	 * @return int
 	 */
-	public function getHours()
+	public function getHours() : int
 	{
 		return $this->hours;
 	}
@@ -135,7 +139,7 @@ class SingleDayTime extends Object implements IComparable
 	/**
 	 * @return int
 	 */
-	public function getMinutes()
+	public function getMinutes() : int
 	{
 		return $this->minutes;
 	}
@@ -145,7 +149,7 @@ class SingleDayTime extends Object implements IComparable
 	/**
 	 * @return float
 	 */
-	public function getSeconds()
+	public function getSeconds() : float
 	{
 		return $this->seconds;
 	}
@@ -156,7 +160,7 @@ class SingleDayTime extends Object implements IComparable
 	 * @param int $hours
 	 * @return static
 	 */
-	public function setHours($hours)
+	public function setHours(int $hours) : SingleDayTime
 	{
 		if ($hours > 23) {
 			throw new InvalidArgumentException('Hours have to be less then 24.');
@@ -172,7 +176,7 @@ class SingleDayTime extends Object implements IComparable
 	 * @param int $minutes
 	 * @return static
 	 */
-	public function setMinutes($minutes)
+	public function setMinutes(int $minutes) : SingleDayTime
 	{
 		if ($minutes > 59) {
 			throw new InvalidArgumentException('Minutes have to be less then 60.');
@@ -188,7 +192,7 @@ class SingleDayTime extends Object implements IComparable
 	 * @param float $seconds
 	 * @return static
 	 */
-	public function setSeconds($seconds)
+	public function setSeconds(float $seconds) : SingleDayTime
 	{
 		if ($seconds > 59) {
 			throw new InvalidArgumentException('Seconds have to be less then 60.');
@@ -201,11 +205,11 @@ class SingleDayTime extends Object implements IComparable
 
 
 	/**
-	 * @param string|int|float $modifier
+	 * @param string $modifier
 	 * @return static
 	 * @throws ModificationNotPossibleException
 	 */
-	public function modify($modifier)
+	public function modify(string $modifier) : SingleDayTime
 	{
 		$thisDateTime = $this->toInternalDateTime();
 		$modified = $thisDateTime->modifyClone($modifier);
@@ -226,7 +230,7 @@ class SingleDayTime extends Object implements IComparable
 	 * @return static
 	 * @throws ModificationNotPossibleException
 	 */
-	public function modifyClone($modifier)
+	public function modifyClone(string $modifier): SingleDayTime
 	{
 		$new = clone $this;
 
@@ -240,7 +244,7 @@ class SingleDayTime extends Object implements IComparable
 	 * @param SingleDayTime $other
 	 * @return static
 	 */
-	public function add(SingleDayTime $other)
+	public function add(SingleDayTime $other) : SingleDayTime
 	{
 		$this->addOrSub($other, 1);
 
@@ -253,7 +257,7 @@ class SingleDayTime extends Object implements IComparable
 	 * @param SingleDayTime $other
 	 * @return static
 	 */
-	public function sub(SingleDayTime $other)
+	public function sub(SingleDayTime $other) : SingleDayTime
 	{
 		$this->addOrSub($other, -1);
 
@@ -266,7 +270,7 @@ class SingleDayTime extends Object implements IComparable
 	 * @param string $format
 	 * @return string
 	 */
-	public function format($format)
+	public function format(string $format) : string
 	{
 		if (Tools::isAnyOfSymbolsInPattern(self::NOT_ALLOWED_FORMAT_SYMBOLS, $format)) {
 			throw new LogicException(
@@ -283,10 +287,10 @@ class SingleDayTime extends Object implements IComparable
 	 * @param \DateTime $day
 	 * @return DateTime
 	 */
-	public function toDateTime(\DateTime $day)
+	public function toDateTime(\DateTime $day) : DateTime
 	{
 		$day = DateTime::from($day);
-		$day->setTime($this->hours, $this->minutes, $this->seconds);
+		$day->setTime($this->hours, $this->minutes, (int) round($this->seconds));
 
 		return $day;
 	}
@@ -297,7 +301,7 @@ class SingleDayTime extends Object implements IComparable
 	 * @param \DateTime|SingleDayTime|string|int|NULL $time
 	 * @return SingleDayTime
 	 */
-	public static function from($time)
+	public static function from($time) : SingleDayTime
 	{
 		if ($time instanceof static) {
 			return clone $time;
@@ -314,7 +318,7 @@ class SingleDayTime extends Object implements IComparable
 	 * @param \DateTime $dateTime
 	 * @return static
 	 */
-	public static function fromDateTime(\DateTime $dateTime)
+	public static function fromDateTime(\DateTime $dateTime) : SingleDayTime
 	{
 		/** @var DateTime $dateTime */
 		$dateTime = DateTime::from($dateTime);
@@ -327,7 +331,7 @@ class SingleDayTime extends Object implements IComparable
 	/**
 	 * @inheritdoc
 	 */
-	public function __toString()
+	public function __toString() : string
 	{
 		return $this->toInternalDateTime()->format('H:i:s');
 	}
@@ -339,7 +343,7 @@ class SingleDayTime extends Object implements IComparable
 	 * @param int $sign -1 (sub) or 1 (add)
 	 * @throws ModificationNotPossibleException
 	 */
-	private function addOrSub(SingleDayTime $other, $sign)
+	private function addOrSub(SingleDayTime $other, int $sign)
 	{
 		$seconds = $this->seconds;
 		$minutes = $this->minutes;
@@ -372,7 +376,7 @@ class SingleDayTime extends Object implements IComparable
 	/**
 	 * @return DateTime
 	 */
-	private function toInternalDateTime()
+	private function toInternalDateTime() : DateTime
 	{
 		return $this->toDateTime(new DateTime(self::INTERNAL_DATE));
 	}
@@ -396,7 +400,7 @@ class SingleDayTime extends Object implements IComparable
 	 * @param int $sign
 	 * @throws ModificationNotPossibleException
 	 */
-	private function validateModification($hours, $sign)
+	private function validateModification(int $hours, int $sign)
 	{
 		if ($hours > 23 || $hours < 0) {
 			throw new ModificationNotPossibleException(

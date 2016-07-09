@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Achse\Math\Interval\Types;
 
 use Achse\Comparable\ComparisonMethods;
@@ -26,7 +28,7 @@ class DateTime extends NDateTime implements IComparable
 			throw new LogicException('You cannot compare sheep with the goat.');
 		}
 
-		return IntervalUtils::intCmp($this->getTimestamp(), $other->getTimestamp());
+		return IntervalUtils::numberCmp($this->getTimestamp(), $other->getTimestamp());
 	}
 
 
@@ -35,7 +37,7 @@ class DateTime extends NDateTime implements IComparable
 	 * @inheritdoc
 	 * @return static
 	 */
-	public static function from($time)
+	public static function from($time) : DateTime
 	{
 		// Intentionally: This method is here just because of 'static' annotation for return
 		return parent::from($time);

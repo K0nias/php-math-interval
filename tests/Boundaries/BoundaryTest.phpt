@@ -4,6 +4,8 @@
  * @testCase
  */
 
+declare(strict_types = 1);
+
 namespace Achse\Tests\Interval\Boundaries;
 
 require_once __DIR__ . '/../bootstrap.php';

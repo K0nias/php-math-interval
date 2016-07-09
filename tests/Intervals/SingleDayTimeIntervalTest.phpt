@@ -4,6 +4,8 @@
  * @testCase
  */
 
+declare(strict_types = 1);
+
 namespace Achse\Tests\Interval\Intervals;
 
 require __DIR__ . '/../bootstrap.php';
@@ -61,11 +63,11 @@ class SingleDayTimeIntervalTest extends TestCase
 	/**
 	 * @dataProvider getDataForIsFollowedByTest
 	 *
-	 * @param string $expected
+	 * @param bool $expected
 	 * @param string $firstString
 	 * @param string $secondString
 	 */
-	public function testIsFollowedBy($expected, $firstString, $secondString)
+	public function testIsFollowedBy(bool $expected, string $firstString, string $secondString)
 	{
 		$first = SingleDayTimeIntervalStringParser::parse($firstString);
 		$second = SingleDayTimeIntervalStringParser::parse($secondString);
@@ -77,7 +79,7 @@ class SingleDayTimeIntervalTest extends TestCase
 	/**
 	 * @return bool[][]|string[][]
 	 */
-	public function getDataForIsFollowedByTest()
+	public function getDataForIsFollowedByTest() : array
 	{
 		return [
 			[FALSE, '[23:50:00, 23:59:59]', '[00:00:00, 00:05:00]'],

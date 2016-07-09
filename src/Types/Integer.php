@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Achse\Math\Interval\Types;
 
 use Achse\Comparable\ComparisonMethods;
@@ -26,7 +28,7 @@ class Integer extends Object implements IComparable
 	/**
 	 * @param int $internal
 	 */
-	public function __construct($internal)
+	public function __construct(int $internal)
 	{
 		$this->internal = $internal;
 	}
@@ -36,7 +38,7 @@ class Integer extends Object implements IComparable
 	/**
 	 * @return int
 	 */
-	public function toInt()
+	public function toInt() : int
 	{
 		return $this->internal;
 	}
@@ -52,7 +54,7 @@ class Integer extends Object implements IComparable
 			throw new LogicException('You cannot compare sheep with the goat.');
 		}
 
-		return IntervalUtils::intCmp($this->internal, $other->toInt());
+		return IntervalUtils::numberCmp($this->internal, $other->toInt());
 	}
 
 
@@ -60,14 +62,18 @@ class Integer extends Object implements IComparable
 	/**
 	 * @return string
 	 */
-	public function __toString()
+	public function __toString() : string
 	{
 		return (string) $this->toInt();
 	}
 
 
 
-	public static function fromString($string)
+	/**
+	 * @param string $string
+	 * @return static
+	 */
+	public static function fromString(string $string) : Integer
 	{
 		if (!is_numeric($string)) {
 			throw new InvalidArgumentException("'$string' in not numeric.");

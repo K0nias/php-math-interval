@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Achse\Math\Interval\Boundaries;
 
 use Achse\Comparable\IComparable;
@@ -13,7 +15,7 @@ class SingleDayTimeBoundary extends Boundary
 	/**
 	 * @inheritdoc
 	 */
-	public function __construct(IComparable $element, $state)
+	public function __construct(IComparable $element, bool $state)
 	{
 		$this->validateElement($element, SingleDayTime::class);
 
@@ -25,7 +27,7 @@ class SingleDayTimeBoundary extends Boundary
 	/**
 	 * @return SingleDayTime
 	 */
-	public function getValue()
+	public function getValue() : IComparable 
 	{
 		return parent::getValue();
 	}

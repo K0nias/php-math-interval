@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Achse\Math\Interval\Boundaries;
 
 use Achse\Comparable\ComparisonMethods;
@@ -38,7 +40,7 @@ class Boundary extends Object implements IComparable
 	 * @param IComparable $element
 	 * @param bool $state
 	 */
-	public function __construct(IComparable $element, $state)
+	public function __construct(IComparable $element, bool $state)
 	{
 		$this->element = $element;
 		$this->state = $state;
@@ -49,7 +51,7 @@ class Boundary extends Object implements IComparable
 	/**
 	 * @return IComparable
 	 */
-	public function getValue()
+	public function getValue() : IComparable
 	{
 		return $this->element;
 	}
@@ -59,7 +61,7 @@ class Boundary extends Object implements IComparable
 	/**
 	 * @return bool
 	 */
-	public function isClosed()
+	public function isClosed() : bool
 	{
 		return $this->state === self::CLOSED;
 	}
@@ -69,7 +71,7 @@ class Boundary extends Object implements IComparable
 	/**
 	 * @return bool
 	 */
-	public function isOpened()
+	public function isOpened() : bool
 	{
 		return $this->state === self::OPENED;
 	}
@@ -103,7 +105,7 @@ class Boundary extends Object implements IComparable
 	/**
 	 * @return bool
 	 */
-	public function getState()
+	public function getState() : bool
 	{
 		return $this->state;
 	}
@@ -113,7 +115,7 @@ class Boundary extends Object implements IComparable
 	/**
 	 * @return string
 	 */
-	public function __toString()
+	public function __toString() : string
 	{
 		return (
 			($this->isOpened() ? self::STRING_OPENED_LEFT : self::STRING_CLOSED_LEFT)
@@ -150,7 +152,7 @@ class Boundary extends Object implements IComparable
 	 * @param IComparable $element
 	 * @param string $type
 	 */
-	protected function validateElement(IComparable $element, $type)
+	protected function validateElement(IComparable $element, string $type)
 	{
 		if (!$element instanceof $type) {
 			throw new LogicException("You have to provide {$type} as element. " . get_class($element) . ' given.');

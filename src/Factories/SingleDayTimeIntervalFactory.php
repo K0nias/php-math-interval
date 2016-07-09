@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Achse\Math\Interval\Factories;
 
 use Achse\Math\Interval\Intervals\SingleDayTimeInterval;
@@ -17,7 +19,12 @@ class SingleDayTimeIntervalFactory extends Object
 	 * @param bool $rightState
 	 * @return SingleDayTimeInterval
 	 */
-	public static function create($leftElement, $leftState, $rightElement, $rightState)
+	public static function create(
+		$leftElement,
+		bool $leftState,
+		$rightElement,
+		bool $rightState
+	) : SingleDayTimeInterval
 	{
 		return new SingleDayTimeInterval(
 			SingleDayTimeBoundaryFactory::create($leftElement, $leftState),

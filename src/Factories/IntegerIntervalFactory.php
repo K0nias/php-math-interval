@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Achse\Math\Interval\Factories;
 
 use Achse\Math\Interval\Intervals\IntegerInterval;
@@ -17,7 +19,12 @@ class IntegerIntervalFactory extends Object
 	 * @param bool $rightState
 	 * @return IntegerInterval
 	 */
-	public static function create($leftElement, $leftState, $rightElement, $rightState)
+	public static function create(
+		int $leftElement,
+		bool $leftState,
+		int $rightElement,
+		bool $rightState
+	) : IntegerInterval
 	{
 		return new IntegerInterval(
 			IntegerBoundaryFactory::create($leftElement, $leftState),

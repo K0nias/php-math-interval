@@ -4,6 +4,8 @@
  * @testCase
  */
 
+declare(strict_types = 1);
+
 namespace Achse\Tests\Interval\Types;
 
 require_once __DIR__ . '/../bootstrap.php';
@@ -23,13 +25,6 @@ class IntegerBoundaryFactoryTest extends TestCase
 	{
 		Assert::equal('[1]', (string) IntegerBoundaryFactory::create(1, Boundary::CLOSED));
 		Assert::equal('(1)', (string) IntegerBoundaryFactory::create(1, Boundary::OPENED));
-
-		Assert::exception(
-			function () {
-				IntegerBoundaryFactory::create(1.7, Boundary::OPENED);
-			},
-			InvalidArgumentException::class
-		);
 
 		Assert::equal('(' . PHP_INT_MAX . ')', (string) IntegerBoundaryFactory::create(PHP_INT_MAX, Boundary::OPENED));
 	}

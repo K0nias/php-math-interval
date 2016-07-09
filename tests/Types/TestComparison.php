@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Achse\Tests\Interval\Types;
 
 use Achse\Comparable\IComparable;

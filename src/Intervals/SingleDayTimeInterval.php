@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Achse\Math\Interval\Intervals;
 
 use Achse\Comparable\IComparable;
@@ -7,9 +9,9 @@ use Achse\Math\Interval\Boundaries\Boundary;
 use Achse\Math\Interval\Boundaries\DateTimeBoundary;
 use Achse\Math\Interval\Boundaries\SingleDayTimeBoundary;
 use Achse\Math\Interval\ModificationNotPossibleException;
-use Achse\Math\Interval\Utils\IntervalUtils;
 use Achse\Math\Interval\Types\DateTime;
 use Achse\Math\Interval\Types\SingleDayTime;
+use Achse\Math\Interval\Utils\IntervalUtils;
 use Nette\InvalidArgumentException;
 
 
@@ -34,7 +36,7 @@ class SingleDayTimeInterval extends Interval
 	 * @param string $till
 	 * @return SingleDayTimeInterval
 	 */
-	public static function fromString($from, $till)
+	public static function fromString(string $from, string $till) : SingleDayTimeInterval
 	{
 		return new static(
 			new SingleDayTimeBoundary(SingleDayTime::from($from), Boundary::CLOSED),
@@ -49,7 +51,7 @@ class SingleDayTimeInterval extends Interval
 	 * @param \DateTime $date
 	 * @return static
 	 */
-	public static function fromDateTimeInterval(DateTimeInterval $interval, \DateTime $date)
+	public static function fromDateTimeInterval(DateTimeInterval $interval, \DateTime $date) : SingleDayTimeInterval
 	{
 		$thisDayInterval = self::buildWholeDayInterval($date);
 
@@ -76,7 +78,10 @@ class SingleDayTimeInterval extends Interval
 	 * @param string $precision
 	 * @return bool
 	 */
-	public function isFollowedBy(SingleDayTimeInterval $other, $precision = IntervalUtils::PRECISION_ON_SECOND)
+	public function isFollowedBy(
+		SingleDayTimeInterval $other,
+		string $precision = IntervalUtils::PRECISION_ON_SECOND
+	) : bool
 	{
 		try {
 			$this->getRight()->getValue()->modifyClone("+{$precision}");
@@ -96,7 +101,7 @@ class SingleDayTimeInterval extends Interval
 	/**
 	 * @return SingleDayTimeBoundary
 	 */
-	public function getLeft()
+	public function getLeft() : Boundary
 	{
 		return parent::getLeft();
 	}
@@ -106,7 +111,7 @@ class SingleDayTimeInterval extends Interval
 	/**
 	 * @return SingleDayTimeBoundary
 	 */
-	public function getRight()
+	public function getRight() : Boundary
 	{
 		return parent::getRight();
 	}
@@ -117,7 +122,7 @@ class SingleDayTimeInterval extends Interval
 	 * @param \DateTime $day
 	 * @return DateTimeInterval
 	 */
-	public function toDateTimeInterval(\DateTime $day)
+	public function toDateTimeInterval(\DateTime $day) : DateTimeInterval
 	{
 		$left = new DateTimeBoundary(
 			$this->getLeft()->getValue()->toDateTime($day), $this->getLeft()->getState()
@@ -136,7 +141,7 @@ class SingleDayTimeInterval extends Interval
 	 * @param bool $state
 	 * @return SingleDayTimeBoundary
 	 */
-	protected function buildBoundary(IComparable $element, $state)
+	protected function buildBoundary(IComparable $element, bool $state) : Boundary
 	{
 		return new SingleDayTimeBoundary($element, $state);
 	}
@@ -147,7 +152,7 @@ class SingleDayTimeInterval extends Interval
 	 * @param \DateTime $date
 	 * @return DateTimeInterval
 	 */
-	protected static function buildWholeDayInterval(\DateTime $date)
+	protected static function buildWholeDayInterval(\DateTime $date) : DateTimeInterval
 	{
 		/** @var DateTime $start */
 		$start = DateTime::from($date);
