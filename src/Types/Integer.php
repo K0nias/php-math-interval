@@ -2,8 +2,8 @@
 
 namespace Achse\Math\Interval\Types;
 
-use Achse\Math\Interval\Types\Comparison\ComparisonMethods;
-use Achse\Math\Interval\Types\Comparison\IComparable;
+use Achse\Comparable\ComparisonMethods;
+use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Utils\IntervalUtils;
 use LogicException;
 use Nette\InvalidArgumentException;
@@ -46,7 +46,7 @@ class Integer extends Object implements IComparable
 	/**
 	 * @inheritdoc
 	 */
-	public function compare(IComparable $other)
+	public function compare(IComparable $other) : int
 	{
 		if (!$other instanceof static) {
 			throw new LogicException('You cannot compare sheep with the goat.');

@@ -2,9 +2,9 @@
 
 namespace Achse\Math\Interval\Intervals;
 
+use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Boundaries\Boundary;
 use Achse\Math\Interval\Boundaries\IntegerBoundary;
-use Achse\Math\Interval\Types\Comparison\IComparable;
 
 
 

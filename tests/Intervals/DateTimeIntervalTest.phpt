@@ -10,6 +10,7 @@ require __DIR__ . '/../bootstrap.php';
 
 use Achse\Math\Interval\Boundaries\Boundary;
 use Achse\Math\Interval\Factories\DateTimeBoundaryFactory;
+use Achse\Math\Interval\Factories\DateTimeIntervalFactory;
 use Achse\Math\Interval\Intervals\DateTimeInterval;
 use Achse\Math\Interval\Utils\IntervalUtils;
 use Achse\Math\Interval\Types\DateTime;

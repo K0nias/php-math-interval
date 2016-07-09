@@ -15,9 +15,10 @@
 		}
 	],
 	"require": {
-		"php": ">= 5.6.0",
+		"php": ">= 7.0.0",
 		"nette/utils": ">= 2.3.0",
-		"achse/datetime-format-tools": "^1.0"
+		"achse/datetime-format-tools": "^1.0",
+		"achse/php-comparable-interface": "^1.0"
 	},
 	"require-dev": {
 		"nette/tester": "@dev"

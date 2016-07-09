@@ -2,6 +2,7 @@
 
 namespace Achse\Math\Interval\Intervals;
 
+use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Boundaries\Boundary;
 use Achse\Math\Interval\Boundaries\DateTimeBoundary;
 use Achse\Math\Interval\Boundaries\SingleDayTimeBoundary;
@@ -10,7 +11,6 @@ use Achse\Math\Interval\Utils\IntervalUtils;
 use Achse\Math\Interval\Types\DateTime;
 use Achse\Math\Interval\Types\SingleDayTime;
 use Nette\InvalidArgumentException;
-use Achse\Math\Interval\Types\Comparison\IComparable;
 
 
 

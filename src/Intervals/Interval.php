@@ -2,10 +2,10 @@
 
 namespace Achse\Math\Interval\Intervals;
 
+use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Boundaries\Boundary;
 use Achse\Math\Interval\IntervalRangesInvalidException;
 use Achse\Math\Interval\InvalidBoundaryTypeException;
-use Achse\Math\Interval\Types\Comparison\IComparable;
 use Nette\Object;
 
 

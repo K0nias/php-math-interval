@@ -2,7 +2,7 @@
 
 namespace Achse\Math\Interval\Boundaries;
 
-use Achse\Math\Interval\Types\Comparison\IComparable;
+use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Types\Integer;
 
 
