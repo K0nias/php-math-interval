@@ -1,15 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Math\Interval\Factories;
 
 use Achse\Math\Interval\Intervals\IntegerInterval;
-use Nette\Object;
 
 
 
-class IntegerIntervalFactory extends Object
+class IntegerIntervalFactory
 {
 
 	/**
@@ -24,8 +23,7 @@ class IntegerIntervalFactory extends Object
 		bool $leftState,
 		int $rightElement,
 		bool $rightState
-	) : IntegerInterval
-	{
+	): IntegerInterval {
 		return new IntegerInterval(
 			IntegerBoundaryFactory::create($leftElement, $leftState),
 			IntegerBoundaryFactory::create($rightElement, $rightState)

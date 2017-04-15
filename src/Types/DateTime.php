@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Math\Interval\Types;
 
@@ -8,11 +8,10 @@ use Achse\Comparable\ComparisonMethods;
 use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Utils\IntervalUtils;
 use LogicException;
-use Nette\Utils\DateTime as NDateTime;
 
 
 
-class DateTime extends NDateTime implements IComparable
+class DateTime extends \DateTime implements IComparable
 {
 
 	use ComparisonMethods;
@@ -20,9 +19,39 @@ class DateTime extends NDateTime implements IComparable
 
 
 	/**
+	 * @param string $modify
+	 * @return static
+	 */
+	public function modifyClone(string $modify = ''): DateTime
+	{
+		$cloned = clone $this;
+
+		return $modify !== '' ? $cloned->modify($modify) : $cloned;
+	}
+
+
+
+	/**
+	 * @inheritdoc
+	 * @return static
+	 */
+	public static function from($time): DateTime
+	{
+		if ($time instanceof \DateTimeInterface) {
+			return new static($time->format('Y-m-d H:i:s.u'), $time->getTimezone());
+		} elseif (is_numeric($time)) {
+			return (new static('@' . $time))->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
+		} else {
+			return new static($time);
+		}
+	}
+
+
+
+	/**
 	 * @inheritdoc
 	 */
-	public function compare(IComparable $other) : int
+	public function compare(IComparable $other): int
 	{
 		if (!$other instanceof static) {
 			throw new LogicException('You cannot compare sheep with the goat.');
@@ -34,13 +63,11 @@ class DateTime extends NDateTime implements IComparable
 
 
 	/**
-	 * @inheritdoc
-	 * @return static
+	 * @return string
 	 */
-	public static function from($time) : DateTime
+	function __toString(): string
 	{
-		// Intentionally: This method is here just because of 'static' annotation for return
-		return parent::from($time);
+		return $this->format('Y-m-d H:i:s');
 	}
 
 }

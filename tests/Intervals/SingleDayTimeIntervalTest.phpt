@@ -17,7 +17,7 @@ use Achse\Math\Interval\Intervals\DateTimeInterval;
 use Achse\Math\Interval\Intervals\SingleDayTimeInterval;
 use Achse\Math\Interval\Types\DateTime;
 use Achse\Math\Interval\Utils\StringParser\SingleDayTimeIntervalStringParser;
-use Nette\InvalidArgumentException;
+use InvalidArgumentException;
 use Tester\Assert;
 use Tester\TestCase;
 

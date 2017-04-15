@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Math\Interval\Utils\StringParser;
 
@@ -19,7 +19,7 @@ class IntegerIntervalStringParser extends IntervalStringParser
 	 * @param string $string
 	 * @return IntegerInterval
 	 */
-	public static function parse(string $string) : Interval
+	public static function parse(string $string): Interval
 	{
 		list ($left, $right) = self::parseBoundariesStringsFromString($string);
 
@@ -32,7 +32,7 @@ class IntegerIntervalStringParser extends IntervalStringParser
 	 * @param string $string
 	 * @return IntegerBoundary
 	 */
-	protected static function parseBoundary(string $string) : Boundary
+	protected static function parseBoundary(string $string): Boundary
 	{
 		list($elementString, $state) = self::parseBoundaryDataFromString($string);
 

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Math\Interval\Intervals;
 
@@ -12,7 +12,7 @@ use Achse\Math\Interval\ModificationNotPossibleException;
 use Achse\Math\Interval\Types\DateTime;
 use Achse\Math\Interval\Types\SingleDayTime;
 use Achse\Math\Interval\Utils\IntervalUtils;
-use Nette\InvalidArgumentException;
+use InvalidArgumentException;
 
 
 
@@ -36,7 +36,7 @@ class SingleDayTimeInterval extends Interval
 	 * @param string $till
 	 * @return SingleDayTimeInterval
 	 */
-	public static function fromString(string $from, string $till) : SingleDayTimeInterval
+	public static function fromString(string $from, string $till): SingleDayTimeInterval
 	{
 		return new static(
 			new SingleDayTimeBoundary(SingleDayTime::from($from), Boundary::CLOSED),
@@ -51,7 +51,7 @@ class SingleDayTimeInterval extends Interval
 	 * @param \DateTime $date
 	 * @return static
 	 */
-	public static function fromDateTimeInterval(DateTimeInterval $interval, \DateTime $date) : SingleDayTimeInterval
+	public static function fromDateTimeInterval(DateTimeInterval $interval, \DateTime $date): SingleDayTimeInterval
 	{
 		$thisDayInterval = self::buildWholeDayInterval($date);
 
@@ -74,6 +74,30 @@ class SingleDayTimeInterval extends Interval
 
 
 	/**
+	 * @param \DateTime $date
+	 * @return DateTimeInterval
+	 */
+	protected static function buildWholeDayInterval(\DateTime $date): DateTimeInterval
+	{
+		/** @var DateTime $start */
+		$start = DateTime::from($date);
+		$start->setTime(0, 0, 0);
+
+		/** @var DateTime $ends */
+		$ends = DateTime::from($date);
+		$ends->setTime(23, 59, 59);
+
+		$thisDayInterval = new DateTimeInterval(
+			new DateTimeBoundary($start, Boundary::CLOSED),
+			new DateTimeBoundary($ends, Boundary::CLOSED)
+		);
+
+		return $thisDayInterval;
+	}
+
+
+
+	/**
 	 * @param SingleDayTimeInterval $other
 	 * @param string $precision
 	 * @return bool
@@ -81,8 +105,7 @@ class SingleDayTimeInterval extends Interval
 	public function isFollowedBy(
 		SingleDayTimeInterval $other,
 		string $precision = IntervalUtils::PRECISION_ON_SECOND
-	) : bool
-	{
+	): bool {
 		try {
 			$this->getRight()->getValue()->modifyClone("+{$precision}");
 			$other->getLeft()->getValue()->modifyClone("-{$precision}");
@@ -101,9 +124,9 @@ class SingleDayTimeInterval extends Interval
 	/**
 	 * @return SingleDayTimeBoundary
 	 */
-	public function getLeft() : Boundary
+	public function getRight(): Boundary
 	{
-		return parent::getLeft();
+		return parent::getRight();
 	}
 
 
@@ -111,9 +134,9 @@ class SingleDayTimeInterval extends Interval
 	/**
 	 * @return SingleDayTimeBoundary
 	 */
-	public function getRight() : Boundary
+	public function getLeft(): Boundary
 	{
-		return parent::getRight();
+		return parent::getLeft();
 	}
 
 
@@ -122,7 +145,7 @@ class SingleDayTimeInterval extends Interval
 	 * @param \DateTime $day
 	 * @return DateTimeInterval
 	 */
-	public function toDateTimeInterval(\DateTime $day) : DateTimeInterval
+	public function toDateTimeInterval(\DateTime $day): DateTimeInterval
 	{
 		$left = new DateTimeBoundary(
 			$this->getLeft()->getValue()->toDateTime($day), $this->getLeft()->getState()
@@ -141,33 +164,9 @@ class SingleDayTimeInterval extends Interval
 	 * @param bool $state
 	 * @return SingleDayTimeBoundary
 	 */
-	protected function buildBoundary(IComparable $element, bool $state) : Boundary
+	protected function buildBoundary(IComparable $element, bool $state): Boundary
 	{
 		return new SingleDayTimeBoundary($element, $state);
-	}
-
-
-
-	/**
-	 * @param \DateTime $date
-	 * @return DateTimeInterval
-	 */
-	protected static function buildWholeDayInterval(\DateTime $date) : DateTimeInterval
-	{
-		/** @var DateTime $start */
-		$start = DateTime::from($date);
-		$start->setTime(0, 0, 0);
-
-		/** @var DateTime $ends */
-		$ends = DateTime::from($date);
-		$ends->setTime(23, 59, 59);
-
-		$thisDayInterval = new DateTimeInterval(
-			new DateTimeBoundary($start, Boundary::CLOSED),
-			new DateTimeBoundary($ends, Boundary::CLOSED)
-		);
-
-		return $thisDayInterval;
 	}
 
 }

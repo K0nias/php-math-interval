@@ -1,17 +1,16 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Math\Interval\Boundaries;
 
 use Achse\Comparable\ComparisonMethods;
 use Achse\Comparable\IComparable;
 use LogicException;
-use Nette\Object;
 
 
 
-class Boundary extends Object implements IComparable
+class Boundary implements IComparable
 {
 
 	use ComparisonMethods;
@@ -51,7 +50,7 @@ class Boundary extends Object implements IComparable
 	/**
 	 * @return IComparable
 	 */
-	public function getValue() : IComparable
+	public function getValue(): IComparable
 	{
 		return $this->element;
 	}
@@ -61,7 +60,7 @@ class Boundary extends Object implements IComparable
 	/**
 	 * @return bool
 	 */
-	public function isClosed() : bool
+	public function isClosed(): bool
 	{
 		return $this->state === self::CLOSED;
 	}
@@ -69,19 +68,9 @@ class Boundary extends Object implements IComparable
 
 
 	/**
-	 * @return bool
-	 */
-	public function isOpened() : bool
-	{
-		return $this->state === self::OPENED;
-	}
-
-
-
-	/**
 	 * @inheritdoc
 	 */
-	public function compare(IComparable $other) : int
+	public function compare(IComparable $other): int
 	{
 		if (!$other instanceof self) { // intentionally self
 			throw new LogicException('You cannot compare sheep with the goat.');
@@ -105,7 +94,17 @@ class Boundary extends Object implements IComparable
 	/**
 	 * @return bool
 	 */
-	public function getState() : bool
+	public function isOpened(): bool
+	{
+		return $this->state === self::OPENED;
+	}
+
+
+
+	/**
+	 * @return bool
+	 */
+	public function getState(): bool
 	{
 		return $this->state;
 	}
@@ -113,9 +112,20 @@ class Boundary extends Object implements IComparable
 
 
 	/**
+	 * @deprecated Boundary should be immutable type.
+	 * @param bool $state
+	 */
+	public function setState($state)
+	{
+		$this->state = $state;
+	}
+
+
+
+	/**
 	 * @return string
 	 */
-	public function __toString() : string
+	public function __toString(): string
 	{
 		return (
 			($this->isOpened() ? self::STRING_OPENED_LEFT : self::STRING_CLOSED_LEFT)
@@ -133,17 +143,6 @@ class Boundary extends Object implements IComparable
 	public function setValue(IComparable $value)
 	{
 		$this->element = $value;
-	}
-
-
-
-	/**
-	 * @deprecated Boundary should be immutable type.
-	 * @param bool $state
-	 */
-	public function setState($state)
-	{
-		$this->state = $state;
 	}
 
 

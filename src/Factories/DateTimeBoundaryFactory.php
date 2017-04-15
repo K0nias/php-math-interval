@@ -1,16 +1,15 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Math\Interval\Factories;
 
 use Achse\Math\Interval\Boundaries\DateTimeBoundary;
 use Achse\Math\Interval\Types\DateTime;
-use Nette\Object;
 
 
 
-class DateTimeBoundaryFactory extends Object
+class DateTimeBoundaryFactory
 {
 
 	/**
@@ -18,7 +17,7 @@ class DateTimeBoundaryFactory extends Object
 	 * @param bool $state
 	 * @return DateTimeBoundary
 	 */
-	public static function create($element, bool $state) : DateTimeBoundary
+	public static function create($element, bool $state): DateTimeBoundary
 	{
 		/** @var DateTime $element */
 		$element = DateTime::from($element);

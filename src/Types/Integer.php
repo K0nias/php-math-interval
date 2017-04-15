@@ -1,19 +1,18 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Math\Interval\Types;
 
 use Achse\Comparable\ComparisonMethods;
 use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Utils\IntervalUtils;
+use InvalidArgumentException;
 use LogicException;
-use Nette\InvalidArgumentException;
-use Nette\Object;
 
 
 
-class Integer extends Object implements IComparable
+class Integer implements IComparable
 {
 
 	use ComparisonMethods;
@@ -36,11 +35,16 @@ class Integer extends Object implements IComparable
 
 
 	/**
-	 * @return int
+	 * @param string $string
+	 * @return static
 	 */
-	public function toInt() : int
+	public static function fromString(string $string): Integer
 	{
-		return $this->internal;
+		if (!is_numeric($string)) {
+			throw new InvalidArgumentException("'$string' in not numeric.");
+		}
+
+		return new static((int) $string);
 	}
 
 
@@ -48,7 +52,7 @@ class Integer extends Object implements IComparable
 	/**
 	 * @inheritdoc
 	 */
-	public function compare(IComparable $other) : int
+	public function compare(IComparable $other): int
 	{
 		if (!$other instanceof static) {
 			throw new LogicException('You cannot compare sheep with the goat.');
@@ -60,25 +64,20 @@ class Integer extends Object implements IComparable
 
 
 	/**
-	 * @return string
+	 * @return int
 	 */
-	public function __toString() : string
+	public function toInt(): int
 	{
-		return (string) $this->toInt();
+		return $this->internal;
 	}
 
 
 
 	/**
-	 * @param string $string
-	 * @return static
+	 * @return string
 	 */
-	public static function fromString(string $string) : Integer
+	public function __toString(): string
 	{
-		if (!is_numeric($string)) {
-			throw new InvalidArgumentException("'$string' in not numeric.");
-		}
-
-		return new static((int) $string);
+		return (string) $this->toInt();
 	}
 }

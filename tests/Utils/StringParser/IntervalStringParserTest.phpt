@@ -13,7 +13,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 use Achse\Math\Interval\IntervalParseErrorException;
 use Achse\Math\Interval\Utils\StringParser\IntegerIntervalStringParser;
 use Achse\Math\Interval\Utils\StringParser\IntervalStringParser;
-use Nette\NotImplementedException;
+use LogicException;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -28,7 +28,7 @@ class IntervalStringParserTest extends TestCase
 			function () {
 				IntervalStringParser::parse('Whatever!');
 			},
-			NotImplementedException::class
+			LogicException::class
 		);
 	}
 
@@ -64,7 +64,7 @@ class IntervalStringParserTest extends TestCase
 			['[,]', "Boundary part '[' is too short. It must be at leas 2 character long. Example: '(1' or '9]'."],
 		];
 	}
-	
+
 }
 
 

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Math\Interval\Intervals;
 
@@ -45,7 +45,7 @@ class DateTimeInterval extends Interval
 	 * @param string $precision
 	 * @return bool
 	 */
-	public function isFollowedBy(DateTimeInterval $other, string $precision = IntervalUtils::PRECISION_ON_SECOND) : bool
+	public function isFollowedBy(DateTimeInterval $other, string $precision = IntervalUtils::PRECISION_ON_SECOND): bool
 	{
 		if ($this->getLeft() > $other->getRight()) { // intentionally compares boundaries
 			return FALSE;
@@ -77,7 +77,7 @@ class DateTimeInterval extends Interval
 	 * @param DateTimeInterval $other
 	 * @return bool
 	 */
-	public function isFollowedByAtMidnight(DateTimeInterval $other) : bool
+	public function isFollowedByAtMidnight(DateTimeInterval $other): bool
 	{
 		return (
 			IntervalUtils::isSameDate(
@@ -95,7 +95,7 @@ class DateTimeInterval extends Interval
 	/**
 	 * @return DateTimeBoundary
 	 */
-	public function getLeft() : Boundary
+	public function getLeft(): Boundary
 	{
 		return parent::getLeft();
 	}
@@ -105,7 +105,7 @@ class DateTimeInterval extends Interval
 	/**
 	 * @return DateTimeBoundary
 	 */
-	public function getRight() : Boundary
+	public function getRight(): Boundary
 	{
 		return parent::getRight();
 	}
@@ -117,7 +117,7 @@ class DateTimeInterval extends Interval
 	 * @param bool $state
 	 * @return DateTimeBoundary
 	 */
-	protected function buildBoundary(IComparable $element, bool $state) : Boundary
+	protected function buildBoundary(IComparable $element, bool $state): Boundary
 	{
 		return new DateTimeBoundary($element, $state);
 	}

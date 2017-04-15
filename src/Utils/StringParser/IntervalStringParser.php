@@ -1,19 +1,17 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Math\Interval\Utils\StringParser;
 
 use Achse\Math\Interval\Boundaries\Boundary;
 use Achse\Math\Interval\IntervalParseErrorException;
 use Achse\Math\Interval\Intervals\Interval;
-use Nette\NotImplementedException;
-use Nette\Object;
-use Nette\Utils\Strings;
+use LogicException;
 
 
 
-abstract class IntervalStringParser extends Object
+abstract class IntervalStringParser
 {
 
 	/**
@@ -32,9 +30,9 @@ abstract class IntervalStringParser extends Object
 	 * @param string $string
 	 * @return Interval
 	 */
-	public static function parse(string $string) : Interval
+	public static function parse(string $string): Interval
 	{
-		throw new NotImplementedException('Not implemented in this abstract class. Implement this in child.');
+		throw new LogicException('Not implemented in this abstract class. Implement this in child.');
 	}
 
 
@@ -44,7 +42,7 @@ abstract class IntervalStringParser extends Object
 	 * @return string[]
 	 * @throws IntervalParseErrorException
 	 */
-	protected static function parseBoundariesStringsFromString(string $string) : array
+	protected static function parseBoundariesStringsFromString(string $string): array
 	{
 		$boundaries = explode(',', $string);
 
@@ -65,9 +63,9 @@ abstract class IntervalStringParser extends Object
 	 * @return array
 	 * @throws IntervalParseErrorException
 	 */
-	protected static function parseBoundaryDataFromString(string $string) : array 
+	protected static function parseBoundaryDataFromString(string $string): array
 	{
-		$letters = Strings::split($string, '//u', PREG_SPLIT_NO_EMPTY);
+		$letters = preg_split('//u', $string, -1,PREG_SPLIT_NO_EMPTY);
 
 		if (count($letters) < 2) {
 			throw new IntervalParseErrorException(
@@ -82,33 +80,11 @@ abstract class IntervalStringParser extends Object
 
 
 	/**
-	 * @param string $character
-	 * @return bool
-	 */
-	protected static function isCharacterBoundaryType(string $character) : bool
-	{
-		return isset(self::$parenthesisToStateTranslationTable[$character]);
-	}
-
-
-
-	/**
-	 * @param string $character
-	 * @return bool
-	 */
-	protected static function getTypeByCharacter(string $character) : bool
-	{
-		return self::$parenthesisToStateTranslationTable[$character];
-	}
-
-
-
-	/**
 	 * @param int[] $letters
 	 * @return array
 	 * @throws IntervalParseErrorException
 	 */
-	protected static function getElementAndStateData(array $letters) : array
+	protected static function getElementAndStateData(array $letters): array
 	{
 		if (($firstCharacter = reset($letters)) === FALSE || ($lastCharacter = end($letters)) === FALSE) {
 			throw new IntervalParseErrorException('No letters given.');
@@ -135,12 +111,34 @@ abstract class IntervalStringParser extends Object
 
 
 	/**
+	 * @param string $character
+	 * @return bool
+	 */
+	protected static function isCharacterBoundaryType(string $character): bool
+	{
+		return isset(self::$parenthesisToStateTranslationTable[$character]);
+	}
+
+
+
+	/**
+	 * @param string $character
+	 * @return bool
+	 */
+	protected static function getTypeByCharacter(string $character): bool
+	{
+		return self::$parenthesisToStateTranslationTable[$character];
+	}
+
+
+
+	/**
 	 * @param string $string
 	 * @return Boundary
 	 */
-	protected static function parseBoundary(string $string) : Boundary
+	protected static function parseBoundary(string $string): Boundary
 	{
-		throw new NotImplementedException('Not implemented in this abstract class. Implement this in child.');
+		throw new LogicException('Not implemented in this abstract class. Implement this in child.');
 	}
 
 }

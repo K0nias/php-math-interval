@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Math\Interval\Intervals;
 
@@ -28,7 +28,7 @@ class IntegerInterval extends Interval
 	/**
 	 * @return IntegerBoundary
 	 */
-	public function getLeft() : Boundary
+	public function getLeft(): Boundary
 	{
 		return parent::getLeft();
 	}
@@ -38,7 +38,7 @@ class IntegerInterval extends Interval
 	/**
 	 * @return IntegerBoundary
 	 */
-	public function getRight() : Boundary
+	public function getRight(): Boundary
 	{
 		return parent::getRight();
 	}
@@ -50,7 +50,7 @@ class IntegerInterval extends Interval
 	 * @param bool $state
 	 * @return IntegerBoundary
 	 */
-	protected function buildBoundary(IComparable $element, bool $state) : Boundary
+	protected function buildBoundary(IComparable $element, bool $state): Boundary
 	{
 		return new IntegerBoundary($element, $state);
 	}

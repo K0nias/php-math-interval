@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Math\Interval\Intervals;
 
@@ -8,11 +8,10 @@ use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Boundaries\Boundary;
 use Achse\Math\Interval\IntervalRangesInvalidException;
 use Achse\Math\Interval\InvalidBoundaryTypeException;
-use Nette\Object;
 
 
 
-class Interval extends Object
+class Interval
 {
 
 	const STRING_DELIMITER = ',';
@@ -44,7 +43,7 @@ class Interval extends Object
 	/**
 	 * @return string
 	 */
-	public function __toString() : string
+	public function __toString(): string
 	{
 		return (
 			$this->getLeftBracket() . $this->getLeft()->getValue()
@@ -58,7 +57,7 @@ class Interval extends Object
 	/**
 	 * @return Boundary
 	 */
-	public function getLeft() : Boundary
+	public function getLeft(): Boundary
 	{
 		return $this->left;
 	}
@@ -68,7 +67,7 @@ class Interval extends Object
 	/**
 	 * @return Boundary
 	 */
-	public function getRight() : Boundary
+	public function getRight(): Boundary
 	{
 		return $this->right;
 	}
@@ -106,7 +105,7 @@ class Interval extends Object
 	/**
 	 * @return bool
 	 */
-	public function isEmpty() : bool
+	public function isEmpty(): bool
 	{
 		return $this->isLeftOpened() && $this->left->getValue()->isEqual($this->right->getValue());
 	}
@@ -118,7 +117,7 @@ class Interval extends Object
 	 *
 	 * @return bool
 	 */
-	public function isDegenerate() : bool
+	public function isDegenerate(): bool
 	{
 		return $this->isClosed() && $this->left->isEqual($this->right);
 	}
@@ -128,7 +127,7 @@ class Interval extends Object
 	/**
 	 * @return bool
 	 */
-	public function isProper() : bool
+	public function isProper(): bool
 	{
 		return !$this->isEmpty() && !$this->isDegenerate();
 	}
@@ -140,7 +139,7 @@ class Interval extends Object
 	 *
 	 * @return bool
 	 */
-	public function isOpened() : bool
+	public function isOpened(): bool
 	{
 		return $this->isLeftOpened() && $this->isRightOpened();
 	}
@@ -152,7 +151,7 @@ class Interval extends Object
 	 *
 	 * @return bool
 	 */
-	public function isLeftOpened() : bool
+	public function isLeftOpened(): bool
 	{
 		return $this->getLeft()->isOpened();
 	}
@@ -164,7 +163,7 @@ class Interval extends Object
 	 *
 	 * @return bool
 	 */
-	public function isRightOpened() : bool
+	public function isRightOpened(): bool
 	{
 		return $this->getRight()->isOpened();
 	}
@@ -174,7 +173,7 @@ class Interval extends Object
 	/**
 	 * @return bool
 	 */
-	public function isClosed() : bool
+	public function isClosed(): bool
 	{
 		return $this->isLeftClosed() && $this->isRightClosed();
 	}
@@ -184,7 +183,7 @@ class Interval extends Object
 	/**
 	 * @return bool
 	 */
-	public function isLeftClosed() : bool
+	public function isLeftClosed(): bool
 	{
 		return $this->getLeft()->isClosed();
 	}
@@ -194,7 +193,7 @@ class Interval extends Object
 	/**
 	 * @return bool
 	 */
-	public function isRightClosed() : bool
+	public function isRightClosed(): bool
 	{
 		return $this->getRight()->isClosed();
 	}
@@ -205,7 +204,7 @@ class Interval extends Object
 	 * @param IComparable $element
 	 * @return bool
 	 */
-	public function isContainingElement(IComparable $element) : bool
+	public function isContainingElement(IComparable $element): bool
 	{
 		$leftBoundaryCheck = (
 			$this->isLeftOpened() && $this->getLeft()->getValue()->isLessThan($element)
@@ -241,7 +240,7 @@ class Interval extends Object
 	 * @param Interval $other
 	 * @return bool
 	 */
-	public function isContaining(Interval $other) : bool
+	public function isContaining(Interval $other): bool
 	{
 		return (
 			(
@@ -277,7 +276,7 @@ class Interval extends Object
 	 * @param Interval $other
 	 * @return bool
 	 */
-	public function isOverlappedFromRightBy(Interval $other) : bool
+	public function isOverlappedFromRightBy(Interval $other): bool
 	{
 		return (
 			$this->isContainingElement($other->getLeft()->getValue())
@@ -345,7 +344,7 @@ class Interval extends Object
 	 * @param Interval $other
 	 * @return bool
 	 */
-	public function isColliding(Interval $other) : bool
+	public function isColliding(Interval $other): bool
 	{
 		return (
 			$this->isOverlappedFromRightBy($other)
@@ -359,7 +358,7 @@ class Interval extends Object
 	 * @param Interval $other
 	 * @return Interval[]
 	 */
-	public function getDifference(Interval $other) : array
+	public function getDifference(Interval $other): array
 	{
 		if (($other = $this->getIntersection($other)) === NULL) {
 			return [$this];
@@ -391,7 +390,7 @@ class Interval extends Object
 	 * @param bool $state
 	 * @return Boundary
 	 */
-	protected function buildBoundary(IComparable $element, bool $state) : Boundary
+	protected function buildBoundary(IComparable $element, bool $state): Boundary
 	{
 		return new Boundary($element, $state);
 	}
@@ -419,7 +418,7 @@ class Interval extends Object
 	/**
 	 * @return string
 	 */
-	private function getLeftBracket() : string
+	private function getLeftBracket(): string
 	{
 		return $this->isLeftOpened() ? Boundary::STRING_OPENED_LEFT : Boundary::STRING_CLOSED_LEFT;
 	}
@@ -429,7 +428,7 @@ class Interval extends Object
 	/**
 	 * @return string
 	 */
-	private function getRightBracket() : string
+	private function getRightBracket(): string
 	{
 		return $this->isRightOpened() ? Boundary::STRING_OPENED_RIGHT : Boundary::STRING_CLOSED_RIGHT;
 	}
@@ -440,7 +439,7 @@ class Interval extends Object
 	 * @param IComparable $element
 	 * @return bool
 	 */
-	private function isElementLeftOpenedBorder(IComparable $element) : bool
+	private function isElementLeftOpenedBorder(IComparable $element): bool
 	{
 		return $this->isLeftOpened() && $this->getLeft()->getValue()->isEqual($element);
 	}
@@ -451,7 +450,7 @@ class Interval extends Object
 	 * @param IComparable $element
 	 * @return bool
 	 */
-	private function isElementRightOpenedBorder(IComparable $element) : bool
+	private function isElementRightOpenedBorder(IComparable $element): bool
 	{
 		return $this->isRightOpened() && $this->getRight()->getValue()->isEqual($element);
 	}

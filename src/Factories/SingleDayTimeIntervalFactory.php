@@ -1,15 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Math\Interval\Factories;
 
 use Achse\Math\Interval\Intervals\SingleDayTimeInterval;
-use Nette\Object;
 
 
 
-class SingleDayTimeIntervalFactory extends Object
+class SingleDayTimeIntervalFactory
 {
 
 	/**
@@ -24,8 +23,7 @@ class SingleDayTimeIntervalFactory extends Object
 		bool $leftState,
 		$rightElement,
 		bool $rightState
-	) : SingleDayTimeInterval
-	{
+	): SingleDayTimeInterval {
 		return new SingleDayTimeInterval(
 			SingleDayTimeBoundaryFactory::create($leftElement, $leftState),
 			SingleDayTimeBoundaryFactory::create($rightElement, $rightState)

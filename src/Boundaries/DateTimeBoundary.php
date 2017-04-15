@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Math\Interval\Boundaries;
 
@@ -27,7 +27,7 @@ class DateTimeBoundary extends Boundary
 	/**
 	 * @return DateTime
 	 */
-	public function getValue() : IComparable
+	public function getValue(): IComparable
 	{
 		return parent::getValue();
 	}
