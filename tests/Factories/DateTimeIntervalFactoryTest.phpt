@@ -29,7 +29,6 @@ class DateTimeIntervalFactoryTest extends TestCase
 			'2015-10-11  12:13:14',
 			Boundary::OPENED
 		);
-		Assert::type(DateTimeInterval::class, $result);
 		Assert::equal('[2015-10-11 00:00:00, 2015-10-11 12:13:14)', (string) $result);
 	}
 
