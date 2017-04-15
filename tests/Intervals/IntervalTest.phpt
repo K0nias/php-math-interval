@@ -4,7 +4,7 @@
  * @testCase
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Tests\Interval\Intervals;
 
@@ -12,9 +12,8 @@ require __DIR__ . '/../bootstrap.php';
 
 use Achse\Math\Interval\IntervalRangesInvalidException;
 use Achse\Math\Interval\Intervals\IntegerInterval;
-use Achse\Math\Interval\Intervals\Interval;
 use Achse\Math\Interval\Types\Integer;
-use Achse\Math\Interval\Utils\StringParser\IntegerIntervalStringParser;
+use Achse\Math\Interval\Utils\StringParser\IntegerIntervalStringParser as Parser;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -23,102 +22,11 @@ use Tester\TestCase;
 class IntervalTest extends TestCase
 {
 
-	/**
-	 * @var IntegerInterval
-	 */
-	private $intervalOneFourClosed;
-
-	/**
-	 * @var IntegerInterval
-	 */
-	private $intervalOneFourOpened;
-
-	/**
-	 * @var IntegerInterval
-	 */
-	private $intervalTwoThreeClosed;
-
-	/**
-	 * @var IntegerInterval
-	 */
-	private $intervalTwoThreeOpened;
-
-	/**
-	 * @var IntegerInterval
-	 */
-	private $intervalOneTwoClosed;
-
-	/**
-	 * @var IntegerInterval
-	 */
-	private $intervalOneThreeOpened;
-
-	/**
-	 * @var IntegerInterval
-	 */
-	private $intervalTwoFourOpened;
-
-	/**
-	 * @var IntegerInterval
-	 */
-	private $intervalOneTwoOpened;
-
-	/**
-	 * @var IntegerInterval
-	 */
-	private $intervalThreeFourOpened;
-
-	/**
-	 * @var IntegerInterval
-	 */
-	private $intervalThreeFourClosed;
-
-	/**
-	 * @var IntegerInterval
-	 */
-	private $intervalTwoFourClosed;
-
-	/**
-	 * @var IntegerInterval
-	 */
-	private $intervalZeroToFiveClosed;
-
-
-
-	protected function setUp()
-	{
-		parent::setUp();
-
-		$this->intervalOneFourClosed = IntegerIntervalStringParser::parse('[1, 4]');
-		$this->intervalOneFourOpened = IntegerIntervalStringParser::parse('(1, 4)');
-
-		$this->intervalTwoThreeClosed = IntegerIntervalStringParser::parse('[2, 3]');
-		$this->intervalTwoThreeOpened = IntegerIntervalStringParser::parse('(2, 3)');
-
-		$this->intervalOneTwoClosed = IntegerIntervalStringParser::parse('[1, 2]');
-		$this->intervalOneTwoOpened = IntegerIntervalStringParser::parse('(1, 2)');
-
-		$this->intervalTwoThreeClosed = IntegerIntervalStringParser::parse('[2, 3]');
-		$this->intervalTwoThreeOpened = IntegerIntervalStringParser::parse('(2, 3)');
-
-		$this->intervalThreeFourClosed = IntegerIntervalStringParser::parse('[3, 4]');
-		$this->intervalThreeFourOpened = IntegerIntervalStringParser::parse('(3, 4)');
-
-		$this->intervalTwoFourClosed = IntegerIntervalStringParser::parse('[2, 4]');
-		$this->intervalTwoFourOpened = IntegerIntervalStringParser::parse('(2, 4)');
-
-		$this->intervalOneThreeOpened = IntegerIntervalStringParser::parse('(1, 3)');
-
-		$this->intervalZeroToFiveClosed = IntegerIntervalStringParser::parse('[0, 5]');
-	}
-
-
-
 	public function testErrors()
 	{
 		Assert::exception(
 			function () {
-				IntegerIntervalStringParser::parse('[5, 0]');
+				Parser::parse('[5, 0]');
 			},
 			IntervalRangesInvalidException::class,
 			'Right endpoint cannot be less then Left endpoint.'
@@ -129,74 +37,74 @@ class IntervalTest extends TestCase
 
 	public function testOpenedClosed()
 	{
-		Assert::true($this->intervalOneFourClosed->isClosed());
-		Assert::false($this->intervalOneFourClosed->isOpened());
+		Assert::true(Parser::parse('[1, 4]')->isClosed());
+		Assert::false(Parser::parse('[1, 4]')->isOpened());
 
-		Assert::false($this->intervalOneFourOpened->isClosed());
-		Assert::true($this->intervalOneFourOpened->isOpened());
+		Assert::false(Parser::parse('(1, 4)')->isClosed());
+		Assert::true(Parser::parse('(1, 4)')->isOpened());
 
-		Assert::false((IntegerIntervalStringParser::parse('[1, 2)')->isOpened()));
-		Assert::false((IntegerIntervalStringParser::parse('[1, 2)')->isClosed()));
+		Assert::false((Parser::parse('[1, 2)')->isOpened()));
+		Assert::false((Parser::parse('[1, 2)')->isClosed()));
 
-		Assert::false((IntegerIntervalStringParser::parse('(1, 2]')->isOpened()));
-		Assert::false((IntegerIntervalStringParser::parse('(1, 2]')->isClosed()));
+		Assert::false((Parser::parse('(1, 2]')->isOpened()));
+		Assert::false((Parser::parse('(1, 2]')->isClosed()));
 	}
 
 
 
 	public function testIsDegenerate()
 	{
-		Assert::true((IntegerIntervalStringParser::parse('[1, 1]')->isDegenerate()));
+		Assert::true((Parser::parse('[1, 1]')->isDegenerate()));
 
-		Assert::false((IntegerIntervalStringParser::parse('(1, 1)')->isDegenerate()));
-		Assert::false((IntegerIntervalStringParser::parse('(1, 1]')->isDegenerate()));
+		Assert::false((Parser::parse('(1, 1)')->isDegenerate()));
+		Assert::false((Parser::parse('(1, 1]')->isDegenerate()));
 
-		Assert::false($this->intervalOneFourClosed->isDegenerate());
-		Assert::false($this->intervalOneFourOpened->isDegenerate());
+		Assert::false(Parser::parse('[1, 4]')->isDegenerate());
+		Assert::false(Parser::parse('(1, 4)')->isDegenerate());
 	}
 
 
 
 	public function testIsProper()
 	{
-		Assert::false((IntegerIntervalStringParser::parse('[1, 1]')->isProper()));
-		Assert::false((IntegerIntervalStringParser::parse('(1, 1)')->isProper()));
-		Assert::false((IntegerIntervalStringParser::parse('(1, 1]')->isProper()));
+		Assert::false((Parser::parse('[1, 1]')->isProper()));
+		Assert::false((Parser::parse('(1, 1)')->isProper()));
+		Assert::false((Parser::parse('(1, 1]')->isProper()));
 
-		Assert::true($this->intervalOneFourClosed->isProper());
-		Assert::true($this->intervalOneFourOpened->isProper());
+		Assert::true(Parser::parse('[1, 4]')->isProper());
+		Assert::true(Parser::parse('(1, 4)')->isProper());
 	}
 
 
 
 	public function testIsEmpty()
 	{
-		Assert::true((IntegerIntervalStringParser::parse('(1, 1)')->isEmpty()));
-		Assert::true((IntegerIntervalStringParser::parse('(1, 1]')->isEmpty()));
-		Assert::false((IntegerIntervalStringParser::parse('[1, 1]')->isEmpty()));
+		Assert::true((Parser::parse('(1, 1)')->isEmpty()));
+		Assert::true((Parser::parse('(1, 1]')->isEmpty()));
+		Assert::false((Parser::parse('[1, 1]')->isEmpty()));
 
-		Assert::false($this->intervalOneFourClosed->isEmpty());
-		Assert::false($this->intervalOneFourOpened->isEmpty());
+		Assert::false(Parser::parse('[1, 4]')->isEmpty());
+		Assert::false(Parser::parse('(1, 4)')->isEmpty());
 	}
 
 
 
 	public function testIsContainingElement()
 	{
-		$interval = IntegerIntervalStringParser::parse('[1, 2]');
+		$interval = Parser::parse('[1, 2]');
 		Assert::true($interval->isContainingElement(new Integer(1)));
 		Assert::true($interval->isContainingElement(new Integer(2)));
 
-		$interval = IntegerIntervalStringParser::parse('(1, 2)');
+		$interval = Parser::parse('(1, 2)');
 		Assert::false($interval->isContainingElement(new Integer(1)));
 		Assert::false($interval->isContainingElement(new Integer(2)));
 
-		$interval = IntegerIntervalStringParser::parse('[1, 3)');
+		$interval = Parser::parse('[1, 3)');
 		Assert::true($interval->isContainingElement(new Integer(1)));
 		Assert::true($interval->isContainingElement(new Integer(2)));
 		Assert::false($interval->isContainingElement(new Integer(3)));
 
-		$interval = IntegerIntervalStringParser::parse('(1, 3]');
+		$interval = Parser::parse('(1, 3]');
 		Assert::false($interval->isContainingElement(new Integer(1)));
 		Assert::true($interval->isContainingElement(new Integer(2)));
 		Assert::true($interval->isContainingElement(new Integer(3)));
@@ -208,28 +116,28 @@ class IntervalTest extends TestCase
 	{
 
 		// [1, 4] contains (1, 4)
-		Assert::true($this->intervalOneFourClosed->isContaining($this->intervalOneFourOpened));
+		Assert::true(Parser::parse('[1, 4]')->isContaining(Parser::parse('(1, 4)')));
 		// (1, 4) NOT contains [1, 4]
-		Assert::false($this->intervalOneFourOpened->isContaining($this->intervalOneFourClosed));
+		Assert::false(Parser::parse('(1, 4)')->isContaining(Parser::parse('[1, 4]')));
 
 		// [1, 4] contains [2, 3]
-		Assert::true($this->intervalOneFourClosed->isContaining($this->intervalTwoThreeClosed));
+		Assert::true(Parser::parse('[1, 4]')->isContaining(Parser::parse('[2, 3]')));
 		// [2, 3] NOT contains [1, 4]
-		Assert::false($this->intervalTwoThreeClosed->isContaining($this->intervalOneFourClosed));
+		Assert::false(Parser::parse('[2, 3]')->isContaining(Parser::parse('[1, 4]')));
 
 		// [1, 4] contains (2, 3)
-		Assert::true($this->intervalOneFourClosed->isContaining($this->intervalTwoThreeOpened));
+		Assert::true(Parser::parse('[1, 4]')->isContaining(Parser::parse('(2, 3)')));
 		// (2, 3) NOT contains [1, 4]
-		Assert::false($this->intervalTwoThreeOpened->isContaining($this->intervalOneFourClosed));
+		Assert::false(Parser::parse('(2, 3)')->isContaining(Parser::parse('[1, 4]')));
 
 
 		// (1, 4) NOT contains [3, 4]
-		Assert::false($this->intervalOneFourOpened->isContaining($this->intervalThreeFourClosed));
+		Assert::false(Parser::parse('(1, 4)')->isContaining(Parser::parse('[3, 4]')));
 		// (1, 4) NOT contains [1, 2]
-		Assert::false($this->intervalOneFourOpened->isContaining($this->intervalOneTwoClosed));
+		Assert::false(Parser::parse('(1, 4)')->isContaining(Parser::parse('[1, 2]')));
 
-		$left = IntegerIntervalStringParser::parse('[1, 3]');
-		$right = IntegerIntervalStringParser::parse('[3, 4]');
+		$left = Parser::parse('[1, 3]');
+		$right = Parser::parse('[3, 4]');
 
 		Assert::false($left->isContaining($right));
 		Assert::false($right->isContaining($left));
@@ -239,53 +147,53 @@ class IntervalTest extends TestCase
 
 	public function testIsOverlappedFromRightBy()
 	{
-		Assert::true($this->intervalOneTwoClosed->isOverlappedFromRightBy($this->intervalTwoThreeClosed));
-		Assert::false($this->intervalTwoThreeClosed->isOverlappedFromRightBy($this->intervalOneTwoClosed));
+		Assert::true(Parser::parse('[1, 2]')->isOverlappedFromRightBy(Parser::parse('[2, 3]')));
+		Assert::false(Parser::parse('[2, 3]')->isOverlappedFromRightBy(Parser::parse('[1, 2]')));
 
 		// (1, 2) ~ [2, 3]
-		Assert::false($this->intervalOneTwoOpened->isOverlappedFromRightBy($this->intervalTwoThreeClosed));
+		Assert::false(Parser::parse('(1, 2)')->isOverlappedFromRightBy(Parser::parse('[2, 3]')));
 		// [1, 2] ~ (2, 3)
-		Assert::false($this->intervalOneTwoClosed->isOverlappedFromRightBy($this->intervalTwoThreeOpened));
+		Assert::false(Parser::parse('[1, 2]')->isOverlappedFromRightBy(Parser::parse('(2, 3)')));
 
-		Assert::true($this->intervalOneThreeOpened->isOverlappedFromRightBy($this->intervalTwoFourOpened));
+		Assert::true(Parser::parse('(1, 3)')->isOverlappedFromRightBy(Parser::parse('(2, 4)')));
 	}
 
 
 
 	public function testIsColliding()
 	{
-		Assert::true($this->intervalOneTwoClosed->isColliding($this->intervalTwoThreeClosed));
-		Assert::true($this->intervalTwoThreeClosed->isColliding($this->intervalOneTwoClosed));
+		Assert::true(Parser::parse('[1, 2]')->isColliding(Parser::parse('[2, 3]')));
+		Assert::true(Parser::parse('[2, 3]')->isColliding(Parser::parse('[1, 2]')));
 
-		Assert::false($this->intervalOneTwoClosed->isColliding($this->intervalTwoThreeOpened));
-		Assert::false($this->intervalOneTwoOpened->isColliding($this->intervalTwoThreeClosed));
+		Assert::false(Parser::parse('[1, 2]')->isColliding(Parser::parse('(2, 3)')));
+		Assert::false(Parser::parse('(1, 2)')->isColliding(Parser::parse('[2, 3]')));
 
-		Assert::true($this->intervalOneThreeOpened->isColliding($this->intervalTwoFourOpened));
-		Assert::true($this->intervalTwoFourOpened->isColliding($this->intervalOneThreeOpened));
+		Assert::true(Parser::parse('(1, 3)')->isColliding(Parser::parse('(2, 4)')));
+		Assert::true(Parser::parse('(2, 4)')->isColliding(Parser::parse('(1, 3)')));
 	}
 
 
 
 	public function testGetIntersection()
 	{
-		$intervalTwoTwoClosed = IntegerIntervalStringParser::parse('[2, 2]');
+		$intervalTwoTwoClosed = Parser::parse('[2, 2]');
 
-		$intersection = $this->intervalOneTwoClosed->getIntersection($this->intervalTwoThreeClosed);
+		$intersection = Parser::parse('[1, 2]')->getIntersection(Parser::parse('[2, 3]'));
 		$this->assertInterval($intervalTwoTwoClosed, $intersection);
 
-		$intersection = $this->intervalTwoThreeClosed->getIntersection($this->intervalOneTwoClosed);
+		$intersection = Parser::parse('[2, 3]')->getIntersection(Parser::parse('[1, 2]'));
 		$this->assertInterval($intervalTwoTwoClosed, $intersection);
 
-		Assert::null($this->intervalOneTwoClosed->getIntersection($this->intervalTwoThreeOpened));
-		Assert::null($this->intervalOneTwoOpened->getIntersection($this->intervalTwoThreeClosed));
+		Assert::null(Parser::parse('[1, 2]')->getIntersection(Parser::parse('(2, 3)')));
+		Assert::null(Parser::parse('(1, 2)')->getIntersection(Parser::parse('[2, 3]')));
 
-		$intervalTwoThreeOpened = IntegerIntervalStringParser::parse('(2, 3)');
+		$intervalTwoThreeOpened = Parser::parse('(2, 3)');
 
 		// (1, 3) ∩ (2, 4) ⟺ (2, 3)
-		$intersection = $this->intervalOneThreeOpened->getIntersection($this->intervalTwoFourOpened);
+		$intersection = Parser::parse('(1, 3)')->getIntersection(Parser::parse('(2, 4)'));
 		$this->assertInterval($intervalTwoThreeOpened, $intersection);
 
-		$intersection = $this->intervalTwoFourOpened->getIntersection($this->intervalOneThreeOpened);
+		$intersection = Parser::parse('(2, 4)')->getIntersection(Parser::parse('(1, 3)'));
 		$this->assertInterval($intervalTwoThreeOpened, $intersection);
 	}
 
@@ -294,47 +202,47 @@ class IntervalTest extends TestCase
 	public function testGetDifference()
 	{
 		// [1, 4] \ [0, 5]
-		$diff = $this->intervalOneFourClosed->getDifference($this->intervalZeroToFiveClosed);
+		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('[0, 5]'));
 		Assert::count(0, $diff);
 
 		// [1, 4] \ [1, 4]
-		$diff = $this->intervalOneFourClosed->getDifference($this->intervalOneFourClosed);
+		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('[1, 4]'));
 		Assert::count(0, $diff);
 
 		// (1, 4) \ (1, 4)
-		$diff = $this->intervalOneFourOpened->getDifference($this->intervalOneFourOpened);
+		$diff = Parser::parse('(1, 4)')->getDifference(Parser::parse('(1, 4)'));
 		Assert::count(0, $diff);
 
 		// [1, 4] \ [2, 4]
-		$diff = $this->intervalOneFourClosed->getDifference($this->intervalTwoFourClosed);
+		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('[2, 4]'));
 		Assert::count(1, $diff);
 		Assert::equal('[1, 2)', (string) reset($diff));
 
 		// [1, 4] \ [1, 2]
-		$diff = $this->intervalOneFourClosed->getDifference($this->intervalOneTwoClosed);
+		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('[1, 2]'));
 		Assert::count(1, $diff);
 		Assert::equal('(2, 4]', (string) reset($diff));
 
 		// [1, 4] \ (2, 4)
-		$diff = $this->intervalOneFourClosed->getDifference($this->intervalTwoFourOpened);
+		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('(2, 4)'));
 		Assert::count(2, $diff);
 		Assert::equal('[1, 2]', (string) $diff[0]);
 		Assert::equal('[4, 4]', (string) $diff[1]);
 
 		// [1, 4] \ (1, 2)
-		$diff = $this->intervalOneFourClosed->getDifference($this->intervalOneTwoOpened);
+		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('(1, 2)'));
 		Assert::count(2, $diff);
 		Assert::equal('[1, 1]', (string) $diff[0]);
 		Assert::equal('[2, 4]', (string) $diff[1]);
 
 		// [1, 4] \ [2, 3]
-		$diff = $this->intervalOneFourClosed->getDifference($this->intervalTwoThreeClosed);
+		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('[2, 3]'));
 		Assert::count(2, $diff);
 		Assert::equal('[1, 2)', (string) $diff[0]);
 		Assert::equal('(3, 4]', (string) $diff[1]);
 
 		// [1, 4] \ (2, 3)
-		$diff = $this->intervalOneFourClosed->getDifference($this->intervalTwoThreeOpened);
+		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('(2, 3)'));
 		Assert::count(2, $diff);
 		Assert::equal('[1, 2]', (string) $diff[0]);
 		Assert::equal('[3, 4]', (string) $diff[1]);
