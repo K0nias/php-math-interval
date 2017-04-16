@@ -26,7 +26,7 @@ final class SingleDayTimeBoundaryFactoryTest extends TestCase
 	 * @param string $expected
 	 * @param string $from
 	 */
-	public function testAll(string $expected, string $from): void
+	public function testAll(string $expected, string $from)
 	{
 		Assert::equal($expected, (string) SingleDayTimeBoundaryFactory::create($from, Boundary::CLOSED));
 	}
