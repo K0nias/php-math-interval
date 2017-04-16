@@ -21,9 +21,15 @@ final class SingleDayTime implements IComparable
 
 	use ComparisonMethods;
 
-	private const ALLOWED_FORMAT_SYMBOLS = ['a', 'A', 'B', 'g', 'G', 'h', 'H', 'i', 's', 'u'];
+	/**
+	 * @internal
+	 */
+	const ALLOWED_FORMAT_SYMBOLS = ['a', 'A', 'B', 'g', 'G', 'h', 'H', 'i', 's', 'u'];
 
-	private const NOT_ALLOWED_FORMAT_SYMBOLS = [
+	/**
+	 * @internal
+	 */
+	const NOT_ALLOWED_FORMAT_SYMBOLS = [
 		// day
 		'd',
 		'D',
@@ -59,8 +65,15 @@ final class SingleDayTime implements IComparable
 		'U',
 	];
 
-	private const INTERNAL_DATE = '2000-01-01';
-	private const TIME_FORMAT = 'H:i:s';
+	/**
+	 * @internal
+	 */
+	const INTERNAL_DATE = '2000-01-01';
+
+	/**
+	 * @internal
+	 */
+	const TIME_FORMAT = 'H:i:s';
 
 	const FLOAT_SECONDS_PRECISION = 0.00001;
 
