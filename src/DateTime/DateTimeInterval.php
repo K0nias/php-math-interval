@@ -10,6 +10,7 @@ use Achse\Math\Interval\Interval;
 use Achse\Math\Interval\IntervalUtils;
 
 
+
 /**
  * @deprecated Use DateTimeImmutable, always!
  */
@@ -71,6 +72,26 @@ final class DateTimeInterval extends Interval
 
 
 	/**
+	 * @return DateTimeBoundary
+	 */
+	public function getLeft(): Boundary
+	{
+		return parent::getLeft();
+	}
+
+
+
+	/**
+	 * @return DateTimeBoundary
+	 */
+	public function getRight(): Boundary
+	{
+		return parent::getRight();
+	}
+
+
+
+	/**
 	 * # Example:
 	 *
 	 *     This:  □□□□□□■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□□□□□
@@ -94,38 +115,6 @@ final class DateTimeInterval extends Interval
 
 
 	/**
-	 * @return DateTimeBoundary
-	 */
-	public function getLeft(): Boundary
-	{
-		return parent::getLeft();
-	}
-
-
-
-	/**
-	 * @return DateTimeBoundary
-	 */
-	public function getRight(): Boundary
-	{
-		return parent::getRight();
-	}
-
-
-
-	/**
-	 * @param IComparable $element
-	 * @param bool $state
-	 * @return DateTimeBoundary
-	 */
-	protected function buildBoundary(IComparable $element, bool $state): Boundary
-	{
-		return new DateTimeBoundary($element, $state);
-	}
-
-
-
-	/**
 	 * @return string
 	 */
 	public function __toString(): string
@@ -140,6 +129,18 @@ final class DateTimeInterval extends Interval
 			. self::STRING_DELIMITER . ' '
 			. $right->format('Y-m-d H:i:s') . $this->getRightBracket()
 		);
+	}
+
+
+
+	/**
+	 * @param IComparable $element
+	 * @param bool $state
+	 * @return DateTimeBoundary
+	 */
+	protected function buildBoundary(IComparable $element, bool $state): Boundary
+	{
+		return new DateTimeBoundary($element, $state);
 	}
 
 }

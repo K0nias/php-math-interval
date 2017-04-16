@@ -4,13 +4,13 @@
  * @testCase
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Tests\Interval\SingleDay;
 
 require __DIR__ . '/../bootstrap.php';
 
-use Achse\Math\Interval\DateTime\DateTime;
+use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
 use Achse\Math\Interval\ModificationNotPossibleException;
 use Achse\Math\Interval\SingleDay\SingleDayTime;
 use Achse\Tests\Interval\TestComparison;
@@ -36,9 +36,9 @@ final class SingleDayTimeTest extends TestCase
 
 	public function testToDateTime()
 	{
-		$day = new DateTime('2015-12-24 00:00:00');
+		$day = new DateTimeImmutable('2015-12-24 00:00:00');
 
-		Assert::equal(new DateTime('2015-12-24 12:13:14'), (new SingleDayTime(12, 13, 14))->toDateTime($day));
+		Assert::equal(new DateTimeImmutable('2015-12-24 12:13:14'), (new SingleDayTime(12, 13, 14))->toDateTime($day));
 	}
 
 
@@ -74,7 +74,7 @@ final class SingleDayTimeTest extends TestCase
 			function () {
 				(new SingleDayTime(23, 59, 59))->add(new SingleDayTime(0, 0, 1));
 			},
-			ModificationNotPossibleException::final class
+			ModificationNotPossibleException::class
 		);
 	}
 
@@ -107,14 +107,14 @@ final class SingleDayTimeTest extends TestCase
 			function () {
 				(new SingleDayTime(0, 0, 0))->sub(new SingleDayTime(0, 0, 1));
 			},
-			ModificationNotPossibleException::final class
+			ModificationNotPossibleException::class
 		);
 
 		Assert::exception(
 			function () {
 				(new SingleDayTime(23, 59, 58))->sub(new SingleDayTime(23, 59, 59));
 			},
-			ModificationNotPossibleException::final class
+			ModificationNotPossibleException::class
 		);
 	}
 
@@ -140,7 +140,7 @@ final class SingleDayTimeTest extends TestCase
 			function () {
 				(new SingleDayTime(5, 14, 58))->modify('-6 hours');
 			},
-			ModificationNotPossibleException::final class
+			ModificationNotPossibleException::class
 		);
 	}
 
@@ -148,7 +148,7 @@ final class SingleDayTimeTest extends TestCase
 
 	public function testFromDateTime()
 	{
-		$time = SingleDayTime::fromDateTime(new DateTime('2015-05-14 09:10:11'));
+		$time = SingleDayTime::fromDateTime(new \DateTimeImmutable('2015-05-14 09:10:11'));
 		Assert::equal('09:10:11', $time->format('H:i:s'));
 	}
 
@@ -186,7 +186,7 @@ final class SingleDayTimeTest extends TestCase
 	/**
 	 * @return array
 	 */
-	public function getDataForFormat() : array
+	public function getDataForFormat(): array
 	{
 		return [
 			['', '18:19:20', ''],
@@ -218,7 +218,7 @@ final class SingleDayTimeTest extends TestCase
 			function () use ($time, $format) {
 				$time->format($format);
 			},
-			LogicException::final class
+			LogicException::class
 		);
 	}
 
@@ -227,13 +227,47 @@ final class SingleDayTimeTest extends TestCase
 	/**
 	 * @return array
 	 */
-	public function getDataForFormatFail() : array
+	public function getDataForFormatFail(): array
 	{
 		return array_map(
 			function ($symbol) {
 				return ['2015-12-24 10:11:12', $symbol];
 			},
-			SingleDayTime::NOT_ALLOWED_FORMAT_SYMBOLS
+			[
+				// day
+				'd',
+				'D',
+				'j',
+				'l',
+				'N',
+				'S',
+				'w',
+				'z',
+				// Week
+				'W',
+				// Month
+				'F',
+				'm',
+				'M',
+				'n',
+				't',
+				// Year
+				'L',
+				'o',
+				'Y',
+				'y',
+				// Timezone
+				'e',
+				'I',
+				'O',
+				'P',
+				'T',
+				'Z',
+				// Full DateTime
+				'c',
+				'r',
+				'U',
+			]
 		);
 	}
 

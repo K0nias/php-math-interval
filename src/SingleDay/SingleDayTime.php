@@ -95,7 +95,7 @@ final class SingleDayTime implements IComparable
 
 
 	/**
-	 * @param DateTimeInterface|SingleDayTime $time
+	 * @param DateTimeInterface|SingleDayTime|string $time
 	 * @return SingleDayTime
 	 */
 	public static function from($time): SingleDayTime
@@ -104,10 +104,17 @@ final class SingleDayTime implements IComparable
 			return clone $time;
 		} elseif ($time instanceof DateTimeInterface) {
 			return static::fromDateTime($time);
+		} elseif (is_string($time)) {
+			$time = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2001-01-01 ' . $time);
+
+			return static::fromDateTime($time);
 		}
 
 		throw new InvalidArgumentException(
-			sprintf('Argument is not type of DateTimeInterface or SingleDayTime. Type: %s given', gettype($time))
+			sprintf(
+				'Argument is not type of DateTimeInterface or SingleDayTime or string. Type: %s given',
+				gettype($time)
+			)
 		);
 	}
 
@@ -209,13 +216,13 @@ final class SingleDayTime implements IComparable
 
 
 	/**
-	 * @param \DateTimeInterface $modified
+	 * @param \DateTimeInterface $datetime
 	 */
-	private function setFromDateTime(\DateTimeInterface $modified)
+	private function setFromDateTime(\DateTimeInterface $datetime)
 	{
-		$this->setSeconds((float) $modified->format('s'));
-		$this->setMinutes((int) $modified->format('i'));
-		$this->setHours((int) $modified->format('H'));
+		$this->setSeconds((float) $datetime->format('s'));
+		$this->setMinutes((int) $datetime->format('i'));
+		$this->setHours((int) $datetime->format('H'));
 	}
 
 

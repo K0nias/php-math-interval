@@ -28,7 +28,7 @@ final class IntervalTest extends TestCase
 			function () {
 				Parser::parse('[5, 0]');
 			},
-			IntervalRangesInvalidException::final class,
+			IntervalRangesInvalidException::class,
 			'Right endpoint cannot be less then Left endpoint.'
 		);
 	}

@@ -69,6 +69,26 @@ final class DateTimeImmutableInterval extends Interval
 
 
 	/**
+	 * @return DateTimeImmutableBoundary
+	 */
+	public function getLeft(): Boundary
+	{
+		return parent::getLeft();
+	}
+
+
+
+	/**
+	 * @return DateTimeImmutableBoundary
+	 */
+	public function getRight(): Boundary
+	{
+		return parent::getRight();
+	}
+
+
+
+	/**
 	 * # Example:
 	 *
 	 *     This:  □□□□□□■■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□□□□□
@@ -88,26 +108,6 @@ final class DateTimeImmutableInterval extends Interval
 			&& $this->getRight()->getValue()->format('H:i:s') === '23:59:59'
 			&& $other->getLeft()->getValue()->format('H:i:s') === '00:00:00'
 		);
-	}
-
-
-
-	/**
-	 * @return DateTimeImmutableBoundary
-	 */
-	public function getLeft(): Boundary
-	{
-		return parent::getLeft();
-	}
-
-
-
-	/**
-	 * @return DateTimeImmutableBoundary
-	 */
-	public function getRight(): Boundary
-	{
-		return parent::getRight();
 	}
 
 

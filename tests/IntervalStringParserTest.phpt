@@ -28,7 +28,7 @@ final class IntervalStringParserTest extends TestCase
 			function () {
 				IntervalStringParser::parse('Whatever!');
 			},
-			LogicException::final class
+			LogicException::class
 		);
 	}
 
@@ -46,7 +46,7 @@ final class IntervalStringParserTest extends TestCase
 			function () use ($string, $exceptionText) {
 				IntegerIntervalStringParser::parse($string);
 			},
-			IntervalParseErrorException::final class,
+			IntervalParseErrorException::class,
 			$exceptionText
 		);
 	}

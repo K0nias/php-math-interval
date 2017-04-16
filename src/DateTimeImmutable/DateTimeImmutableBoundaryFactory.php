@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace Achse\Math\Interval\DateTimeImmutable;
 
+use DateTimeInterface;
+
+
 
 final class DateTimeImmutableBoundaryFactory
 {
 
 	/**
-	 * @param \DateTime|\DateTimeImmutable|string|int $element
+	 * @param DateTimeInterface $element
 	 * @param bool $state
 	 * @return DateTimeImmutableBoundary
 	 */
-	public static function create($element, bool $state): DateTimeImmutableBoundary
+	public static function create(DateTimeInterface $element, bool $state): DateTimeImmutableBoundary
 	{
-		$element = DateTimeImmutable::from($element);
-
-		return new DateTimeImmutableBoundary($element, $state);
+		return new DateTimeImmutableBoundary(DateTimeImmutable::from($element), $state);
 	}
 
 }

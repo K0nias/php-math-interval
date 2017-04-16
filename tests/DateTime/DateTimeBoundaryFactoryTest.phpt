@@ -24,7 +24,7 @@ final class DateTimeBoundaryFactoryTest extends TestCase
 	{
 		Assert::equal(
 			'[2015-10-11 12:13:14]',
-			(string) DateTimeBoundaryFactory::create('2015-10-11 12:13:14', Boundary::CLOSED)
+			(string) DateTimeBoundaryFactory::create(new \DateTime('2015-10-11 12:13:14'), Boundary::CLOSED)
 		);
 	}
 

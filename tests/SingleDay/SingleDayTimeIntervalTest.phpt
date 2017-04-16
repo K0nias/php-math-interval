@@ -4,17 +4,16 @@
  * @testCase
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Tests\Interval\SingleDay;
 
 require __DIR__ . '/../bootstrap.php';
 
-use Achse\Math\Interval\Boundary;
 use Achse\Math\Interval\DateTime\DateTime;
 use Achse\Math\Interval\DateTime\DateTimeBoundary;
-use Achse\Math\Interval\DateTime\DateTimeBoundaryFactory;
 use Achse\Math\Interval\DateTime\DateTimeInterval;
+use Achse\Math\Interval\DateTime\DateTimeIntervalStringParser;
 use Achse\Math\Interval\SingleDay\SingleDayTimeInterval;
 use Achse\Math\Interval\SingleDay\SingleDayTimeIntervalStringParser as Parser;
 use InvalidArgumentException;
@@ -36,10 +35,7 @@ final class SingleDayTimeIntervalTest extends TestCase
 
 	public function testFromDateTimeInterval()
 	{
-		$dateTimeInterval = new DateTimeInterval(
-			DateTimeBoundaryFactory::create('2015-05-10 12:13:14', Boundary::CLOSED),
-			DateTimeBoundaryFactory::create('2015-05-12 21:22:23', Boundary::OPENED)
-		);
+		$dateTimeInterval = DateTimeIntervalStringParser::parse('[2015-05-10 12:13:14, 2015-05-12 21:22:23)');
 
 		$interval = SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTime('2015-05-10'));
 		Assert::equal('[12:13:14, 23:59:59]', (string) $interval);
@@ -54,7 +50,7 @@ final class SingleDayTimeIntervalTest extends TestCase
 			function () use ($dateTimeInterval) {
 				SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTime('2015-05-13'));
 			},
-			InvalidArgumentException::final class
+			InvalidArgumentException::class
 		);
 	}
 
@@ -79,7 +75,7 @@ final class SingleDayTimeIntervalTest extends TestCase
 	/**
 	 * @return bool[][]|string[][]
 	 */
-	public function getDataForIsFollowedByTest() : array
+	public function getDataForIsFollowedByTest(): array
 	{
 		return [
 			[FALSE, '[23:50:00, 23:59:59]', '[00:00:00, 00:05:00]'],
@@ -94,9 +90,9 @@ final class SingleDayTimeIntervalTest extends TestCase
 	{
 		$singleDayInterval = SingleDayTimeInterval::fromString('01:02:03', '04:05:06');
 		$dateTimeInterval = $singleDayInterval->toDaTeTimeInterval(new DateTime('2015-10-11 20:21:22'));
-		Assert::type(DateTimeInterval::final class, $dateTimeInterval);
-		Assert::type(DateTimeBoundary::final class, $dateTimeInterval->getLeft());
-		Assert::type(DateTimeBoundary::final class, $dateTimeInterval->getRight());
+		Assert::type(DateTimeInterval::class, $dateTimeInterval);
+		Assert::type(DateTimeBoundary::class, $dateTimeInterval->getLeft());
+		Assert::type(DateTimeBoundary::class, $dateTimeInterval->getRight());
 		Assert::equal('[2015-10-11 01:02:03, 2015-10-11 04:05:06)', (string) $dateTimeInterval);
 	}
 

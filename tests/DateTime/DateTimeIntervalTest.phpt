@@ -4,16 +4,13 @@
  * @testCase
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Tests\Interval\DateTime;
 
 require __DIR__ . '/../bootstrap.php';
 
-use Achse\Math\Interval\Boundary;
 use Achse\Math\Interval\DateTime\DateTime;
-use Achse\Math\Interval\DateTime\DateTimeBoundaryFactory;
-use Achse\Math\Interval\DateTime\DateTimeInterval;
 use Achse\Math\Interval\DateTime\DateTimeIntervalStringParser as Parser;
 use Achse\Math\Interval\IntervalUtils;
 use Tester\Assert;
@@ -136,28 +133,14 @@ final class DateTimeIntervalTest extends TestCase
 
 	public function testIsFollowedByAtMidnight()
 	{
-		$first = new DateTimeInterval(
-			DateTimeBoundaryFactory::create('2015-03-04 20:00:00', Boundary::CLOSED),
-			DateTimeBoundaryFactory::create('2015-03-04 23:59:59', Boundary::OPENED)
-		);
-
-		$second = new DateTimeInterval(
-			DateTimeBoundaryFactory::create('2015-03-05 00:00:00', Boundary::CLOSED),
-			DateTimeBoundaryFactory::create('2015-03-05 04:00:00', Boundary::OPENED)
-		);
+		$first = Parser::parse('[2015-03-04 20:00:00, 2015-03-04 23:59:59)');
+		$second = Parser::parse('[2015-03-05 00:00:00, 2015-03-05 04:00:00)');
 
 		Assert::true($first->isFollowedByAtMidnight($second));
 		Assert::false($second->isFollowedByAtMidnight($first));
 
-		$first = new DateTimeInterval(
-			DateTimeBoundaryFactory::create('2015-03-03 20:00:00', Boundary::CLOSED),
-			DateTimeBoundaryFactory::create('2015-03-03 23:59:59', Boundary::OPENED)
-		);
-
-		$secondShiftedByDay = new DateTimeInterval(
-			DateTimeBoundaryFactory::create('2015-03-05 00:00:00', Boundary::CLOSED),
-			DateTimeBoundaryFactory::create('2015-03-05 04:00:00', Boundary::OPENED)
-		);
+		$first = Parser::parse('[2015-03-03 20:00:00, 2015-03-03 23:59:59)');
+		$secondShiftedByDay = Parser::parse('[2015-03-05 00:00:00, 2015-03-05 04:00:00)');
 
 		Assert::false($first->isFollowedByAtMidnight($secondShiftedByDay));
 	}
@@ -166,10 +149,7 @@ final class DateTimeIntervalTest extends TestCase
 
 	public function testIsContainingDateTime()
 	{
-		$interval = new DateTimeInterval(
-			DateTimeBoundaryFactory::create('2015-03-05 00:00:00', Boundary::CLOSED),
-			DateTimeBoundaryFactory::create('2015-03-05 04:00:00', Boundary::OPENED)
-		);
+		$interval = Parser::parse('[2015-03-05 00:00:00, 2015-03-05 04:00:00)');
 
 		Assert::true($interval->isContainingElement(new DateTime('2015-03-05 02:00:00')));
 		Assert::false($interval->isContainingElement(new DateTime('2015-03-05 04:00:00')));
