@@ -6,17 +6,17 @@
 
 declare(strict_types = 1);
 
-namespace Achse\Tests\Interval\Intervals;
+namespace Achse\Tests\Interval\SingleDay;
 
 require __DIR__ . '/../bootstrap.php';
 
-use Achse\Math\Interval\Boundaries\Boundary;
-use Achse\Math\Interval\Boundaries\DateTimeBoundary;
-use Achse\Math\Interval\Factories\DateTimeBoundaryFactory;
-use Achse\Math\Interval\Intervals\DateTimeInterval;
-use Achse\Math\Interval\Intervals\SingleDayTimeInterval;
-use Achse\Math\Interval\Types\DateTime;
-use Achse\Math\Interval\Utils\StringParser\SingleDayTimeIntervalStringParser;
+use Achse\Math\Interval\Boundary;
+use Achse\Math\Interval\DateTime\DateTime;
+use Achse\Math\Interval\DateTime\DateTimeBoundary;
+use Achse\Math\Interval\DateTime\DateTimeBoundaryFactory;
+use Achse\Math\Interval\DateTime\DateTimeInterval;
+use Achse\Math\Interval\SingleDay\SingleDayTimeInterval;
+use Achse\Math\Interval\SingleDay\SingleDayTimeIntervalStringParser as Parser;
 use InvalidArgumentException;
 use Tester\Assert;
 use Tester\TestCase;
@@ -69,8 +69,8 @@ class SingleDayTimeIntervalTest extends TestCase
 	 */
 	public function testIsFollowedBy(bool $expected, string $firstString, string $secondString)
 	{
-		$first = SingleDayTimeIntervalStringParser::parse($firstString);
-		$second = SingleDayTimeIntervalStringParser::parse($secondString);
+		$first = Parser::parse($firstString);
+		$second = Parser::parse($secondString);
 		Assert::same($expected, $first->isFollowedBy($second));
 	}
 
