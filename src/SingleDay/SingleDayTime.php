@@ -60,6 +60,7 @@ final class SingleDayTime implements IComparable
 	];
 
 	private const INTERNAL_DATE = '2000-01-01';
+	private const TIME_FORMAT = 'H:i:s';
 
 	const FLOAT_SECONDS_PRECISION = 0.00001;
 
@@ -105,9 +106,15 @@ final class SingleDayTime implements IComparable
 		} elseif ($time instanceof DateTimeInterface) {
 			return static::fromDateTime($time);
 		} elseif (is_string($time)) {
-			$time = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2001-01-01 ' . $time);
+			$dateTime = DateTimeImmutable::createFromFormat('Y-m-d ' . self::TIME_FORMAT, '2001-01-01 ' . $time);
 
-			return static::fromDateTime($time);
+			if ($dateTime === FALSE || $dateTime->format(self::TIME_FORMAT) !== $time) {
+				throw new InvalidArgumentException(
+					sprintf('Given string %s not valid %s time.', $time, self::TIME_FORMAT)
+				);
+			}
+
+			return static::fromDateTime($dateTime);
 		}
 
 		throw new InvalidArgumentException(
@@ -207,8 +214,8 @@ final class SingleDayTime implements IComparable
 	 */
 	public function toDateTime(\DateTimeInterface $day): DateTimeImmutable
 	{
-		$day = DateTimeImmutable::from($day);
-		$day->setTime($this->hours, $this->minutes, (int) round($this->seconds));
+		$day = DateTimeImmutable::from($day)
+			->setTime($this->hours, $this->minutes, (int) round($this->seconds));
 
 		return $day;
 	}

@@ -6,12 +6,13 @@ namespace Achse\Math\Interval\SingleDay;
 
 use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Boundary;
-use Achse\Math\Interval\DateTime\DateTime;
-use Achse\Math\Interval\DateTime\DateTimeBoundary;
-use Achse\Math\Interval\DateTime\DateTimeInterval;
+use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
+use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutableBoundary;
+use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutableInterval;
 use Achse\Math\Interval\Interval;
 use Achse\Math\Interval\IntervalUtils;
 use Achse\Math\Interval\ModificationNotPossibleException;
+use DateTimeInterface;
 use InvalidArgumentException;
 
 
@@ -47,15 +48,17 @@ final class SingleDayTimeInterval extends Interval
 
 
 	/**
-	 * @param DateTimeInterval $interval
-	 * @param \DateTime $date
+	 * @param DateTimeImmutableInterval $interval
+	 * @param DateTimeInterface $date
 	 * @return static
 	 */
-	public static function fromDateTimeInterval(DateTimeInterval $interval, \DateTime $date): SingleDayTimeInterval
-	{
+	public static function fromDateTimeInterval(
+		DateTimeImmutableInterval $interval,
+		DateTimeInterface $date
+	): SingleDayTimeInterval {
 		$thisDayInterval = self::buildWholeDayInterval($date);
 
-		/** @var DateTimeInterval $intersection */
+		/** @var DateTimeImmutableInterval $intersection */
 		$intersection = $thisDayInterval->getIntersection($interval);
 
 		if ($intersection === NULL) {
@@ -74,22 +77,17 @@ final class SingleDayTimeInterval extends Interval
 
 
 	/**
-	 * @param \DateTime $date
-	 * @return DateTimeInterval
+	 * @param DateTimeInterface $date
+	 * @return DateTimeImmutableInterval
 	 */
-	protected static function buildWholeDayInterval(\DateTime $date): DateTimeInterval
+	protected static function buildWholeDayInterval(DateTimeInterface $date): DateTimeImmutableInterval
 	{
-		/** @var DateTime $start */
-		$start = DateTime::from($date);
-		$start->setTime(0, 0, 0);
+		$start = DateTimeImmutable::from($date)->setTime(0, 0, 0);
+		$ends = DateTimeImmutable::from($date)->setTime(23, 59, 59);
 
-		/** @var DateTime $ends */
-		$ends = DateTime::from($date);
-		$ends->setTime(23, 59, 59);
-
-		$thisDayInterval = new DateTimeInterval(
-			new DateTimeBoundary($start, Boundary::CLOSED),
-			new DateTimeBoundary($ends, Boundary::CLOSED)
+		$thisDayInterval = new DateTimeImmutableInterval(
+			new DateTimeImmutableBoundary($start, Boundary::CLOSED),
+			new DateTimeImmutableBoundary($ends, Boundary::CLOSED)
 		);
 
 		return $thisDayInterval;
@@ -114,7 +112,7 @@ final class SingleDayTimeInterval extends Interval
 		}
 
 
-		$dummyDay = new DateTime(SingleDayTime::INTERNAL_DATE); // intentionally using @internal
+		$dummyDay = new DateTimeImmutable('2001-01-01 00:00:00');
 
 		return $this->toDateTimeInterval($dummyDay)->isFollowedBy($other->toDateTimeInterval($dummyDay));
 	}
@@ -142,19 +140,19 @@ final class SingleDayTimeInterval extends Interval
 
 
 	/**
-	 * @param \DateTime $day
-	 * @return DateTimeInterval
+	 * @param DateTimeInterface $day
+	 * @return DateTimeImmutableInterval
 	 */
-	public function toDateTimeInterval(\DateTime $day): DateTimeInterval
+	public function toDateTimeInterval(DateTimeInterface $day): DateTimeImmutableInterval
 	{
-		$left = new DateTimeBoundary(
+		$left = new DateTimeImmutableBoundary(
 			$this->getLeft()->getValue()->toDateTime($day), $this->getLeft()->getState()
 		);
-		$right = new DateTimeBoundary(
+		$right = new DateTimeImmutableBoundary(
 			$this->getRight()->getValue()->toDateTime($day), $this->getRight()->getState()
 		);
 
-		return new DateTimeInterval($left, $right);
+		return new DateTimeImmutableInterval($left, $right);
 	}
 
 

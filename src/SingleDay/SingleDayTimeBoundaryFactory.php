@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Achse\Math\Interval\SingleDay;
 
+use DateTimeInterface;
+
 
 
 final class SingleDayTimeBoundaryFactory
 {
 
 	/**
-	 * @param \DateTime|string|int $element
+	 * @param DateTimeInterface|string $element
 	 * @param bool $state
 	 * @return SingleDayTimeBoundary
 	 */

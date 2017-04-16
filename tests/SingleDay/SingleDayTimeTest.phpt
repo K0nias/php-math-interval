@@ -14,6 +14,7 @@ use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
 use Achse\Math\Interval\ModificationNotPossibleException;
 use Achse\Math\Interval\SingleDay\SingleDayTime;
 use Achse\Tests\Interval\TestComparison;
+use InvalidArgumentException;
 use LogicException;
 use Tester\Assert;
 use Tester\TestCase;
@@ -38,7 +39,7 @@ final class SingleDayTimeTest extends TestCase
 	{
 		$day = new DateTimeImmutable('2015-12-24 00:00:00');
 
-		Assert::equal(new DateTimeImmutable('2015-12-24 12:13:14'), (new SingleDayTime(12, 13, 14))->toDateTime($day));
+		Assert::equal('2015-12-24 12:13:14', (string) (new SingleDayTime(12, 13, 14))->toDateTime($day));
 	}
 
 
@@ -156,14 +157,42 @@ final class SingleDayTimeTest extends TestCase
 
 	public function testFrom()
 	{
-		$time = SingleDayTime::from('2015-05-15 1:2:3');
+		$time = SingleDayTime::from('01:02:03');
 		Assert::equal('01:02:03', $time->format('H:i:s'));
-
-		$time = SingleDayTime::from('July 1, 2001 20:21:22');
-		Assert::equal('20:21:22', $time->format('H:i:s'));
 
 		$time = SingleDayTime::from(new SingleDayTime(4, 17, 39));
 		Assert::equal('04:17:39', $time->format('H:i:s'));
+	}
+
+
+
+	/**
+	 * @dataProvider getDataForFromFail
+	 * @param string $from
+	 */
+	public function testFromFail(string $from)
+	{
+		Assert::exception(
+			function () use ($from) {
+				SingleDayTime::from($from);
+			},
+			InvalidArgumentException::class
+		);
+	}
+
+
+
+	/**
+	 * @return array
+	 */
+	public function getDataForFromFail()
+	{
+		return [
+			[''],
+			['1:2:3'],
+			['100:200:300'],
+			['99:99:00'],
+		];
 	}
 
 
@@ -189,17 +218,13 @@ final class SingleDayTimeTest extends TestCase
 	public function getDataForFormat(): array
 	{
 		return [
-			['', '18:19:20', ''],
 			['18:19:20', '18:19:20', 'H:i:s'],
-			['18:19:20', '2015-12-24 18:19:20', 'H:i:s'],
-
 			[
 				'pm, PM, 763, 6, 18, 06, 18, 19, 20, 000000',
-				'2015-12-24 18:19:20',
+				'18:19:20',
 				'a, A, B, g, G, h, H, i, s, u'
 			],
-
-			['Y-m-d 18:19:20', '2015-12-24 18:19:20', '\Y-\m-\d H:i:s'],
+			['Y-m-d 18:19:20', '18:19:20', '\Y-\m-\d H:i:s'],
 		];
 	}
 
@@ -231,7 +256,7 @@ final class SingleDayTimeTest extends TestCase
 	{
 		return array_map(
 			function ($symbol) {
-				return ['2015-12-24 10:11:12', $symbol];
+				return ['10:11:12', $symbol];
 			},
 			[
 				// day

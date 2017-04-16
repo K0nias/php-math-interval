@@ -20,16 +20,28 @@ use Tester\TestCase;
 final class SingleDayTimeBoundaryFactoryTest extends TestCase
 {
 
-	public function testAll()
+	/**
+	 * @dataProvider getDataForAllTest
+	 *
+	 * @param string $expected
+	 * @param string $from
+	 */
+	public function testAll(string $expected, string $from): void
 	{
-		Assert::equal(
-			'[12:13:14]',
-			(string) SingleDayTimeBoundaryFactory::create('2015-10-11 12:13:14', Boundary::CLOSED)
-		);
-		Assert::equal(
-			'[01:02:03]',
-			(string) SingleDayTimeBoundaryFactory::create('01:02:03', Boundary::CLOSED)
-		);
+		Assert::equal($expected, (string) SingleDayTimeBoundaryFactory::create($from, Boundary::CLOSED));
+	}
+
+
+
+	/**
+	 * @return string[][]
+	 */
+	public function getDataForAllTest()
+	{
+		return [
+			['[12:13:14]', '12:13:14'],
+			['[01:02:03]', '01:02:03'],
+		];
 	}
 
 }
