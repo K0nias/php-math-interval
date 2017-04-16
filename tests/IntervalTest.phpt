@@ -6,14 +6,14 @@
 
 declare(strict_types=1);
 
-namespace Achse\Tests\Interval\Intervals;
+namespace Achse\Tests\Interval;
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/bootstrap.php';
 
+use Achse\Math\Interval\Integer\Integer;
+use Achse\Math\Interval\Integer\IntegerInterval;
 use Achse\Math\Interval\IntervalRangesInvalidException;
-use Achse\Math\Interval\Intervals\IntegerInterval;
-use Achse\Math\Interval\Types\Integer;
-use Achse\Math\Interval\Utils\StringParser\IntegerIntervalStringParser as Parser;
+use Achse\Math\Interval\Integer\IntegerIntervalStringParser as Parser;
 use Tester\Assert;
 use Tester\TestCase;
 
