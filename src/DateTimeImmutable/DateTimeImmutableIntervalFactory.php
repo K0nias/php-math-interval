@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace Achse\Math\Interval\DateTimeImmutable;
 
+use DateTimeInterface;
+
 
 
 final class DateTimeImmutableIntervalFactory
 {
 
 	/**
-	 * @param \DateTime|\DateTimeImmutable|string|int $leftElement
+	 * @param DateTimeInterface $leftElement
 	 * @param bool $leftState
-	 * @param \DateTime|\DateTimeImmutable|string|int $rightElement
+	 * @param DateTimeInterface $rightElement
 	 * @param bool $rightState
 	 * @return DateTimeImmutableInterval
 	 */
 	public static function create(
-		$leftElement,
+		DateTimeInterface $leftElement,
 		bool $leftState,
-		$rightElement,
+		DateTimeInterface $rightElement,
 		bool $rightState
 	): DateTimeImmutableInterval {
 		return new DateTimeImmutableInterval(

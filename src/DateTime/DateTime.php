@@ -44,4 +44,14 @@ final class DateTime extends \DateTime implements IComparable
 		return IntervalUtils::numberCmp($this->getTimestamp(), $other->getTimestamp());
 	}
 
+
+
+	/**
+	 * @return string
+	 */
+	public function __toString(): string
+	{
+		return $this->format('Y-m-d H:i:s');
+	}
+
 }
