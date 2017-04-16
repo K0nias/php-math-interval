@@ -17,7 +17,7 @@ use Tester\TestCase;
 
 
 
-class BoundaryTest extends TestCase
+final class BoundaryTest extends TestCase
 {
 
 	public function testAll()

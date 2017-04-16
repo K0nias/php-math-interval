@@ -11,7 +11,10 @@ use LogicException;
 
 
 
-class DateTime extends \DateTime implements IComparable
+/**
+ * @deprecated Use DateTimeImmutable, always!
+ */
+final class DateTime extends \DateTime implements IComparable
 {
 
 	use ComparisonMethods;
@@ -19,31 +22,12 @@ class DateTime extends \DateTime implements IComparable
 
 
 	/**
-	 * @param string $modify
+	 * @param \DateTimeInterface $dateTime
 	 * @return static
 	 */
-	public function modifyClone(string $modify = ''): DateTime
+	public static function from(\DateTimeInterface $dateTime): DateTime
 	{
-		$cloned = clone $this;
-
-		return $modify !== '' ? $cloned->modify($modify) : $cloned;
-	}
-
-
-
-	/**
-	 * @inheritdoc
-	 * @return static
-	 */
-	public static function from($time): DateTime
-	{
-		if ($time instanceof \DateTimeInterface) {
-			return new static($time->format('Y-m-d H:i:s.u'), $time->getTimezone());
-		} elseif (is_numeric($time)) {
-			return (new static('@' . $time))->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
-		} else {
-			return new static($time);
-		}
+		return new static($dateTime->format('Y-m-d H:i:s.u'), $dateTime->getTimezone());
 	}
 
 
@@ -58,16 +42,6 @@ class DateTime extends \DateTime implements IComparable
 		}
 
 		return IntervalUtils::numberCmp($this->getTimestamp(), $other->getTimestamp());
-	}
-
-
-
-	/**
-	 * @return string
-	 */
-	function __toString(): string
-	{
-		return $this->format('Y-m-d H:i:s');
 	}
 
 }

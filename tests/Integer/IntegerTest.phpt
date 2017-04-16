@@ -16,7 +16,7 @@ use Tester\TestCase;
 
 
 
-class IntegerTest extends TestCase
+final class IntegerTest extends TestCase
 {
 
 	use TestComparison;

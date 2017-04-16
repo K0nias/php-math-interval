@@ -11,7 +11,7 @@ use Achse\Math\Interval\IntervalUtils;
 
 
 
-class DateTimeImmutableInterval extends Interval
+final class DateTimeImmutableInterval extends Interval
 {
 
 	/**

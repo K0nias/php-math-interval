@@ -17,7 +17,7 @@ use Tester\TestCase;
 
 
 
-class IntegerIntervalFactoryTest extends TestCase
+final class IntegerIntervalFactoryTest extends TestCase
 {
 
 	public function testAll()

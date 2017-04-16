@@ -11,7 +11,7 @@ use LogicException;
 
 
 
-class DateTimeImmutable extends \DateTimeImmutable implements IComparable
+final class DateTimeImmutable extends \DateTimeImmutable implements IComparable
 {
 
 	use ComparisonMethods;
@@ -19,18 +19,12 @@ class DateTimeImmutable extends \DateTimeImmutable implements IComparable
 
 
 	/**
-	 * @inheritdoc
+	 * @param \DateTimeInterface $dateTime
 	 * @return static
 	 */
-	public static function from($time): DateTimeImmutable
+	public static function from(\DateTimeInterface $dateTime): DateTimeImmutable
 	{
-		if ($time instanceof \DateTimeInterface) {
-			return new static($time->format('Y-m-d H:i:s.u'), $time->getTimezone());
-		} elseif (is_numeric($time)) {
-			return (new static('@' . $time))->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
-		} else {
-			return new static($time);
-		}
+		return new static($dateTime->format('Y-m-d H:i:s.u'), $dateTime->getTimezone());
 	}
 
 
@@ -45,16 +39,6 @@ class DateTimeImmutable extends \DateTimeImmutable implements IComparable
 		}
 
 		return IntervalUtils::numberCmp($this->getTimestamp(), $other->getTimestamp());
-	}
-
-
-
-	/**
-	 * @return string
-	 */
-	function __toString(): string
-	{
-		return $this->format('Y-m-d H:i:s');
 	}
 
 }

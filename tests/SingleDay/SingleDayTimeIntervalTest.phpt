@@ -23,7 +23,7 @@ use Tester\TestCase;
 
 
 
-class SingleDayTimeIntervalTest extends TestCase
+final class SingleDayTimeIntervalTest extends TestCase
 {
 
 	public function testFromString()
@@ -54,7 +54,7 @@ class SingleDayTimeIntervalTest extends TestCase
 			function () use ($dateTimeInterval) {
 				SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTime('2015-05-13'));
 			},
-			InvalidArgumentException::class
+			InvalidArgumentException::final class
 		);
 	}
 
@@ -94,9 +94,9 @@ class SingleDayTimeIntervalTest extends TestCase
 	{
 		$singleDayInterval = SingleDayTimeInterval::fromString('01:02:03', '04:05:06');
 		$dateTimeInterval = $singleDayInterval->toDaTeTimeInterval(new DateTime('2015-10-11 20:21:22'));
-		Assert::type(DateTimeInterval::class, $dateTimeInterval);
-		Assert::type(DateTimeBoundary::class, $dateTimeInterval->getLeft());
-		Assert::type(DateTimeBoundary::class, $dateTimeInterval->getRight());
+		Assert::type(DateTimeInterval::final class, $dateTimeInterval);
+		Assert::type(DateTimeBoundary::final class, $dateTimeInterval->getLeft());
+		Assert::type(DateTimeBoundary::final class, $dateTimeInterval->getRight());
 		Assert::equal('[2015-10-11 01:02:03, 2015-10-11 04:05:06)', (string) $dateTimeInterval);
 	}
 

@@ -19,7 +19,7 @@ use Tester\TestCase;
 
 
 
-class IntervalStringParserTest extends TestCase
+final class IntervalStringParserTest extends TestCase
 {
 
 	public function testStaticAbstractError()
@@ -28,7 +28,7 @@ class IntervalStringParserTest extends TestCase
 			function () {
 				IntervalStringParser::parse('Whatever!');
 			},
-			LogicException::class
+			LogicException::final class
 		);
 	}
 
@@ -46,7 +46,7 @@ class IntervalStringParserTest extends TestCase
 			function () use ($string, $exceptionText) {
 				IntegerIntervalStringParser::parse($string);
 			},
-			IntervalParseErrorException::class,
+			IntervalParseErrorException::final class,
 			$exceptionText
 		);
 	}

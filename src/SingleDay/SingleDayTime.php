@@ -7,28 +7,23 @@ namespace Achse\Math\Interval\SingleDay;
 use Achse\Comparable\ComparisonMethods;
 use Achse\Comparable\IComparable;
 use Achse\DateTimeFormatTools\Tools;
-use Achse\Math\Interval\DateTime\DateTime;
+use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
 use Achse\Math\Interval\IntervalUtils;
 use Achse\Math\Interval\ModificationNotPossibleException;
+use DateTimeInterface;
 use InvalidArgumentException;
 use LogicException;
 
 
 
-class SingleDayTime implements IComparable
+final class SingleDayTime implements IComparable
 {
 
 	use ComparisonMethods;
 
-	/**
-	 * @internal
-	 */
-	const ALLOWED_FORMAT_SYMBOLS = ['a', 'A', 'B', 'g', 'G', 'h', 'H', 'i', 's', 'u'];
+	private const ALLOWED_FORMAT_SYMBOLS = ['a', 'A', 'B', 'g', 'G', 'h', 'H', 'i', 's', 'u'];
 
-	/**
-	 * @internal
-	 */
-	const NOT_ALLOWED_FORMAT_SYMBOLS = [
+	private const NOT_ALLOWED_FORMAT_SYMBOLS = [
 		// day
 		'd',
 		'D',
@@ -64,10 +59,7 @@ class SingleDayTime implements IComparable
 		'U',
 	];
 
-	/**
-	 * @internal
-	 */
-	const INTERNAL_DATE = '2000-01-01';
+	private const INTERNAL_DATE = '2000-01-01';
 
 	const FLOAT_SECONDS_PRECISION = 0.00001;
 
@@ -103,31 +95,30 @@ class SingleDayTime implements IComparable
 
 
 	/**
-	 * @param \DateTime|SingleDayTime|string|int|NULL $time
+	 * @param DateTimeInterface|SingleDayTime $time
 	 * @return SingleDayTime
 	 */
 	public static function from($time): SingleDayTime
 	{
 		if ($time instanceof static) {
 			return clone $time;
+		} elseif ($time instanceof DateTimeInterface) {
+			return static::fromDateTime($time);
 		}
 
-		$dateTime = DateTime::from($time);
-
-		return static::fromDateTime($dateTime);
+		throw new InvalidArgumentException(
+			sprintf('Argument is not type of DateTimeInterface or SingleDayTime. Type: %s given', gettype($time))
+		);
 	}
 
 
 
 	/**
-	 * @param \DateTime $dateTime
+	 * @param \DateTimeInterface $dateTime
 	 * @return static
 	 */
-	public static function fromDateTime(\DateTime $dateTime): SingleDayTime
+	public static function fromDateTime(\DateTimeInterface $dateTime): SingleDayTime
 	{
-		/** @var DateTime $dateTime */
-		$dateTime = DateTime::from($dateTime);
-
 		return new static((int) $dateTime->format('H'), (int) $dateTime->format('i'), (float) $dateTime->format('s'));
 	}
 
@@ -180,7 +171,7 @@ class SingleDayTime implements IComparable
 	public function modify(string $modifier): SingleDayTime
 	{
 		$thisDateTime = $this->toInternalDateTime();
-		$modified = $thisDateTime->modifyClone($modifier);
+		$modified = $thisDateTime->modify($modifier);
 
 		if ($thisDateTime->format('Y-m-d') !== $modified->format('Y-m-d')) {
 			throw new ModificationNotPossibleException("Modifying this by '{$modifier}' leaves a single day range.");
@@ -194,22 +185,22 @@ class SingleDayTime implements IComparable
 
 
 	/**
-	 * @return DateTime
+	 * @return DateTimeImmutable
 	 */
-	private function toInternalDateTime(): DateTime
+	private function toInternalDateTime(): DateTimeImmutable
 	{
-		return $this->toDateTime(new DateTime(self::INTERNAL_DATE));
+		return $this->toDateTime(new DateTimeImmutable(self::INTERNAL_DATE));
 	}
 
 
 
 	/**
-	 * @param \DateTime $day
-	 * @return DateTime
+	 * @param \DateTimeInterface $day
+	 * @return DateTimeImmutable
 	 */
-	public function toDateTime(\DateTime $day): DateTime
+	public function toDateTime(\DateTimeInterface $day): DateTimeImmutable
 	{
-		$day = DateTime::from($day);
+		$day = DateTimeImmutable::from($day);
 		$day->setTime($this->hours, $this->minutes, (int) round($this->seconds));
 
 		return $day;
@@ -218,9 +209,9 @@ class SingleDayTime implements IComparable
 
 
 	/**
-	 * @param \DateTime $modified
+	 * @param \DateTimeInterface $modified
 	 */
-	private function setFromDateTime(\DateTime $modified)
+	private function setFromDateTime(\DateTimeInterface $modified)
 	{
 		$this->setSeconds((float) $modified->format('s'));
 		$this->setMinutes((int) $modified->format('i'));

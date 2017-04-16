@@ -17,7 +17,7 @@ use Tester\TestCase;
 
 
 
-class IntegerBoundaryFactoryTest extends TestCase
+final class IntegerBoundaryFactoryTest extends TestCase
 {
 
 	public function testAll()

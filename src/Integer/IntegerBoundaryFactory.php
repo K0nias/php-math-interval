@@ -6,7 +6,7 @@ namespace Achse\Math\Interval\Integer;
 
 
 
-class IntegerBoundaryFactory
+final class IntegerBoundaryFactory
 {
 
 	/**

@@ -9,7 +9,7 @@ use Achse\Math\Interval\Boundary;
 
 
 
-class IntegerBoundary extends Boundary
+final class IntegerBoundary extends Boundary
 {
 
 	/**

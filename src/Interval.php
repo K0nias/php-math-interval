@@ -415,7 +415,7 @@ class Interval
 	/**
 	 * @return string
 	 */
-	private function getLeftBracket(): string
+	protected function getLeftBracket(): string
 	{
 		return $this->isLeftOpened() ? Boundary::STRING_OPENED_LEFT : Boundary::STRING_CLOSED_LEFT;
 	}
@@ -425,7 +425,7 @@ class Interval
 	/**
 	 * @return string
 	 */
-	private function getRightBracket(): string
+	protected function getRightBracket(): string
 	{
 		return $this->isRightOpened() ? Boundary::STRING_OPENED_RIGHT : Boundary::STRING_CLOSED_RIGHT;
 	}

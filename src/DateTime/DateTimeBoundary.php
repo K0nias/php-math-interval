@@ -8,8 +8,10 @@ use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Boundary;
 
 
-
-class DateTimeBoundary extends Boundary
+/**
+ * @deprecated Use DateTimeImmutable, always!
+ */
+final class DateTimeBoundary extends Boundary
 {
 
 	/**

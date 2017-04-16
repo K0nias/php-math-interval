@@ -10,7 +10,7 @@ use Achse\Math\Interval\Interval;
 
 
 
-class IntegerInterval extends Interval
+final class IntegerInterval extends Interval
 {
 
 	/**

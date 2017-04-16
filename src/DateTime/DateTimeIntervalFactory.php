@@ -6,8 +6,10 @@ namespace Achse\Math\Interval\DateTime;
 
 
 
-
-class DateTimeIntervalFactory
+/**
+ * @deprecated Use DateTimeImmutable, always!
+ */
+final class DateTimeIntervalFactory
 {
 
 	/**

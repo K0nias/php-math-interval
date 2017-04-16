@@ -6,7 +6,7 @@ namespace Achse\Math\Interval\DateTimeImmutable;
 
 
 
-class DateTimeImmutableIntervalFactory
+final class DateTimeImmutableIntervalFactory
 {
 
 	/**

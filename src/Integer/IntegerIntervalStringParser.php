@@ -10,7 +10,7 @@ use Achse\Math\Interval\IntervalStringParser;
 
 
 
-class IntegerIntervalStringParser extends IntervalStringParser
+final class IntegerIntervalStringParser extends IntervalStringParser
 {
 
 	/**

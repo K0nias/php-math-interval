@@ -6,7 +6,7 @@ namespace Achse\Math\Interval\SingleDay;
 
 
 
-class SingleDayTimeBoundaryFactory
+final class SingleDayTimeBoundaryFactory
 {
 
 	/**

@@ -19,7 +19,7 @@ use Tester\TestCase;
 
 
 
-class IntervalTest extends TestCase
+final class IntervalTest extends TestCase
 {
 
 	public function testErrors()
@@ -28,7 +28,7 @@ class IntervalTest extends TestCase
 			function () {
 				Parser::parse('[5, 0]');
 			},
-			IntervalRangesInvalidException::class,
+			IntervalRangesInvalidException::final class,
 			'Right endpoint cannot be less then Left endpoint.'
 		);
 	}

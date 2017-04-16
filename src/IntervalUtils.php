@@ -6,7 +6,7 @@ namespace Achse\Math\Interval;
 
 
 
-class IntervalUtils
+final class IntervalUtils
 {
 
 	const PRECISION_ON_SECOND = '1 second';

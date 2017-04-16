@@ -17,7 +17,7 @@ use Tester\TestCase;
 
 
 
-class DateTimeBoundaryFactoryTest extends TestCase
+final class DateTimeBoundaryFactoryTest extends TestCase
 {
 
 	public function testAll()

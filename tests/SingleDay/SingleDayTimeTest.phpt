@@ -20,7 +20,7 @@ use Tester\TestCase;
 
 
 
-class SingleDayTimeTest extends TestCase
+final class SingleDayTimeTest extends TestCase
 {
 
 	use TestComparison;
@@ -74,7 +74,7 @@ class SingleDayTimeTest extends TestCase
 			function () {
 				(new SingleDayTime(23, 59, 59))->add(new SingleDayTime(0, 0, 1));
 			},
-			ModificationNotPossibleException::class
+			ModificationNotPossibleException::final class
 		);
 	}
 
@@ -107,14 +107,14 @@ class SingleDayTimeTest extends TestCase
 			function () {
 				(new SingleDayTime(0, 0, 0))->sub(new SingleDayTime(0, 0, 1));
 			},
-			ModificationNotPossibleException::class
+			ModificationNotPossibleException::final class
 		);
 
 		Assert::exception(
 			function () {
 				(new SingleDayTime(23, 59, 58))->sub(new SingleDayTime(23, 59, 59));
 			},
-			ModificationNotPossibleException::class
+			ModificationNotPossibleException::final class
 		);
 	}
 
@@ -140,7 +140,7 @@ class SingleDayTimeTest extends TestCase
 			function () {
 				(new SingleDayTime(5, 14, 58))->modify('-6 hours');
 			},
-			ModificationNotPossibleException::class
+			ModificationNotPossibleException::final class
 		);
 	}
 
@@ -218,7 +218,7 @@ class SingleDayTimeTest extends TestCase
 			function () use ($time, $format) {
 				$time->format($format);
 			},
-			LogicException::class
+			LogicException::final class
 		);
 	}
 

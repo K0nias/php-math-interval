@@ -16,7 +16,7 @@ use InvalidArgumentException;
 
 
 
-class SingleDayTimeInterval extends Interval
+final class SingleDayTimeInterval extends Interval
 {
 
 	/**

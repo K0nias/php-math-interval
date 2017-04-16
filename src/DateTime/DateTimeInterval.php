@@ -10,8 +10,10 @@ use Achse\Math\Interval\Interval;
 use Achse\Math\Interval\IntervalUtils;
 
 
-
-class DateTimeInterval extends Interval
+/**
+ * @deprecated Use DateTimeImmutable, always!
+ */
+final class DateTimeInterval extends Interval
 {
 
 	/**
@@ -51,10 +53,12 @@ class DateTimeInterval extends Interval
 		}
 
 		/** @var DateTime $modifiedPlus */
-		$modifiedPlus = $this->getRight()->getValue()->modifyClone("+{$precision}");
+		$modifiedPlus = clone $this->getRight()->getValue();
+		$modifiedPlus = $modifiedPlus->modify("+{$precision}");
 
 		/** @var DateTime $modifiedMinus */
-		$modifiedMinus = $other->getLeft()->getValue()->modifyClone("-{$precision}");
+		$modifiedMinus = clone $other->getLeft()->getValue();
+		$modifiedMinus = $modifiedMinus->modify("-{$precision}");
 
 		return (
 			$modifiedPlus->isGreaterThanOrEqual($other->getLeft()->getValue())
@@ -78,12 +82,10 @@ class DateTimeInterval extends Interval
 	 */
 	public function isFollowedByAtMidnight(DateTimeInterval $other): bool
 	{
+		$left = clone $other->getLeft()->getValue();
+
 		return (
-			IntervalUtils::isSameDate(
-				$this->getRight()->getValue(),
-				$other->getLeft()->getValue()
-					->modifyClone('-1 day')
-			)
+			IntervalUtils::isSameDate($this->getRight()->getValue(), $left->modify('-1 day'))
 			&& $this->getRight()->getValue()->format('H:i:s') === '23:59:59'
 			&& $other->getLeft()->getValue()->format('H:i:s') === '00:00:00'
 		);
@@ -119,6 +121,25 @@ class DateTimeInterval extends Interval
 	protected function buildBoundary(IComparable $element, bool $state): Boundary
 	{
 		return new DateTimeBoundary($element, $state);
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	public function __toString(): string
+	{
+		/** @var DateTime $left */
+		$left = $this->getLeft()->getValue();
+		/** @var DateTime $right */
+		$right = $this->getRight()->getValue();
+
+		return (
+			$this->getLeftBracket() . $left->format('Y-m-d H:i:s')
+			. self::STRING_DELIMITER . ' '
+			. $right->format('Y-m-d H:i:s') . $this->getRightBracket()
+		);
 	}
 
 }

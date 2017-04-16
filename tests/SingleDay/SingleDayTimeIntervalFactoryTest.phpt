@@ -17,7 +17,7 @@ use Tester\TestCase;
 
 
 
-class SingleDayTimeIntervalFactoryTest extends TestCase
+final class SingleDayTimeIntervalFactoryTest extends TestCase
 {
 
 	public function testAll()

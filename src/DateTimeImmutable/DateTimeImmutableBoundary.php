@@ -9,7 +9,7 @@ use Achse\Math\Interval\Boundary;
 
 
 
-class DateTimeImmutableBoundary extends Boundary
+final class DateTimeImmutableBoundary extends Boundary
 {
 
 	/**

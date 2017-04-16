@@ -21,7 +21,7 @@ use Tester\TestCase;
 
 
 
-class DateTimeIntervalTest extends TestCase
+final class DateTimeIntervalTest extends TestCase
 {
 
 	public function testConsolidation()

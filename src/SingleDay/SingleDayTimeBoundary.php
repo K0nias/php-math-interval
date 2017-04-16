@@ -9,7 +9,7 @@ use Achse\Math\Interval\Boundary;
 
 
 
-class SingleDayTimeBoundary extends Boundary
+final class SingleDayTimeBoundary extends Boundary
 {
 
 	/**

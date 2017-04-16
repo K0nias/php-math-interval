@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Achse\Math\Interval\DateTimeImmutable;
 
 
-class DateTimeImmutableBoundaryFactory
+final class DateTimeImmutableBoundaryFactory
 {
 
 	/**

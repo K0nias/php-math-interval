@@ -16,7 +16,7 @@ use Tester\TestCase;
 
 
 
-class IntervalUtilsTest extends TestCase
+final class IntervalUtilsTest extends TestCase
 {
 
 	/**

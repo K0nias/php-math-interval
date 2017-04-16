@@ -16,7 +16,7 @@ use Tester\TestCase;
 
 
 
-class DateTimeImmutableTest extends TestCase
+final class DateTimeImmutableTest extends TestCase
 {
 
 	use TestComparison;

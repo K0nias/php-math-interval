@@ -16,7 +16,7 @@ use Tester\TestCase;
 
 
 
-class DateTimeTest extends TestCase
+final class DateTimeTest extends TestCase
 {
 
 	use TestComparison;

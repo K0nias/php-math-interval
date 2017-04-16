@@ -17,7 +17,7 @@ use Tester\TestCase;
 
 
 
-class DateTimeImmutableIntervalFactoryTest extends TestCase
+final class DateTimeImmutableIntervalFactoryTest extends TestCase
 {
 
 	public function testAll()

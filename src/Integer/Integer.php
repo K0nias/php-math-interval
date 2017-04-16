@@ -12,7 +12,7 @@ use LogicException;
 
 
 
-class Integer implements IComparable
+final class Integer implements IComparable
 {
 
 	use ComparisonMethods;

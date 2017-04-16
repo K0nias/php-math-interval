@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Achse\Math\Interval\DateTime;
 
-
-class DateTimeBoundaryFactory
+/**
+ * @deprecated Use DateTimeImmutable, always!
+ */
+final class DateTimeBoundaryFactory
 {
 
 	/**

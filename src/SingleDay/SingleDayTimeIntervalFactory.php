@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Achse\Math\Interval\SingleDay;
 
 
-class SingleDayTimeIntervalFactory
+final class SingleDayTimeIntervalFactory
 {
 
 	/**

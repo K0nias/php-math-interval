@@ -10,7 +10,10 @@ use Achse\Math\Interval\IntervalStringParser;
 
 
 
-class DateTimeIntervalStringParser extends IntervalStringParser
+/**
+ * @deprecated Use DateTimeImmutable, always!
+ */
+final class DateTimeIntervalStringParser extends IntervalStringParser
 {
 
 	/**
@@ -35,7 +38,7 @@ class DateTimeIntervalStringParser extends IntervalStringParser
 		list($elementString, $state) = self::parseBoundaryDataFromString($string);
 
 		/** @var DateTime $dateTime */
-		$dateTime = DateTime::from($elementString);
+		$dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $elementString);
 
 		return new DateTimeBoundary($dateTime, $state);
 	}
