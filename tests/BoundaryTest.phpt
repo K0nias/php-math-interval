@@ -24,10 +24,6 @@ final class BoundaryTest extends TestCase
 	{
 		$boundary = new Boundary(new Integer(9), Boundary::CLOSED);
 		Assert::equal('[9]', (string) $boundary);
-
-		$boundary->setValue(new Integer(42));
-		$boundary->setState(Boundary::OPENED);
-		Assert::equal('(42)', (string) $boundary);
 	}
 
 }

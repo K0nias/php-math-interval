@@ -112,17 +112,6 @@ class Boundary implements IComparable
 
 
 	/**
-	 * @deprecated Boundary should be immutable type.
-	 * @param bool $state
-	 */
-	public function setState($state)
-	{
-		$this->state = $state;
-	}
-
-
-
-	/**
 	 * @return string
 	 */
 	public function __toString(): string
@@ -132,17 +121,6 @@ class Boundary implements IComparable
 			. $this->element
 			. ($this->isOpened() ? self::STRING_OPENED_RIGHT : self::STRING_CLOSED_RIGHT)
 		);
-	}
-
-
-
-	/**
-	 * @deprecated Boundary should be immutable type.
-	 * @param IComparable $value
-	 */
-	public function setValue(IComparable $value)
-	{
-		$this->element = $value;
 	}
 
 
