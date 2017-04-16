@@ -27,11 +27,11 @@ class IntervalUtils
 
 
 	/**
-	 * @param \DateTime $first
-	 * @param \DateTime $second
+	 * @param \DateTimeInterface $first
+	 * @param \DateTimeInterface $second
 	 * @return bool
 	 */
-	public static function isSameDate(\DateTime $first, \DateTime $second): bool
+	public static function isSameDate(\DateTimeInterface $first, \DateTimeInterface $second): bool
 	{
 		return $first->format('Y-m-d') === $second->format('Y-m-d');
 	}

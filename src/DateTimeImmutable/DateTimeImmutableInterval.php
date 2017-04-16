@@ -83,8 +83,7 @@ class DateTimeImmutableInterval extends Interval
 		return (
 			IntervalUtils::isSameDate(
 				$this->getRight()->getValue(),
-				$other->getLeft()->getValue()
-					->modifyClone('-1 day')
+				$other->getLeft()->getValue()->modify('-1 day')
 			)
 			&& $this->getRight()->getValue()->format('H:i:s') === '23:59:59'
 			&& $other->getLeft()->getValue()->format('H:i:s') === '00:00:00'
