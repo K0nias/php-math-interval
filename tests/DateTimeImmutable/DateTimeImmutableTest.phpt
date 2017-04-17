@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * @testCase
+ */
+
+declare(strict_types=1);
+
+namespace Achse\Tests\Interval\DateTimeImmutable;
+
+require __DIR__ . '/../bootstrap.php';
+
+use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
+use Achse\Math\Interval\Integer\Integer;
+use Achse\Tests\Interval\TestComparison;
+use LogicException;
+use Tester\Assert;
+use Tester\TestCase;
+
+
+
+final class DateTimeImmutableTest extends TestCase
+{
+
+	use TestComparison;
+
+
+
+	public function testCompare()
+	{
+		$this->assertForComparison(
+			new DateTimeImmutable('2015-05-05 12:00:00'),
+			new DateTimeImmutable('2015-05-06 12:00:00')
+		);
+		Assert::exception(
+			function () {
+				(new DateTimeImmutable())->compare(new Integer(5));
+			},
+			LogicException::class,
+			'You cannot compare sheep with the goat. Type Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable expected,'
+			. ' but Achse\Math\Interval\Integer\Integer given.'
+		);
+	}
+
+}
+
+
+
+(new DateTimeImmutableTest())->run();

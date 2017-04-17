@@ -3,7 +3,7 @@
 namespace Achse\Math\Interval\Test;
 
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/Types/TestComparison.php';
+require __DIR__ . '/TestComparison.php';
 
 use Tester\Environment;
 
