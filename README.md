@@ -85,6 +85,16 @@ Parser::parse('[2, 3]')->isColliding(Parser::parse('[1, 2]')); // true
 Parser::parse('[1, 2]')->isColliding(Parser::parse('(2, 3)')); // false
 ```
 
+* For `DateTimeImmutable`, `DateTime` a `SingleDayTimeInterval` there is method to test if intervals follows with given precision:
+```php
+$first = Parser::parse('[2014-12-31 00:00:00, 2014-12-31 23:59:59)');
+$second = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 02:00:00)');
+$first->isFollowedBy($second, IntervalUtils::PRECISION_ON_SECOND); // true
+$second->isFollowedBy($first, IntervalUtils::PRECISION_ON_SECOND); // false
+```
+
+* Also `isFollowedByAtMidnight` is available for testing continuity of intervals between days.
+
 ### Available Types
 Library contains intervals for those types:
 * `Integer` - classic int,
