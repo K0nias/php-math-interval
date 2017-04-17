@@ -64,9 +64,8 @@ Parser::parse('(1, 3)')->getIntersection(Parser::parse('(2, 4)')); // (2, 3)
 
 **Diff two intervals:**
 ```php
-// [1, 4] \ [2, 4]
-Parser::parse('[1, 4]')->getDifference(Parser::parse('[2, 4]'));
-echo ((string) reset($diff)); // [1, 2)
+// [1, 4] \ [2, 3]
+Parser::parse('[1, 4]')->getDifference(Parser::parse('[2, 3]')); // ['[1,2)', '(3, 4]']
 ```
 
 **Test if one interval contains the other:**
