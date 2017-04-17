@@ -55,17 +55,17 @@ final class SingleDayTimeIntervalTest extends TestCase
 
 
 	/**
-	 * @dataProvider getDataForIsFollowedByTest
+	 * @dataProvider getDataForIsFollowedByWithPrecisionTest
 	 *
 	 * @param bool $expected
 	 * @param string $firstString
 	 * @param string $secondString
 	 */
-	public function testIsFollowedBy(bool $expected, string $firstString, string $secondString)
+	public function testIsFollowedByWithPrecision(bool $expected, string $firstString, string $secondString)
 	{
 		$first = Parser::parse($firstString);
 		$second = Parser::parse($secondString);
-		Assert::same($expected, $first->isFollowedBy($second));
+		Assert::same($expected, $first->isFollowedByWithPrecision($second));
 	}
 
 
@@ -73,7 +73,7 @@ final class SingleDayTimeIntervalTest extends TestCase
 	/**
 	 * @return bool[][]|string[][]
 	 */
-	public function getDataForIsFollowedByTest(): array
+	public function getDataForIsFollowedByWithPrecisionTest(): array
 	{
 		return [
 			[FALSE, '[23:50:00, 23:59:59]', '[00:00:00, 00:05:00]'],

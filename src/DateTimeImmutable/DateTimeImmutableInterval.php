@@ -44,7 +44,7 @@ final class DateTimeImmutableInterval extends Interval
 	 * @param string $precision
 	 * @return bool
 	 */
-	public function isFollowedBy(
+	public function isFollowedByWithPrecision(
 		DateTimeImmutableInterval $other,
 		string $precision = IntervalUtils::PRECISION_ON_SECOND
 	): bool {

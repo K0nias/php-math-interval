@@ -100,7 +100,7 @@ final class SingleDayTimeInterval extends Interval
 	 * @param string $precision
 	 * @return bool
 	 */
-	public function isFollowedBy(
+	public function isFollowedByWithPrecision(
 		SingleDayTimeInterval $other,
 		string $precision = IntervalUtils::PRECISION_ON_SECOND
 	): bool {
@@ -114,7 +114,7 @@ final class SingleDayTimeInterval extends Interval
 
 		$dummyDay = new DateTimeImmutable('2001-01-01 00:00:00');
 
-		return $this->toDateTimeInterval($dummyDay)->isFollowedBy($other->toDateTimeInterval($dummyDay));
+		return $this->toDateTimeInterval($dummyDay)->isFollowedByWithPrecision($other->toDateTimeInterval($dummyDay));
 	}
 
 

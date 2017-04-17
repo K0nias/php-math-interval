@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\Tests\Interval;
 
@@ -13,19 +13,60 @@ trait TestComparison
 {
 
 	/**
-	 * @param IComparable $five
-	 * @param IComparable $six
+	 * @param IComparable $smaller
+	 * @param IComparable $greater
 	 */
-	public function assertForComparison(IComparable $five, IComparable $six)
+	public function assertForComparison(IComparable $smaller, IComparable $greater)
 	{
-		Assert::true($five->isLessThan($six));
-		Assert::true($five->isLessThanOrEqual($six));
+		Assert::true(
+			$smaller->isLessThan($greater),
+			sprintf('%s should be LessThan %s', $smaller, $greater)
+		);
+		Assert::true(
+			$smaller->isLessThanOrEqual($greater),
+			sprintf('%s should be LessThanOrEqual %s', $smaller, $greater)
+		);
+		Assert::false(
+			$smaller->isGreaterThanOrEqual($greater),
+			sprintf('%s should NOT be GreaterThanOrEqual %s', $smaller, $greater)
+		);
 
-		Assert::false($six->isLessThan($five));
-		Assert::false($six->isLessThanOrEqual($five));
+		Assert::false(
+			$greater->isLessThan($smaller),
+			sprintf('%s should NOT be LessThan %s', $smaller, $greater)
+		);
+		Assert::false(
+			$greater->isLessThanOrEqual($smaller),
+			sprintf('%s should NOT be LessThanOrEqual %s', $smaller, $greater)
+		);
+		Assert::true(
+			$greater->isGreaterThanOrEqual($smaller),
+			sprintf('%s should be reaterThanOrEqual %s', $smaller, $greater)
+		);
 
-		Assert::false($five->isEqual($six));
-		Assert::false($six->isEqual($five));
+		Assert::true(
+			$smaller->isLessThanOrEqual($smaller),
+			sprintf('%s should be LessThanOrEqual %s', $smaller, $greater)
+		);
+		Assert::true(
+			$greater->isLessThanOrEqual($greater),
+			sprintf('%s should be LessThanOrEqual %s', $smaller, $greater)
+		);
+
+		Assert::true(
+			$smaller->isGreaterThanOrEqual($smaller),
+			sprintf('%s should be GreaterThanOrEqual %s', $smaller, $greater)
+		);
+		Assert::true(
+			$greater->isGreaterThanOrEqual($greater),
+			sprintf('%s should be GreaterThanOrEqual %s', $smaller, $greater)
+		);
+
+		Assert::true($smaller->isEqual($smaller), sprintf('%s should be Equal %s', $smaller, $greater));
+		Assert::true($greater->isEqual($greater), sprintf('%s should be Equal %s', $smaller, $greater));
+
+		Assert::false($smaller->isEqual($greater), sprintf('%s should NOT be LESS %s', $smaller, $greater));
+		Assert::false($greater->isEqual($smaller), sprintf('%s should NOT be LESS %s', $smaller, $greater));
 	}
 
 }

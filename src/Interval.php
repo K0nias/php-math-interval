@@ -383,6 +383,36 @@ class Interval
 
 
 	/**
+	 * @param Interval $other
+	 * @return bool
+	 */
+	public function isFollowedBy(Interval $other): bool
+	{
+		return $this->right->getValue()->isEqual($other->left->getValue())
+			&& ($this->right->isClosed() || $other->getLeft()->isClosed());
+	}
+
+
+
+	/**
+	 * @param Interval $other
+	 * @return Interval[]
+	 */
+	public function getUnion(Interval $other): array
+	{
+		if ($this->isFollowedBy($other)) {
+			return [new static($this->left, $other->getRight())];
+
+		} elseif ($other->isFollowedBy($this)) {
+			return [new static($other->getLeft(), $this->right)];
+		}
+
+		return [$this, $other];
+	}
+
+
+
+	/**
 	 * @param IComparable $element
 	 * @param bool $state
 	 * @return Boundary

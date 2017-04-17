@@ -12,8 +12,9 @@ require __DIR__ . '/bootstrap.php';
 
 use Achse\Math\Interval\Integer\Integer;
 use Achse\Math\Interval\Integer\IntegerInterval;
-use Achse\Math\Interval\IntervalRangesInvalidException;
 use Achse\Math\Interval\Integer\IntegerIntervalStringParser as Parser;
+use Achse\Math\Interval\Interval;
+use Achse\Math\Interval\IntervalRangesInvalidException;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -251,12 +252,62 @@ final class IntervalTest extends TestCase
 
 
 	/**
+	 * @dataProvider getDataForGetUnion
+	 *
+	 * @param string[] $expected
+	 * @param string $first
+	 * @param string $second
+	 */
+	public function testGetUnion(array $expected, string $first, string $second)
+	{
+		$union = Parser::parse($first)->getUnion(Parser::parse($second));
+		Assert::equal($expected, $this->intervalArrayToString($union));
+	}
+
+
+
+	/**
+	 * @return array
+	 */
+	public function getDataForGetUnion()
+	{
+		return [
+			[['[1, 3]'], '[1, 2]', '[2, 3]'],
+			[['[1, 3]'], '[2, 3]', '[1, 2]'],
+
+			[['[1, 3]'], '[1, 2)', '[2, 3]'],
+			[['[1, 3]'], '[2, 3]', '[1, 2)'],
+
+			[['[1, 2)', '(2, 3]'], '[1, 2)', '(2, 3]'],
+			[['[1, 1]', '[2, 2]'], '[1, 1]', '[2, 2]'],
+		];
+	}
+
+
+
+	/**
 	 * @param IntegerInterval $expected
 	 * @param IntegerInterval $actual
 	 */
 	private function assertInterval(IntegerInterval $expected, IntegerInterval $actual)
 	{
 		Assert::equal((string) $expected, (string) $actual);
+	}
+
+
+
+	/**
+	 * @param Interval[] $array
+	 * @return string[]
+	 */
+	private function intervalArrayToString(array $array): array
+	{
+		return array_map(
+			function (Interval $interval) {
+				return (string) $interval;
+			},
+			$array
+		);
 	}
 
 }
