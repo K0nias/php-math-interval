@@ -6,13 +6,13 @@
 
 declare(strict_types=1);
 
-namespace Achse\Tests\Interval\SingleDay;
+namespace Achse\Tests\Interval\SingleDayTime;
 
 require __DIR__ . '/../bootstrap.php';
 
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
 use Achse\Math\Interval\ModificationNotPossibleException;
-use Achse\Math\Interval\SingleDay\SingleDayTime;
+use Achse\Math\Interval\SingleDayTime\SingleDayTime;
 use Achse\Tests\Interval\TestComparison;
 use InvalidArgumentException;
 use LogicException;
@@ -31,6 +31,14 @@ final class SingleDayTimeTest extends TestCase
 	public function testCompare()
 	{
 		$this->assertForComparison(new SingleDayTime(0, 5, 0), new SingleDayTime(0, 6, 0));
+		Assert::exception(
+			function () {
+				(new SingleDayTime(2, 3, 5))->compare(new DateTimeImmutable());
+			},
+			LogicException::class,
+			'You cannot compare sheep with the goat. Type Achse\Math\Interval\SingleDayTime\SingleDayTime expected,'
+			. ' but Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable given.'
+		);
 	}
 
 

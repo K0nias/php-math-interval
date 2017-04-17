@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Achse\Math\Interval\SingleDay;
+namespace Achse\Math\Interval\SingleDayTime;
 
 use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Boundary;

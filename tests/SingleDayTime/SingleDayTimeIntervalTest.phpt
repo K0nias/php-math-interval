@@ -6,14 +6,14 @@
 
 declare(strict_types=1);
 
-namespace Achse\Tests\Interval\SingleDay;
+namespace Achse\Tests\Interval\SingleDayTime;
 
 require __DIR__ . '/../bootstrap.php';
 
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutableIntervalStringParser as ImmutableParser;
-use Achse\Math\Interval\SingleDay\SingleDayTimeInterval;
-use Achse\Math\Interval\SingleDay\SingleDayTimeIntervalStringParser as Parser;
+use Achse\Math\Interval\SingleDayTime\SingleDayTimeInterval;
+use Achse\Math\Interval\SingleDayTime\SingleDayTimeIntervalStringParser as Parser;
 use InvalidArgumentException;
 use Tester\Assert;
 use Tester\TestCase;

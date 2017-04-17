@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Achse\Math\Interval\SingleDay;
+namespace Achse\Math\Interval\SingleDayTime;
 
 
 final class SingleDayTimeIntervalFactory

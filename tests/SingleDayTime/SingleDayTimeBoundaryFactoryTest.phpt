@@ -6,12 +6,12 @@
 
 declare(strict_types=1);
 
-namespace Achse\Tests\Interval\SingleDay;
+namespace Achse\Tests\Interval\SingleDayTime;
 
 require_once __DIR__ . '/../bootstrap.php';
 
 use Achse\Math\Interval\Boundary;
-use Achse\Math\Interval\SingleDay\SingleDayTimeBoundaryFactory;
+use Achse\Math\Interval\SingleDayTime\SingleDayTimeBoundaryFactory;
 use Tester\Assert;
 use Tester\TestCase;
 

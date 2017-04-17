@@ -35,7 +35,13 @@ final class DateTimeImmutable extends \DateTimeImmutable implements IComparable
 	public function compare(IComparable $other): int
 	{
 		if (!$other instanceof static) {
-			throw new LogicException('You cannot compare sheep with the goat.');
+			throw new LogicException(
+				sprintf(
+					'You cannot compare sheep with the goat. Type %s expected, but %s given.',
+					get_class($this),
+					get_class($other)
+				)
+			);
 		}
 
 		return IntervalUtils::numberCmp($this->getTimestamp(), $other->getTimestamp());
