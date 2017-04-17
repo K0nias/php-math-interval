@@ -1,15 +1,10 @@
 [![Downloads this Month](https://img.shields.io/packagist/dm/achse/php-math-interval.svg)](https://packagist.org/packages/achse/php-math-interval)
 [![Latest Stable Version](https://poser.pugx.org/achse/php-math-interval/v/stable)](https://github.com/achse/php-math-interval/releases)
 [![Build Status](https://travis-ci.org/Achse/php-math-interval.svg?branch=master)](https://travis-ci.org/Achse/php-math-interval)
-* Scrutinizer-ci.com: ![](https://scrutinizer-ci.com/g/Achse/php-math-interval/badges/quality-score.png?b=master)
-* Codeclimate.com: [![Code Climate](https://codeclimate.com/github/Achse/php-math-interval/badges/gpa.svg)](https://codeclimate.com/github/Achse/php-math-interval)
-* Codecov.io: [![codecov.io](https://codecov.io/github/Achse/php-math-interval/coverage.svg?branch=master)](https://codecov.io/github/Achse/php-math-interval?branch=master)
-* Coverals.io: [![Coverage Status](https://coveralls.io/repos/github/Achse/php-math-interval/badge.svg?branch=master)](https://coveralls.io/github/Achse/php-math-interval?branch=master)
-* SensioLabsInsight: [![SensioLabsInsight](https://insight.sensiolabs.com/projects/dfc506e2-0a86-40c3-8c86-fa01a054a2e1/mini.png)](https://insight.sensiolabs.com/projects/dfc506e2-0a86-40c3-8c86-fa01a054a2e1)
-* Versioneye.com: [![Dependency Status](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef/badge.svg?style=flat)](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef)
-
-
-**Note**: *I use this projects for testing many cloud services. That's why you see so many badges here. :)*
+![](https://scrutinizer-ci.com/g/Achse/php-math-interval/badges/quality-score.png?b=master)
+[![Code Climate](https://codeclimate.com/github/Achse/php-math-interval/badges/gpa.svg)](https://codeclimate.com/github/Achse/php-math-interval)
+[![Coverage Status](https://coveralls.io/repos/github/Achse/php-math-interval/badge.svg?branch=master)](https://coveralls.io/github/Achse/php-math-interval?branch=master)
+[![Dependency Status](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef/badge.svg?style=flat)](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef)
 
 ## Installation
 ```
