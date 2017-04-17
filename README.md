@@ -18,24 +18,30 @@ composer require achse/php-math-interval
 
 ## Usage
 ### Creating an interval
-Via factories (most simple, most encapsulated):
+Via factories (most simple):
 ```php
-$interval = DateTimeIntervalFactory::create('2015-10-07 12:00:00', Boundary::CLOSED, '2015-10-07 14:00:00', Boundary::OPENED);
+$interval = DateTimeImmutableIntervalFactory::create(
+	new \DateTimeImmutable('2015-10-07 12:00:00'), 
+	Boundary::CLOSED, 
+	new \DateTimeImmutable('2015-10-07 14:00:00'), 
+	Boundary::OPENED
+);
+echo (string)$interval; // [2015-10-07 12:00:00, 2015-10-07 14:00:00)
 ```
 
 Directly via constructors:
 ```php
-use Achse\Math\Interval\Types\DateTime; # We need one that implements IComparable
+use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable; // We need object implementing IComparable
 ...
 
-$left = new IntegerBoundary(new DateTime('2015-10-07 12:00:00'), Boundary::CLOSED);
-$right = new IntegerBoundary(new DateTime('2015-10-07 14:00:00'), Boundary::OPENED);
-$interval = new DateTimeInterval($left, $right);
+$left = new IntegerBoundary(new DateTimeImmutable('2015-10-07 12:00:00'), Boundary::CLOSED);
+$right = new IntegerBoundary(new DateTimeImmutable('2015-10-07 14:00:00'), Boundary::OPENED);
+$interval = new DateTimeImmutableInterval($left, $right);
 ```
 
 Parsed from string (used for tests mostly):
 ```php
-$interval = DateTimeIntervalStringParser::parse('[2015-01-01 05:00:00, 2015-01-01 10:00:00)');
+$interval = DateTimeImmutableIntervalStringParser::parse('[2015-01-01 05:00:00, 2015-01-01 10:00:00)');
 ```
 
 ### Methods
@@ -48,12 +54,10 @@ Interval have all basic operations like:
 ### Available Types
 Library contains intervals for those types:
 * `Integer` - classic int,
-* `DateTime` - classic DateTime from `Nette\Utils` but implements `IComparable`,
+* `DateTimeImmutable` and `DateTime`,
 * `SingeDayTime` - represents "clock-time" from *00:00:00* to *23:59:59*.
 
 **Other types:** `Interval` (its `Boundary`) can contains any type that implements `IComparable`, but if you want
-to have type-hinting you have to write your own `XyInterval` and `XyBoundary` class and probably also `Factory` classes.
+to have type-hinting you may want to write your own `XyInterval` and `XyBoundary` class 
+and probably also `Factory` classes.
 
-## Motivation, main purpose
-This library was created for working properly with *opening hours* of restaurants. If you miss some type or method od
-simply just some feature, don't hesitate to send pull request. I'll be really happy. :)
