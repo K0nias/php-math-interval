@@ -1,7 +1,7 @@
 [![Downloads this Month](https://img.shields.io/packagist/dm/achse/php-math-interval.svg)](https://packagist.org/packages/achse/php-math-interval)
 [![Latest Stable Version](https://poser.pugx.org/achse/php-math-interval/v/stable)](https://github.com/achse/php-math-interval/releases)
 [![Build Status](https://travis-ci.org/Achse/php-math-interval.svg?branch=master)](https://travis-ci.org/Achse/php-math-interval)
-![](https://scrutinizer-ci.com/g/Achse/php-math-interval/badges/quality-score.png?b=master)
+[![Scrutinizer](https://scrutinizer-ci.com/g/Achse/php-math-interval/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Achse/php-math-interval/)
 [![Code Climate](https://codeclimate.com/github/Achse/php-math-interval/badges/gpa.svg)](https://codeclimate.com/github/Achse/php-math-interval)
 [![Coverage Status](https://coveralls.io/repos/github/Achse/php-math-interval/badge.svg?branch=master)](https://coveralls.io/github/Achse/php-math-interval?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef/badge.svg?style=flat)](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef)
