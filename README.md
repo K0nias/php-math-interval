@@ -45,25 +45,25 @@ Interval object provides powerful tooling for operations with intervals:
 use Achse\Math\Interval\Integer\IntegerIntervalStringParser as Parser;
 ```
 
-**Test if interval contains element:**
+* Test if interval contains element
 ```php
 $interval = Parser::parse('[1, 2]');
 $interval->isContainingElement(new Integer(2)); // true
 $interval->isContainingElement(new Integer(3)); // false
 ```
-**Get intersection between two intervals:**
+* Get intersection between two intervals
 ```php
 // (1, 3) ∩ (2, 4) ⟺ (2, 3)
 Parser::parse('(1, 3)')->getIntersection(Parser::parse('(2, 4)')); // (2, 3)
 ```
 
-**Diff two intervals:**
+* Diff two intervals
 ```php
 // [1, 4] \ [2, 3]
 Parser::parse('[1, 4]')->getDifference(Parser::parse('[2, 3]')); // ['[1,2)', '(3, 4]']
 ```
 
-**Test if one interval contains the other:**
+* Test if one interval contains the other
 ```php
 // [1, 4] contains [2, 3]
 Parser::parse('[1, 4]')->isContaining(Parser::parse('[2, 3]')); // true
@@ -71,7 +71,7 @@ Parser::parse('[1, 4]')->isContaining(Parser::parse('[2, 3]')); // true
 Parser::parse('[2, 3]')->isContaining(Parser::parse('[1, 4]')); // false
 ```
 
-**Does one interval overlap other one from right:**
+* Does one interval overlap other one from right
 ```php
 Parser::parse('[1, 2]')->isOverlappedFromRightBy(Parser::parse('[2, 3]')); // true
 Parser::parse('[2, 3]')->isOverlappedFromRightBy(Parser::parse('[1, 2]')); // false
@@ -79,7 +79,7 @@ Parser::parse('[2, 3]')->isOverlappedFromRightBy(Parser::parse('[1, 2]')); // fa
 Parser::parse('(1, 2)')->isOverlappedFromRightBy(Parser::parse('[2, 3]')); // false
 ```
 
-**Test if two intervals collides (not empty intersection):**
+* Test if two intervals collides (not empty intersection)
 ```php
 Parser::parse('[2, 3]')->isColliding(Parser::parse('[1, 2]')); // true
 Parser::parse('[1, 2]')->isColliding(Parser::parse('(2, 3)')); // false
@@ -101,6 +101,7 @@ Library contains intervals for those types:
 * `DateTimeImmutable` and `DateTime` (I strongly advise you to use Immutable only),
 * `SingeDayTime` - represents "clock-time" from *00:00:00* to *23:59:59*.
 
-**Other types:** `Interval` (its `Boundary`) can contains any type that implements `IComparable`, but if you want
+### Creating your own type
+`Interval` (its `Boundary`) can contains any type that implements `IComparable`, but if you want
 to have type-hinting you may want to write your own `XyInterval` and `XyBoundary` class 
 and probably also `Factory` classes.
