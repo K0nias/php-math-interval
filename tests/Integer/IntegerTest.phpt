@@ -10,9 +10,11 @@ namespace Achse\Tests\Interval\Integer;
 
 require __DIR__ . '/../bootstrap.php';
 
+use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
 use Achse\Math\Interval\Integer\Integer;
 use Achse\Tests\Interval\TestComparison;
 use InvalidArgumentException;
+use LogicException;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -28,6 +30,14 @@ final class IntegerTest extends TestCase
 	public function testAll()
 	{
 		$this->assertForComparison(new Integer(5), new Integer(6));
+		Assert::exception(
+			function () {
+				(new Integer(5))->compare(new DateTimeImmutable());
+			},
+			LogicException::class,
+			'You cannot compare sheep with the goat. Type Achse\Math\Interval\Integer\Integer expected,'
+			. ' but Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable given.'
+		);
 	}
 
 
