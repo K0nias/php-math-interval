@@ -6,17 +6,13 @@
 [![Coverage Status](https://coveralls.io/repos/github/Achse/php-math-interval/badge.svg?branch=master)](https://coveralls.io/github/Achse/php-math-interval?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef/badge.svg?style=flat)](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef)
 
-<div>
-<div style="float:left; width: 50%; margin: 0; padding: 0;">
 ## Whats awesome
 * Heavily tested (nearly 100% coverage),
 * code is clean and predictable,
 * interval is modeled as mathematical entity.
-</div>
-<div style="float:left; width: 50%; margin: 0; padding: 0;">
-tralala
-</div>
-</div>
+
+![](https://img.memesuper.com/85f5a4055aca191d4d841341c41a431e_10-memes-sobre-leonardo-meme-dicaprio_440-264.jpeg)
+
 ## Installation
 ```
 composer require achse/php-math-interval
