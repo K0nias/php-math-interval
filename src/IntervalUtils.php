@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace Achse\Math\Interval;
 
+use InvalidArgumentException;
 
 
+
+/**
+ * @internal This class is supposed to be used only in this library. Please do not use code from here
+ * in your project. Back compatibility of API is not guaranteed here.
+ */
 final class IntervalUtils
 {
 
-	const PRECISION_ON_SECOND = '1 second';
-	const PRECISION_ON_MINUTE = '1 minute';
-
-
-
 	/**
+	 * @internal This method is supposed to be used only in this library. Please do not use code from here
+	 * in your project. Back compatibility of API is not guaranteed here.
+	 *
 	 * @param int|float $first
 	 * @param int|float $second
 	 * @return int
@@ -27,6 +31,9 @@ final class IntervalUtils
 
 
 	/**
+	 * @internal This method is supposed to be used only in this library. Please do not use code from here
+	 * in your project. Back compatibility of API is not guaranteed here.
+	 *
 	 * @param \DateTimeInterface $first
 	 * @param \DateTimeInterface $second
 	 * @return bool
@@ -34,6 +41,28 @@ final class IntervalUtils
 	public static function isSameDate(\DateTimeInterface $first, \DateTimeInterface $second): bool
 	{
 		return $first->format('Y-m-d') === $second->format('Y-m-d');
+	}
+
+
+
+	/**
+	 * @internal This method is supposed to be used only in this library. Please do not use code from here
+	 * in your project. Back compatibility of API is not guaranteed here.
+	 *
+	 * @param string $expectedClassName
+	 * @param mixed $given
+	 */
+	public static function validateClassType(string $expectedClassName, $given)
+	{
+		if (!$given instanceof $expectedClassName) {
+			throw new InvalidArgumentException(
+				sprintf(
+					'Precision must by typ of %s but %s given.',
+					$expectedClassName,
+					is_object($given) ? get_class($given) : gettype($given)
+				)
+			);
+		}
 	}
 
 }

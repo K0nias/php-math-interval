@@ -8,7 +8,7 @@ use Achse\Comparable\IComparable;
 
 
 
-class Interval
+abstract class Interval
 {
 
 	const STRING_DELIMITER = ',';

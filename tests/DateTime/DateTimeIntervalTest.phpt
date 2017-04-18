@@ -12,7 +12,6 @@ require __DIR__ . '/../bootstrap.php';
 
 use Achse\Math\Interval\DateTime\DateTime;
 use Achse\Math\Interval\DateTime\DateTimeIntervalStringParser as Parser;
-use Achse\Math\Interval\IntervalUtils;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -25,25 +24,25 @@ final class DateTimeIntervalTest extends TestCase
 	{
 		$first = Parser::parse('[2014-12-31 00:00:00, 2014-12-31 23:59:59)');
 		$second = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 02:00:00)');
-		Assert::true($first->isFollowedByWithPrecision($second, IntervalUtils::PRECISION_ON_SECOND));
-		Assert::false($second->isFollowedByWithPrecision($first, IntervalUtils::PRECISION_ON_SECOND));
+		Assert::true($first->isFollowedByWithPrecision($second, '+1 second'));
+		Assert::false($second->isFollowedByWithPrecision($first, '+1 second'));
 
 		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
 		$second = Parser::parse('[2015-01-01 01:00:01, 2015-02-01 02:00:00)');
-		Assert::true($first->isFollowedByWithPrecision($second, IntervalUtils::PRECISION_ON_SECOND));
-		Assert::false($second->isFollowedByWithPrecision($first, IntervalUtils::PRECISION_ON_SECOND));
+		Assert::true($first->isFollowedByWithPrecision($second, '+1 second'));
+		Assert::false($second->isFollowedByWithPrecision($first, '+1 second'));
 
 		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
 		$second = Parser::parse('[2015-01-01 01:00:02, 2015-01-01 02:00:00)');
-		Assert::false($first->isFollowedByWithPrecision($second, IntervalUtils::PRECISION_ON_SECOND));
+		Assert::false($first->isFollowedByWithPrecision($second, '+1 second'));
 
 		$allDay = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 23:59:59)');
-		Assert::false($allDay->isFollowedByWithPrecision($allDay, IntervalUtils::PRECISION_ON_SECOND));
+		Assert::false($allDay->isFollowedByWithPrecision($allDay, '+1 second'));
 
 		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:38:00)');
 		$second = Parser::parse('[2015-01-01 01:39:00, 2015-01-01 02:00:00)');
-		Assert::false($first->isFollowedByWithPrecision($second, IntervalUtils::PRECISION_ON_SECOND));
-		Assert::true($first->isFollowedByWithPrecision($second, IntervalUtils::PRECISION_ON_MINUTE));
+		Assert::false($first->isFollowedByWithPrecision($second, '+1 second'));
+		Assert::true($first->isFollowedByWithPrecision($second, '+1 minute'));
 	}
 
 

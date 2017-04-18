@@ -47,10 +47,8 @@ final class DateTimeInterval extends Interval
 	 * @param string $precision
 	 * @return bool
 	 */
-	public function isFollowedByWithPrecision(
-		DateTimeInterval $other,
-		string $precision = IntervalUtils::PRECISION_ON_SECOND
-	): bool {
+	public function isFollowedByWithPrecision(DateTimeInterval $other, string $precision): bool
+	{
 		if ($this->getLeft() > $other->getRight()) { // intentionally compares boundaries
 			return FALSE;
 		}

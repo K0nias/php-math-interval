@@ -55,24 +55,35 @@ final class SingleDayTimeTest extends TestCase
 	public function testAdd()
 	{
 		$a = new SingleDayTime(1, 1, 1);
-		$a->add(new SingleDayTime(1, 1, 1));
+		$a = $a->add(new SingleDayTime(1, 1, 1));
 		Assert::equal('02:02:02', $a->format('H:i:s'));
 
 		$a = new SingleDayTime(0, 0, 59);
-		$a->add(new SingleDayTime(0, 0, 1));
+		$a = $a->add(new SingleDayTime(0, 0, 1));
 		Assert::equal('00:01:00', $a->format('H:i:s'));
 
 		$a = new SingleDayTime(0, 59, 59);
-		$a->add(new SingleDayTime(0, 0, 1));
+		$a = $a->add(new SingleDayTime(0, 0, 1));
 		Assert::equal('01:00:00', $a->format('H:i:s'));
 
 		$a = new SingleDayTime(0, 59, 59);
-		$a->add(new SingleDayTime(0, 0, 2));
+		$a = $a->add(new SingleDayTime(0, 0, 2));
 		Assert::equal('01:00:01', $a->format('H:i:s'));
 
 		$a = new SingleDayTime(0, 59, 59);
-		$a->add(new SingleDayTime(0, 1, 2));
+		$a = $a->add(new SingleDayTime(0, 1, 2));
 		Assert::equal('01:01:01', $a->format('H:i:s'));
+	}
+
+
+
+	public function testAddDoesNotModify()
+	{
+		$a = new SingleDayTime(1, 1, 1);
+		$b = $a->add(new SingleDayTime(1, 1, 1));
+		Assert::notSame($a, $b);
+		Assert::equal('01:01:01', (string) $a);
+		Assert::equal('02:02:02', (string) $b);
 	}
 
 
@@ -92,20 +103,31 @@ final class SingleDayTimeTest extends TestCase
 	public function testSub()
 	{
 		$a = new SingleDayTime(1, 1, 1);
-		$a->sub(new SingleDayTime(1, 1, 1));
+		$a = $a->sub(new SingleDayTime(1, 1, 1));
 		Assert::equal('00:00:00', $a->format('H:i:s'));
 
 		$a = new SingleDayTime(10, 10, 10);
-		$a->sub(new SingleDayTime(0, 0, 40));
+		$a = $a->sub(new SingleDayTime(0, 0, 40));
 		Assert::equal('10:09:30', $a->format('H:i:s'));
 
 		$a = new SingleDayTime(10, 10, 5);
-		$a->sub(new SingleDayTime(0, 12, 40));
+		$a = $a->sub(new SingleDayTime(0, 12, 40));
 		Assert::equal('09:57:25', $a->format('H:i:s'));
 
 		$a = new SingleDayTime(1, 0, 0);
-		$a->sub(new SingleDayTime(0, 0, 1));
+		$a = $a->sub(new SingleDayTime(0, 0, 1));
 		Assert::equal('00:59:59', $a->format('H:i:s'));
+	}
+
+
+
+	public function testSubDoesNotModify()
+	{
+		$a = new SingleDayTime(1, 1, 1);
+		$b = $a->sub(new SingleDayTime(1, 1, 1));
+		Assert::notSame($a, $b);
+		Assert::equal('01:01:01', (string) $a);
+		Assert::equal('00:00:00', (string) $b);
 	}
 
 
@@ -133,16 +155,16 @@ final class SingleDayTimeTest extends TestCase
 	{
 		$time = new SingleDayTime(10, 10, 10);
 
-		$time->modify('+1 hour');
+		$time = $time->modify('+1 hour');
 		Assert::equal('11:10:10', $time->format('H:i:s'));
 
-		$time->modify('+1 minute');
+		$time = $time->modify('+1 minute');
 		Assert::equal('11:11:10', $time->format('H:i:s'));
 
-		$time->modify('+1 second');
+		$time = $time->modify('+1 second');
 		Assert::equal('11:11:11', $time->format('H:i:s'));
 
-		$time->modify('-80 seconds');
+		$time = $time->modify('-80 seconds');
 		Assert::equal('11:09:51', $time->format('H:i:s'));
 
 		Assert::exception(
@@ -151,6 +173,17 @@ final class SingleDayTimeTest extends TestCase
 			},
 			ModificationNotPossibleException::class
 		);
+	}
+
+
+
+	public function testModifyIsImmutable()
+	{
+		$time = new SingleDayTime(10, 10, 10);
+		$modifiedTime = $time->modify('+1 hour');
+		Assert::notSame($time, $modifiedTime);
+		Assert::equal('10:10:10', (string) $time);
+		Assert::equal('11:10:10', (string) $modifiedTime);
 	}
 
 

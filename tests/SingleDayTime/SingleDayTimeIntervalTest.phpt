@@ -65,7 +65,7 @@ final class SingleDayTimeIntervalTest extends TestCase
 	{
 		$first = Parser::parse($firstString);
 		$second = Parser::parse($secondString);
-		Assert::same($expected, $first->isFollowedByWithPrecision($second));
+		Assert::same($expected, $first->isFollowedByWithPrecision($second, '+1 seconds'));
 	}
 
 

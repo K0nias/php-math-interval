@@ -10,7 +10,6 @@ use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutableBoundary;
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutableInterval;
 use Achse\Math\Interval\Interval;
-use Achse\Math\Interval\IntervalUtils;
 use Achse\Math\Interval\ModificationNotPossibleException;
 use DateTimeInterface;
 use InvalidArgumentException;
@@ -100,13 +99,11 @@ final class SingleDayTimeInterval extends Interval
 	 * @param string $precision
 	 * @return bool
 	 */
-	public function isFollowedByWithPrecision(
-		SingleDayTimeInterval $other,
-		string $precision = IntervalUtils::PRECISION_ON_SECOND
-	): bool {
+	public function isFollowedByWithPrecision(Interval $other, $precision): bool
+	{
 		try {
-			$this->getRight()->getValue()->modifyClone("+{$precision}");
-			$other->getLeft()->getValue()->modifyClone("-{$precision}");
+			$this->getRight()->getValue()->modify("+{$precision}");
+			$other->getLeft()->getValue()->modify("-{$precision}");
 		} catch (ModificationNotPossibleException $e) {
 			return FALSE;
 		}
@@ -114,7 +111,10 @@ final class SingleDayTimeInterval extends Interval
 
 		$dummyDay = new DateTimeImmutable('2001-01-01 00:00:00');
 
-		return $this->toDateTimeInterval($dummyDay)->isFollowedByWithPrecision($other->toDateTimeInterval($dummyDay));
+		return $this->toDateTimeInterval($dummyDay)->isFollowedByWithPrecision(
+			$other->toDateTimeInterval($dummyDay),
+			$precision
+		);
 	}
 
 
