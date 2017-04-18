@@ -57,6 +57,16 @@ $interval->isContainingElement(new Integer(3)); // false
 Parser::parse('(1, 3)')->getIntersection(Parser::parse('(2, 4)')); // (2, 3)
 ```
 
+* Get union of two intervals
+```php
+// Union of overlapping intervals
+Parser::parse('[1, 3]')->getUnion(Parser::parse('[2, 4]')); // ['[1, 4]']
+// Union of not overlapping intervals
+Parser::parse('[1, 2)')->getUnion(Parser::parse('[3, 4]')); // ['[1, 4]']
+// Union of two distant intervals is array of those two intervals 
+Parser::parse('[1, 2]')->getUnion(Parser::parse('[3, 4]')); // ['[1, 2], [3, 4]']
+```
+
 * Diff two intervals
 ```php
 // [1, 4] \ [2, 3]
@@ -89,8 +99,8 @@ Parser::parse('[1, 2]')->isColliding(Parser::parse('(2, 3)')); // false
 ```php
 $first = Parser::parse('[2014-12-31 00:00:00, 2014-12-31 23:59:59)');
 $second = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 02:00:00)');
-$first->isFollowedBy($second, IntervalUtils::PRECISION_ON_SECOND); // true
-$second->isFollowedBy($first, IntervalUtils::PRECISION_ON_SECOND); // false
+$first->isFollowedByWithPrecision($second, IntervalUtils::PRECISION_ON_SECOND); // true
+$second->isFollowedByWithPrecision($first, IntervalUtils::PRECISION_ON_SECOND); // false
 ```
 
 * Also `isFollowedByAtMidnight` is available for testing continuity of intervals between days.
