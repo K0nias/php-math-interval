@@ -6,13 +6,12 @@
 [![Coverage Status](https://coveralls.io/repos/github/Achse/php-math-interval/badge.svg?branch=master)](https://coveralls.io/github/Achse/php-math-interval?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef/badge.svg?style=flat)](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef)
 
-## Whats awesome
+## It's awesome!
 * Heavily tested (nearly 100% coverage),
 * code is clean and predictable,
 * interval is modeled as mathematical entity.
 
-![](https://img.memesuper.com/85f5a4055aca191d4d841341c41a431e_10-memes-sobre-leonardo-meme-dicaprio_440-264.jpeg)
-
+<img src="https://img.memesuper.com/85f5a4055aca191d4d841341c41a431e_10-memes-sobre-leonardo-meme-dicaprio_440-264.jpeg" width="150">
 ## Installation
 ```
 composer require achse/php-math-interval
