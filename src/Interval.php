@@ -31,8 +31,12 @@ class Interval
 	 */
 	public function __construct(Boundary $left, Boundary $right)
 	{
-		$this->setLeft($left);
-		$this->setRight($right);
+		if ($left->isGreaterThan($right)) {
+			throw new IntervalRangesInvalidException('Left endpoint cannot be greater then Right endpoint.');
+		}
+
+		$this->left = $left;
+		$this->right = $right;
 	}
 
 
@@ -73,28 +77,22 @@ class Interval
 
 	/**
 	 * @param Boundary $left
+	 * @return static
 	 */
-	public function setLeft(Boundary $left)
+	public function withLeft(Boundary $left): Interval
 	{
-		if ($this->right !== NULL && $left->isGreaterThanOrEqual($this->right)) {
-			throw new IntervalRangesInvalidException('Left endpoint cannot be greater then Right endpoint.');
-		}
-
-		$this->left = $left;
+		return new static($left, $this->right);
 	}
 
 
 
 	/**
 	 * @param Boundary $right
+	 * @return static
 	 */
-	public function setRight(Boundary $right)
+	public function withRight(Boundary $right): Interval
 	{
-		if ($this->left !== NULL && $this->left->isGreaterThan($right)) {
-			throw new IntervalRangesInvalidException('Right endpoint cannot be less then Left endpoint.');
-		}
-
-		$this->right = $right;
+		return new static($this->left, $right);
 	}
 
 

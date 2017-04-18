@@ -7,7 +7,7 @@ namespace Achse\Math\Interval\DateTime;
 use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Boundary;
 use Achse\Math\Interval\Interval;
-use Achse\Math\Interval\IntervalUtils;
+use Achse\Math\Interval\Utils;
 
 
 
@@ -106,7 +106,7 @@ final class DateTimeInterval extends Interval
 		$left = clone $other->getLeft()->getValue();
 
 		return (
-			IntervalUtils::isSameDate($this->getRight()->getValue(), $left->modify('-1 day'))
+			Utils::isSameDate($this->getRight()->getValue(), $left->modify('-1 day'))
 			&& $this->getRight()->getValue()->format('H:i:s') === '23:59:59'
 			&& $other->getLeft()->getValue()->format('H:i:s') === '00:00:00'
 		);

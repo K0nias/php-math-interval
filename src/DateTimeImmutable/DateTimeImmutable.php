@@ -6,7 +6,7 @@ namespace Achse\Math\Interval\DateTimeImmutable;
 
 use Achse\Comparable\ComparisonMethods;
 use Achse\Comparable\IComparable;
-use Achse\Math\Interval\IntervalUtils;
+use Achse\Math\Interval\Utils;
 use LogicException;
 
 
@@ -35,9 +35,9 @@ final class DateTimeImmutable extends \DateTimeImmutable implements IComparable
 	public function compare(IComparable $other): int
 	{
 		/** @var static $other */
-		IntervalUtils::validateClassType(static::class, $other);
+		Utils::validateClassType(static::class, $other);
 
-		return IntervalUtils::numberCmp($this->getTimestamp(), $other->getTimestamp());
+		return Utils::numberCmp($this->getTimestamp(), $other->getTimestamp());
 	}
 
 

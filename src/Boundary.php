@@ -73,7 +73,7 @@ class Boundary implements IComparable
 	public function compare(IComparable $other): int
 	{
 		/** @var static $other */
-		IntervalUtils::validateClassType(static::class, $other);
+		Utils::validateClassType(static::class, $other);
 
 		$comparison = $this->element->compare($other->element);
 

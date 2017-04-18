@@ -7,7 +7,7 @@ namespace Achse\Math\Interval\DateTimeImmutable;
 use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Boundary;
 use Achse\Math\Interval\Interval;
-use Achse\Math\Interval\IntervalUtils;
+use Achse\Math\Interval\Utils;
 
 
 
@@ -99,7 +99,7 @@ final class DateTimeImmutableInterval extends Interval
 	public function isFollowedByAtMidnight(DateTimeImmutableInterval $other): bool
 	{
 		return (
-			IntervalUtils::isSameDate(
+			Utils::isSameDate(
 				$this->getRight()->getValue(),
 				$other->getLeft()->getValue()->modify('-1 day')
 			)

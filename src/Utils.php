@@ -12,7 +12,7 @@ use InvalidArgumentException;
  * @internal This class is supposed to be used only in this library. Please do not use code from here
  * in your project. Back compatibility of API is not guaranteed here.
  */
-final class IntervalUtils
+final class Utils
 {
 
 	/**

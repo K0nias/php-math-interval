@@ -6,7 +6,7 @@ namespace Achse\Tests\Interval;
 
 use Achse\Comparable\ComparisonMethods;
 use Achse\Comparable\IComparable;
-use Achse\Math\Interval\IntervalUtils;
+use Achse\Math\Interval\Utils;
 
 
 
@@ -47,8 +47,8 @@ class DummyInt implements IComparable
 	 */
 	public function compare(IComparable $other): int
 	{
-		/** @var DummyInt $other */
-		IntervalUtils::validateClassType(static::class, $other);
+		/** @var static $other */
+		Utils::validateClassType(static::class, $other);
 
 		return $this->value <=> $other->toInt();
 	}

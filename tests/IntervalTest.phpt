@@ -13,6 +13,7 @@ require __DIR__ . '/DummyInt.php';
 
 use Achse\Math\Interval\Boundary;
 use Achse\Math\Interval\Integer\Integer;
+use Achse\Math\Interval\Integer\IntegerBoundary;
 use Achse\Math\Interval\Integer\IntegerInterval;
 use Achse\Math\Interval\Integer\IntegerIntervalStringParser as Parser;
 use Achse\Math\Interval\Interval;
@@ -45,7 +46,7 @@ final class IntervalTest extends TestCase
 				Parser::parse('[5, 0]');
 			},
 			IntervalRangesInvalidException::class,
-			'Right endpoint cannot be less then Left endpoint.'
+			'Left endpoint cannot be greater then Right endpoint.'
 		);
 	}
 
@@ -304,6 +305,28 @@ final class IntervalTest extends TestCase
 			[['[1, 5)'], '[1, 5]', '(5, 5)'],
 			[['[1, 5)'], '(5, 5)', '[1, 5]'],
 		];
+	}
+
+
+
+	public function testWithLeftIsImmutable()
+	{
+		$a = Parser::parse('[1, 4]');
+		$b = $a->withLeft(new IntegerBoundary(new Integer(0), Boundary::OPENED));
+		Assert::notSame($a, $b);
+		Assert::equal('[1, 4]', (string) $a);
+		Assert::equal('(0, 4]', (string) $b);
+	}
+
+
+
+	public function testWithRightIsImmutable()
+	{
+		$a = Parser::parse('[1, 4]');
+		$b = $a->withRight(new IntegerBoundary(new Integer(5), Boundary::OPENED));
+		Assert::notSame($a, $b);
+		Assert::equal('[1, 4]', (string) $a);
+		Assert::equal('[1, 5)', (string) $b);
 	}
 
 

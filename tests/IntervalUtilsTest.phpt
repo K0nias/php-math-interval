@@ -10,7 +10,7 @@ namespace Achse\Tests\Interval;
 
 require_once __DIR__ . '/bootstrap.php';
 
-use Achse\Math\Interval\IntervalUtils;
+use Achse\Math\Interval\Utils;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -28,7 +28,7 @@ final class IntervalUtilsTest extends TestCase
 	 */
 	public function testNumberCmp($expected, $first, $second)
 	{
-		Assert::equal($expected, IntervalUtils::numberCmp($first, $second));
+		Assert::equal($expected, Utils::numberCmp($first, $second));
 	}
 
 

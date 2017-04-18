@@ -6,7 +6,7 @@ namespace Achse\Math\Interval\DateTime;
 
 use Achse\Comparable\ComparisonMethods;
 use Achse\Comparable\IComparable;
-use Achse\Math\Interval\IntervalUtils;
+use Achse\Math\Interval\Utils;
 
 
 
@@ -36,9 +36,10 @@ final class DateTime extends \DateTime implements IComparable
 	 */
 	public function compare(IComparable $other): int
 	{
-		IntervalUtils::validateClassType(static::class, $other);
+		/** @var static $other */
+		Utils::validateClassType(static::class, $other);
 
-		return IntervalUtils::numberCmp($this->getTimestamp(), $other->getTimestamp());
+		return Utils::numberCmp($this->getTimestamp(), $other->getTimestamp());
 	}
 
 

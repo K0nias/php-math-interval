@@ -8,7 +8,7 @@ use Achse\Comparable\ComparisonMethods;
 use Achse\Comparable\IComparable;
 use Achse\DateTimeFormatTools\Tools;
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
-use Achse\Math\Interval\IntervalUtils;
+use Achse\Math\Interval\Utils;
 use Achse\Math\Interval\ModificationNotPossibleException;
 use DateTimeInterface;
 use InvalidArgumentException;
@@ -167,9 +167,9 @@ final class SingleDayTime implements IComparable
 	public function compare(IComparable $other): int
 	{
 		/** @var static $other */
-		IntervalUtils::validateClassType(static::class, $other);
+		Utils::validateClassType(static::class, $other);
 
-		return IntervalUtils::numberCmp($this->toSeconds(), $other->toSeconds());
+		return Utils::numberCmp($this->toSeconds(), $other->toSeconds());
 	}
 
 

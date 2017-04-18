@@ -7,9 +7,10 @@
 [![Dependency Status](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef/badge.svg?style=flat)](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef)
 
 ## It's awesome!
-* Heavily tested (nearly 100% coverage),
-* code is clean and predictable,
-* interval is modeled as mathematical entity.
+* Heavily vtested** (nearly 100% coverage),
+* all object are **immutable**,
+* code is **clean and predictable**,
+* interval is modeled as **mathematical entity**.
 
 	<img src="https://img.memesuper.com/85f5a4055aca191d4d841341c41a431e_10-memes-sobre-leonardo-meme-dicaprio_440-264.jpeg" width="150">
 
