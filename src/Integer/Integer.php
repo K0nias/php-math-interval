@@ -8,7 +8,6 @@ use Achse\Comparable\ComparisonMethods;
 use Achse\Comparable\IComparable;
 use Achse\Math\Interval\IntervalUtils;
 use InvalidArgumentException;
-use LogicException;
 
 
 
@@ -54,15 +53,8 @@ final class Integer implements IComparable
 	 */
 	public function compare(IComparable $other): int
 	{
-		if (!$other instanceof static) {
-			throw new LogicException(
-				sprintf(
-					'You cannot compare sheep with the goat. Type %s expected, but %s given.',
-					get_class($this),
-					get_class($other)
-				)
-			);
-		}
+		/** @var static $other */
+		IntervalUtils::validateClassType(static::class, $other);
 
 		return IntervalUtils::numberCmp($this->internal, $other->toInt());
 	}

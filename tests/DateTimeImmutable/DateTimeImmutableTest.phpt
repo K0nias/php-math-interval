@@ -37,7 +37,7 @@ final class DateTimeImmutableTest extends TestCase
 				(new DateTimeImmutable())->compare(new Integer(5));
 			},
 			LogicException::class,
-			'You cannot compare sheep with the goat. Type Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable expected,'
+			'Value must be type of Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable'
 			. ' but Achse\Math\Interval\Integer\Integer given.'
 		);
 	}

@@ -57,7 +57,7 @@ final class IntervalUtils
 		if (!$given instanceof $expectedClassName) {
 			throw new InvalidArgumentException(
 				sprintf(
-					'Precision must by typ of %s but %s given.',
+					'Value must be type of %s but %s given.',
 					$expectedClassName,
 					is_object($given) ? get_class($given) : gettype($given)
 				)

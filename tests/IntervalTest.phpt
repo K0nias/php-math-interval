@@ -9,7 +9,9 @@ declare(strict_types=1);
 namespace Achse\Tests\Interval;
 
 require __DIR__ . '/bootstrap.php';
+require __DIR__ . '/DummyInt.php';
 
+use Achse\Math\Interval\Boundary;
 use Achse\Math\Interval\Integer\Integer;
 use Achse\Math\Interval\Integer\IntegerInterval;
 use Achse\Math\Interval\Integer\IntegerIntervalStringParser as Parser;
@@ -22,6 +24,19 @@ use Tester\TestCase;
 
 final class IntervalTest extends TestCase
 {
+
+	public function testIntervalCanBeUsedStandAlone()
+	{
+
+		$interval = new Interval(
+			new Boundary(new DummyInt(5), Boundary::CLOSED),
+			new Boundary(new DummyInt(6), Boundary::CLOSED)
+		);
+
+		Assert::equal('[5, 6]', (string) $interval);
+	}
+
+
 
 	public function testErrors()
 	{

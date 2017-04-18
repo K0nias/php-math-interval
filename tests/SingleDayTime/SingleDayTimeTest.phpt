@@ -36,7 +36,7 @@ final class SingleDayTimeTest extends TestCase
 				(new SingleDayTime(2, 3, 5))->compare(new DateTimeImmutable());
 			},
 			LogicException::class,
-			'You cannot compare sheep with the goat. Type Achse\Math\Interval\SingleDayTime\SingleDayTime expected,'
+			'Value must be type of Achse\Math\Interval\SingleDayTime\SingleDayTime'
 			. ' but Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable given.'
 		);
 	}

@@ -34,7 +34,7 @@ final class DateTimeTest extends TestCase
 				(new DateTime())->compare(new Integer(5));
 			},
 			LogicException::class,
-			'You cannot compare sheep with the goat. Type Achse\Math\Interval\DateTime\DateTime expected,'
+			'Value must be type of Achse\Math\Interval\DateTime\DateTime'
 			. ' but Achse\Math\Interval\Integer\Integer given.'
 		);
 	}

@@ -12,13 +12,12 @@
 * interval is modeled as mathematical entity.
 
 <img src="https://img.memesuper.com/85f5a4055aca191d4d841341c41a431e_10-memes-sobre-leonardo-meme-dicaprio_440-264.jpeg" width="150">
-## Installation
+
 ```
 composer require achse/php-math-interval
 ```
 
-## Usage
-### Create an interval
+## Create an interval
 Via factories (most simple):
 ```php
 $interval = DateTimeImmutableIntervalFactory::create(
@@ -44,7 +43,7 @@ Parsed from string (used for tests mostly):
 $interval = DateTimeImmutableIntervalStringParser::parse('[2015-01-01 05:00:00, 2015-01-01 10:00:00)');
 ```
 
-### Methods
+## Methods
 Interval object provides powerful tooling for operations with intervals:
 
 ```php
@@ -103,13 +102,13 @@ Parser::parse('[1, 2]')->isColliding(Parser::parse('(2, 3)')); // false
 
 * `isFollowedByAtMidnight` is available for testing continuity of `DateTimeImmutable` / `DateTime` intervals between days.
 
-### Available Types
+## Available Types
 Library contains intervals for those types:
 * `Integer` - classic int,
 * `DateTimeImmutable` and `DateTime` (I strongly advise you to use Immutable only),
 * `SingeDayTime` - represents "clock-time" from *00:00:00* to *23:59:59*.
 
-### Creating your own type
+## Creating your own type
 `Interval` (its `Boundary`) can contains any type that implements `IComparable`, but if you want
 to have type-hinting you may want to write your own `XyInterval` and `XyBoundary` class 
 and probably also `Factory` classes.

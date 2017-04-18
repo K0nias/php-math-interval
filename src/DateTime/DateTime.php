@@ -7,7 +7,6 @@ namespace Achse\Math\Interval\DateTime;
 use Achse\Comparable\ComparisonMethods;
 use Achse\Comparable\IComparable;
 use Achse\Math\Interval\IntervalUtils;
-use LogicException;
 
 
 
@@ -37,15 +36,7 @@ final class DateTime extends \DateTime implements IComparable
 	 */
 	public function compare(IComparable $other): int
 	{
-		if (!$other instanceof static) {
-			throw new LogicException(
-				sprintf(
-					'You cannot compare sheep with the goat. Type %s expected, but %s given.',
-					get_class($this),
-					get_class($other)
-				)
-			);
-		}
+		IntervalUtils::validateClassType(static::class, $other);
 
 		return IntervalUtils::numberCmp($this->getTimestamp(), $other->getTimestamp());
 	}

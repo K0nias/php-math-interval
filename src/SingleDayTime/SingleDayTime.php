@@ -166,15 +166,8 @@ final class SingleDayTime implements IComparable
 	 */
 	public function compare(IComparable $other): int
 	{
-		if (!$other instanceof static) {
-			throw new LogicException(
-				sprintf(
-					'You cannot compare sheep with the goat. Type %s expected, but %s given.',
-					get_class($this),
-					get_class($other)
-				)
-			);
-		}
+		/** @var static $other */
+		IntervalUtils::validateClassType(static::class, $other);
 
 		return IntervalUtils::numberCmp($this->toSeconds(), $other->toSeconds());
 	}

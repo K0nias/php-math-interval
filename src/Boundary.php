@@ -72,9 +72,8 @@ class Boundary implements IComparable
 	 */
 	public function compare(IComparable $other): int
 	{
-		if (!$other instanceof self) { // intentionally self
-			throw new LogicException('You cannot compare sheep with the goat.');
-		}
+		/** @var static $other */
+		IntervalUtils::validateClassType(static::class, $other);
 
 		$comparison = $this->element->compare($other->element);
 
