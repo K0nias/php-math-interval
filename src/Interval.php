@@ -400,10 +400,10 @@ class Interval
 	 */
 	public function getUnion(Interval $other): array
 	{
-		if ($this->isFollowedBy($other)) {
+		if ($this->isOverlappedFromRightBy($other) || $this->isFollowedBy($other)) {
 			return [new static($this->left, $other->getRight())];
 
-		} elseif ($other->isFollowedBy($this)) {
+		} elseif ($other->isOverlappedFromRightBy($this) || $other->isFollowedBy($this)) {
 			return [new static($other->getLeft(), $this->right)];
 		}
 
