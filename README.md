@@ -101,7 +101,7 @@ Parser::parse('[2, 3]')->isColliding(Parser::parse('[1, 2]')); // true
 Parser::parse('[1, 2]')->isColliding(Parser::parse('(2, 3)')); // false
 ```
 
-* `isFollowedByAtMidnight` is available for testing continuity of `DateTimeImmutable` / `DateTime` intervals between days.
+* `isFollowedByWithPrecision` and `isFollowedByAtMidnight` is available for testing continuity of `DateTimeImmutable` / `DateTime` intervals between days.
 
 ## Available Types
 Library contains intervals for those types:

@@ -91,24 +91,36 @@ final class DateTimeImmutableIntervalTest extends TestCase
 
 
 
-	public function testContaining()
+	/**
+	 * @dataProvider getDataForIsContainingTest
+	 *
+	 * @param bool $expected
+	 * @param string $first
+	 * @param string $second
+	 */
+	public function testIsContaining(bool $expected, string $first, string $second)
 	{
-		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-02 01:00:00)');
-		$second = Parser::parse('[2015-01-01 23:30:00, 2015-01-02 00:30:00)');
-		Assert::true($first->isContaining($second));
-		Assert::false($second->isContaining($first));
+		Assert::equal($expected, Parser::parse($first)->isContaining(Parser::parse($second)));
+	}
 
-		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
-		$second = Parser::parse('[2015-01-01 00:30:00, 2015-01-01 01:00:00)');
-		Assert::true($first->isContaining($second));
-		Assert::false($second->isContaining($first));
 
-		$one = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
-		Assert::true($one->isContaining($one));
 
-		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
-		$second = Parser::parse('[2015-01-01 01:00:01, 2015-01-01 02:00:00)');
-		Assert::false($first->isContaining($second));
+	/**
+	 * @return bool[][]|string[][]
+	 */
+	public function getDataForIsContainingTest(): array
+	{
+		return [
+			[TRUE, '[2015-01-01 00:00:00, 2015-01-02 01:00:00)', '[2015-01-01 23:30:00, 2015-01-02 00:30:00)'],
+			[FALSE, '[2015-01-01 23:30:00, 2015-01-02 00:30:00)', '[2015-01-01 00:00:00, 2015-01-02 01:00:00)'],
+
+			[TRUE, '[2015-01-01 00:00:00, 2015-01-01 01:00:00)', '[2015-01-01 00:30:00, 2015-01-01 01:00:00)'],
+			[FALSE, '[2015-01-01 00:30:00, 2015-01-01 01:00:00)', '[2015-01-01 00:00:00, 2015-01-01 01:00:00)'],
+
+			[TRUE, '[2015-01-01 00:00:00, 2015-01-01 01:00:00)', '[2015-01-01 00:00:00, 2015-01-01 01:00:00)'],
+
+			[FALSE, '[2015-01-01 00:00:00, 2015-01-01 01:00:00)', '[2015-01-01 01:00:01, 2015-01-01 02:00:00)'],
+		];
 	}
 
 
