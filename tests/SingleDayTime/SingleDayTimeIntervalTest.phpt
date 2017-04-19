@@ -31,18 +31,39 @@ final class SingleDayTimeIntervalTest extends TestCase
 
 
 
-	public function testFromDateTimeInterval()
+	/**
+	 * @dataProvider getDataForFromDateTimeIntervalTest
+	 *
+	 * @param string $expected
+	 * @param string $input
+	 */
+	public function testFromDateTimeInterval(string $expected, string $input)
 	{
 		$dateTimeInterval = ImmutableParser::parse('[2015-05-10 12:13:14, 2015-05-12 21:22:23)');
 
-		$interval = SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTimeImmutable('2015-05-10'));
-		Assert::equal('[12:13:14, 23:59:59]', (string) $interval);
+		$interval = SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTimeImmutable($input));
+		Assert::equal($expected, (string) $interval);
+	}
 
-		$interval = SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTimeImmutable('2015-05-11'));
-		Assert::equal('[00:00:00, 23:59:59]', (string) $interval);
 
-		$interval = SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTimeImmutable('2015-05-12'));
-		Assert::equal('[00:00:00, 21:22:23)', (string) $interval);
+
+	/**
+	 * @return string[][]
+	 */
+	public function getDataForFromDateTimeIntervalTest(): array
+	{
+		return [
+			['[12:13:14, 23:59:59]', '2015-05-10'],
+			['[00:00:00, 23:59:59]', '2015-05-11'],
+			['[00:00:00, 21:22:23)', '2015-05-12'],
+		];
+	}
+
+
+
+	public function testFromDateTimeIntervalInvalidInput()
+	{
+		$dateTimeInterval = ImmutableParser::parse('[2015-05-10 12:13:14, 2015-05-12 21:22:23)');
 
 		Assert::exception(
 			function () use ($dateTimeInterval) {
