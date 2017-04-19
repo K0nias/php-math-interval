@@ -125,28 +125,41 @@ final class DateTimeImmutableIntervalTest extends TestCase
 
 
 
-	public function testOverlapping()
+	/**
+	 * @dataProvider getDataForOverlapping
+	 *
+	 * @param bool $expected
+	 * @param string $left
+	 * @param string $right
+	 */
+	public function testOverlapping(bool $expected, string $left, string $right)
 	{
-		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 22:30:00)');
-		$second = Parser::parse('[2015-01-01 20:00:00, 2015-01-02 02:00:00)');
-		Assert::true($first->isOverlappedFromRightBy($second));
-		Assert::false($second->isOverlappedFromRightBy($first));
+		Assert::equal($expected, Parser::parse($left)->isOverlappedFromRightBy(Parser::parse($right)));
+	}
 
-		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
-		$second = Parser::parse('[2015-01-01 00:30:00, 2015-01-01 02:00:00)');
-		Assert::true($first->isOverlappedFromRightBy($second));
-		Assert::false($second->isOverlappedFromRightBy($first));
 
-		$one = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
-		Assert::false($one->isOverlappedFromRightBy($one));
 
-		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
-		$second = Parser::parse('[2015-01-01 01:00:01, 2015-01-01 02:00:00)');
-		Assert::false($first->isOverlappedFromRightBy($second));
+	/**
+	 * @return bool[][]|string[][]
+	 */
+	public function getDataForOverlapping(): array
+	{
+		return [
+			[TRUE, '[2015-01-01 00:00:00, 2015-01-01 22:30:00)', '[2015-01-01 20:00:00, 2015-01-02 02:00:00)'],
+			[FALSE, '[2015-01-01 20:00:00, 2015-01-02 02:00:00)', '[2015-01-01 00:00:00, 2015-01-01 22:30:00)'],
 
-		$first = Parser::parse('[2015-01-01 09:00:00, 2015-01-01 16:00:00)');
-		$second = Parser::parse('[2015-01-01 15:00:00, 2015-01-01 22:00:00)');
-		Assert::true($first->isOverlappedFromRightBy($second));
+			[TRUE, '[2015-01-01 00:00:00, 2015-01-01 01:00:00)', '[2015-01-01 00:30:00, 2015-01-01 02:00:00)'],
+			[FALSE, '[2015-01-01 00:30:00, 2015-01-01 02:00:00)', '[2015-01-01 00:00:00, 2015-01-01 01:00:00)'],
+
+			[FALSE, '[2015-01-01 00:00:00, 2015-01-01 01:00:00)', '[2015-01-01 00:00:00, 2015-01-01 01:00:00)'],
+
+			[TRUE, '[2015-01-01 00:00:00, 2015-01-01 01:00:00)', '[2015-01-01 00:30:00, 2015-01-01 02:00:00)'],
+			[FALSE, '[2015-01-01 00:30:00, 2015-01-01 02:00:00)', '[2015-01-01 00:00:00, 2015-01-01 01:00:00)'],
+
+			[FALSE, '[2015-01-01 00:00:00, 2015-01-01 01:00:00)', '[2015-01-01 01:00:01, 2015-01-01 02:00:00)'],
+
+			[TRUE, '[2015-01-01 09:00:00, 2015-01-01 16:00:00)', '[2015-01-01 15:00:00, 2015-01-01 22:00:00)'],
+		];
 	}
 
 
