@@ -10,6 +10,7 @@ namespace Achse\Tests\Interval\SingleDayTime;
 
 require __DIR__ . '/../bootstrap.php';
 
+use Achse\Math\Interval\DateTime\DateTime;
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
 use Achse\Math\Interval\ModificationNotPossibleException;
 use Achse\Math\Interval\SingleDayTime\SingleDayTime;
@@ -52,27 +53,33 @@ final class SingleDayTimeTest extends TestCase
 
 
 
-	public function testAdd()
+	/**
+	 * @dataProvider getDataForAddTest
+	 *
+	 * @param string $expected
+	 * @param SingleDayTime $first
+	 * @param SingleDayTime $second
+	 */
+	public function testAdd(string $expected, SingleDayTime $first, SingleDayTime $second)
 	{
-		$a = new SingleDayTime(1, 1, 1);
-		$a = $a->add(new SingleDayTime(1, 1, 1));
-		Assert::equal('02:02:02', $a->format('H:i:s'));
+		$result = $first->add($second);
+		Assert::equal($expected, $result->format('H:i:s'));
+	}
 
-		$a = new SingleDayTime(0, 0, 59);
-		$a = $a->add(new SingleDayTime(0, 0, 1));
-		Assert::equal('00:01:00', $a->format('H:i:s'));
 
-		$a = new SingleDayTime(0, 59, 59);
-		$a = $a->add(new SingleDayTime(0, 0, 1));
-		Assert::equal('01:00:00', $a->format('H:i:s'));
 
-		$a = new SingleDayTime(0, 59, 59);
-		$a = $a->add(new SingleDayTime(0, 0, 2));
-		Assert::equal('01:00:01', $a->format('H:i:s'));
-
-		$a = new SingleDayTime(0, 59, 59);
-		$a = $a->add(new SingleDayTime(0, 1, 2));
-		Assert::equal('01:01:01', $a->format('H:i:s'));
+	/**
+	 * @return string[][]|SingleDayTime[][]
+	 */
+	public function getDataForAddTest(): array
+	{
+		return [
+			['02:02:02', new SingleDayTime(1, 1, 1), new SingleDayTime(1, 1, 1)],
+			['00:01:00', new SingleDayTime(0, 0, 59), new SingleDayTime(0, 0, 1)],
+			['01:00:00', new SingleDayTime(0, 59, 59), new SingleDayTime(0, 0, 1)],
+			['01:00:01', new SingleDayTime(0, 59, 59), new SingleDayTime(0, 0, 2)],
+			['01:01:01', new SingleDayTime(0, 59, 59), new SingleDayTime(0, 1, 2)],
+		];
 	}
 
 
@@ -100,23 +107,32 @@ final class SingleDayTimeTest extends TestCase
 
 
 
-	public function testSub()
+	/**
+	 * @dataProvider getDataForSubTest
+	 *
+	 * @param string $expected
+	 * @param SingleDayTime $first
+	 * @param SingleDayTime $second
+	 */
+	public function testSub(string $expected, SingleDayTime $first, SingleDayTime $second)
 	{
-		$a = new SingleDayTime(1, 1, 1);
-		$a = $a->sub(new SingleDayTime(1, 1, 1));
-		Assert::equal('00:00:00', $a->format('H:i:s'));
+		$result = $first->sub($second);
+		Assert::equal($expected, $result->format('H:i:s'));
+	}
 
-		$a = new SingleDayTime(10, 10, 10);
-		$a = $a->sub(new SingleDayTime(0, 0, 40));
-		Assert::equal('10:09:30', $a->format('H:i:s'));
 
-		$a = new SingleDayTime(10, 10, 5);
-		$a = $a->sub(new SingleDayTime(0, 12, 40));
-		Assert::equal('09:57:25', $a->format('H:i:s'));
 
-		$a = new SingleDayTime(1, 0, 0);
-		$a = $a->sub(new SingleDayTime(0, 0, 1));
-		Assert::equal('00:59:59', $a->format('H:i:s'));
+	/**
+	 * @return string[][]|SingleDayTime[][]
+	 */
+	public function getDataForSubTest(): array
+	{
+		return [
+			['00:00:00', new SingleDayTime(1, 1, 1), new SingleDayTime(1, 1, 1)],
+			['10:09:30', new SingleDayTime(10, 10, 10), new SingleDayTime(0, 0, 40)],
+			['09:57:25', new SingleDayTime(10, 10, 5), new SingleDayTime(0, 12, 40)],
+			['00:59:59', new SingleDayTime(1, 0, 0), new SingleDayTime(0, 0, 1)],
+		];
 	}
 
 
@@ -132,18 +148,17 @@ final class SingleDayTimeTest extends TestCase
 
 
 
-	public function testInvalidSub()
+	/**
+	 * @dataProvider getDataForInvalidSubTest
+	 *
+	 * @param SingleDayTime $first
+	 * @param SingleDayTime $second
+	 */
+	public function testInvalidSub(SingleDayTime $first, SingleDayTime $second)
 	{
 		Assert::exception(
-			function () {
-				(new SingleDayTime(0, 0, 0))->sub(new SingleDayTime(0, 0, 1));
-			},
-			ModificationNotPossibleException::class
-		);
-
-		Assert::exception(
-			function () {
-				(new SingleDayTime(23, 59, 58))->sub(new SingleDayTime(23, 59, 59));
+			function () use ($first, $second) {
+				$first->sub($second);
 			},
 			ModificationNotPossibleException::class
 		);
@@ -151,22 +166,52 @@ final class SingleDayTimeTest extends TestCase
 
 
 
-	public function testModify()
+	/**
+	 * @return SingleDayTime[][]
+	 */
+	public function getDataForInvalidSubTest(): array
+	{
+		return [
+			[new SingleDayTime(0, 0, 0), new SingleDayTime(0, 0, 1)],
+			[new SingleDayTime(23, 59, 58), new SingleDayTime(23, 59, 59)],
+		];
+	}
+
+
+
+	/**
+	 * @dataProvider getDataForModifyTest
+	 *
+	 * @param string $expected
+	 * @param string $given
+	 */
+	public function testModify(string $expected, string $given)
 	{
 		$time = new SingleDayTime(10, 10, 10);
 
-		$time = $time->modify('+1 hour');
-		Assert::equal('11:10:10', $time->format('H:i:s'));
+		$time = $time->modify($given);
+		Assert::equal($expected, $time->format('H:i:s'));
+	}
 
-		$time = $time->modify('+1 minute');
-		Assert::equal('11:11:10', $time->format('H:i:s'));
 
-		$time = $time->modify('+1 second');
-		Assert::equal('11:11:11', $time->format('H:i:s'));
 
-		$time = $time->modify('-80 seconds');
-		Assert::equal('11:09:51', $time->format('H:i:s'));
+	/**
+	 * @return string[][]
+	 */
+	public function getDataForModifyTest(): array
+	{
+		return [
+			['11:10:10', '+1 hour'],
+			['10:11:10', '+1 minute'],
+			['10:10:11', '+1 second'],
+			['10:08:50', '-80 seconds'],
+		];
+	}
 
+
+
+	public function testModifyInvalidInput()
+	{
 		Assert::exception(
 			function () {
 				(new SingleDayTime(5, 14, 58))->modify('-6 hours');
@@ -196,13 +241,35 @@ final class SingleDayTimeTest extends TestCase
 
 
 
-	public function testFrom()
+	/**
+	 * @dataProvider getDataForFromTest
+	 *
+	 * @param string $expected
+	 * @param string|\DateTimeInterface|SingleDayTime $input
+	 */
+	public function testFrom(string $expected, $input)
 	{
-		$time = SingleDayTime::from('01:02:03');
-		Assert::equal('01:02:03', $time->format('H:i:s'));
+		$time = SingleDayTime::from($input);
+		Assert::equal($expected, $time->format('H:i:s'));
+	}
 
-		$time = SingleDayTime::from(new SingleDayTime(4, 17, 39));
-		Assert::equal('04:17:39', $time->format('H:i:s'));
+
+
+	/**
+	 * @return string[][]
+	 */
+	public function getDataForFromTest()
+	{
+		return [
+			['01:02:03', '01:02:03'],
+			['04:17:39', new SingleDayTime(4, 17, 39)],
+
+			['04:17:39', new \DateTime('2017-04-18 04:17:39')],
+			['04:17:39', new \DateTimeImmutable('2017-04-18 04:17:39')],
+
+			['04:17:39', new DateTime('2017-04-18 04:17:39')],
+			['04:17:39', new DateTimeImmutable('2017-04-18 04:17:39')],
+		];
 	}
 
 
