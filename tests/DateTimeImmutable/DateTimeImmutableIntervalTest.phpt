@@ -20,29 +20,73 @@ use Tester\TestCase;
 final class DateTimeImmutableIntervalTest extends TestCase
 {
 
-	public function testConsolidation()
+	/**
+	 * @dataProvider getDataForConsolidationTest
+	 *
+	 * @param bool $expected
+	 * @param string $first
+	 * @param string $second
+	 * @param string $precision
+	 */
+	public function testConsolidation(bool $expected, string $first, string $second, string $precision)
 	{
-		$first = Parser::parse('[2014-12-31 00:00:00, 2014-12-31 23:59:59)');
-		$second = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 02:00:00)');
-		Assert::true($first->isFollowedByWithPrecision($second, '+1 second'));
-		Assert::false($second->isFollowedByWithPrecision($first, '+1 second'));
+		Assert::equal($expected, Parser::parse($first)->isFollowedByWithPrecision(Parser::parse($second), $precision));
+	}
 
-		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
-		$second = Parser::parse('[2015-01-01 01:00:01, 2015-02-01 02:00:00)');
-		Assert::true($first->isFollowedByWithPrecision($second, '+1 second'));
-		Assert::false($second->isFollowedByWithPrecision($first, '+1 second'));
 
-		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
-		$second = Parser::parse('[2015-01-01 01:00:02, 2015-01-01 02:00:00)');
-		Assert::false($first->isFollowedByWithPrecision($second, '+1 second'));
 
-		$allDay = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 23:59:59)');
-		Assert::false($allDay->isFollowedByWithPrecision($allDay, '+1 second'));
+	/**
+	 * @return bool[][]|string[][]
+	 */
+	public function getDataForConsolidationTest(): array
+	{
+		return [
+			[
+				TRUE,
+				'[2014-12-31 00:00:00, 2014-12-31 23:59:59)',
+				'[2015-01-01 00:00:00, 2015-01-01 02:00:00)',
+				'+1 second',
+			],
+			[
+				FALSE,
+				'[2015-01-01 00:00:00, 2015-01-01 02:00:00)',
+				'[2014-12-31 00:00:00, 2014-12-31 23:59:59)',
+				'+1 second',
+			],
 
-		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:38:00)');
-		$second = Parser::parse('[2015-01-01 01:39:00, 2015-01-01 02:00:00)');
-		Assert::false($first->isFollowedByWithPrecision($second, '+1 second'));
-		Assert::true($first->isFollowedByWithPrecision($second, '+1 minute'));
+			[
+				TRUE,
+				'[2015-01-01 00:00:00, 2015-01-01 01:00:00)',
+				'[2015-01-01 01:00:01, 2015-02-01 02:00:00)',
+				'+1 second',
+			],
+			[
+				FALSE,
+				'[2015-01-01 01:00:01, 2015-02-01 02:00:00)',
+				'[2015-01-01 00:00:00, 2015-01-01 01:00:00)',
+				'+1 second',
+			],
+
+			[
+				FALSE,
+				'[2015-01-01 00:00:00, 2015-01-01 23:59:59)',
+				'[2015-01-01 00:00:00, 2015-01-01 23:59:59)',
+				'+1 second',
+			],
+
+			[
+				FALSE,
+				'[2015-01-01 00:00:00, 2015-01-01 01:38:00)',
+				'[2015-01-01 01:39:00, 2015-01-01 02:00:00)',
+				'+1 second',
+			],
+			[
+				FALSE,
+				'[2015-01-01 01:39:00, 2015-01-01 02:00:00)',
+				'[2015-01-01 00:00:00, 2015-01-01 01:38:00)',
+				'+1 minute',
+			],
+		];
 	}
 
 
