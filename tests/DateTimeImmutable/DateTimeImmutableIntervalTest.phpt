@@ -174,9 +174,9 @@ final class DateTimeImmutableIntervalTest extends TestCase
 	public function testIntersection(?string $expected, string $first, string $second)
 	{
 		$intersection = Parser::parse($first)->intersection(Parser::parse($second));
-		Assert::equal($expected, $intersection === null ? $intersection : (string) $intersection);
+		Assert::equal($expected, $intersection === NULL ? $intersection : (string) $intersection);
 		$intersection = Parser::parse($second)->intersection(Parser::parse($first));
-		Assert::equal($expected, $intersection === null ? $intersection : (string) $intersection);
+		Assert::equal($expected, $intersection === NULL ? $intersection : (string) $intersection);
 	}
 
 
@@ -217,18 +217,31 @@ final class DateTimeImmutableIntervalTest extends TestCase
 
 
 
-	public function testIsFollowedByAtMidnight()
+	/**
+	 * @dataProvider getDataForIsFollowedByMidnight
+	 *
+	 * @param bool $expected
+	 * @param string $first
+	 * @param string $second
+	 */
+	public function testIsFollowedByAtMidnight(bool $expected, string $first, string $second)
 	{
-		$first = Parser::parse('[2015-03-04 20:00:00, 2015-03-04 23:59:59)');
-		$second = Parser::parse('[2015-03-05 00:00:00, 2015-03-05 04:00:00)');
+		Assert::equal($expected, Parser::parse($first)->isFollowedByAtMidnight(Parser::parse($second)));
+	}
 
-		Assert::true($first->isFollowedByAtMidnight($second));
-		Assert::false($second->isFollowedByAtMidnight($first));
 
-		$first = Parser::parse('[2015-03-03 20:00:00, 2015-03-03 23:59:59)');
-		$secondShiftedByDay = Parser::parse('[2015-03-05 00:00:00, 2015-03-05 04:00:00)');
 
-		Assert::false($first->isFollowedByAtMidnight($secondShiftedByDay));
+	/**
+	 * @return bool[][]|string[][]
+	 */
+	public function getDataForIsFollowedByMidnight(): array
+	{
+		return [
+			[TRUE, '[2015-03-04 20:00:00, 2015-03-04 23:59:59)', '[2015-03-05 00:00:00, 2015-03-05 04:00:00)'],
+			[FALSE, '[2015-03-05 00:00:00, 2015-03-05 04:00:00)', '[2015-03-04 20:00:00, 2015-03-04 23:59:59)'],
+
+			[FALSE, '[2015-03-03 20:00:00, 2015-03-03 23:59:59)', '[2015-03-05 00:00:00, 2015-03-05 04:00:00)'],
+		];
 	}
 
 
