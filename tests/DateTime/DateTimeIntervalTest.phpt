@@ -164,37 +164,55 @@ final class DateTimeIntervalTest extends TestCase
 
 
 
-	public function testIntersection()
+	/**
+	 * @dataProvider getDataForIntersectionTest
+	 *
+	 * @param string|null $expected
+	 * @param string $first
+	 * @param string $second
+	 */
+	public function testIntersection(?string $expected, string $first, string $second)
 	{
-		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-02 01:00:00)');
-		$second = Parser::parse('[2015-01-01 22:30:00, 2015-01-02 02:00:00)');
-		$intersection = $first->getIntersection($second);
-		Assert::equal('[2015-01-01 22:30:00, 2015-01-02 01:00:00)', (string) $intersection);
-		$intersection = $second->getIntersection($first);
-		Assert::equal('[2015-01-01 22:30:00, 2015-01-02 01:00:00)', (string) $intersection);
+		$intersection = Parser::parse($first)->intersection(Parser::parse($second));
+		Assert::equal($expected, $intersection === null ? $intersection : (string) $intersection);
+		$intersection = Parser::parse($second)->intersection(Parser::parse($first));
+		Assert::equal($expected, $intersection === null ? $intersection : (string) $intersection);
+	}
 
-		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
-		$second = Parser::parse('[2015-01-01 00:30:00, 2015-01-01 02:00:00)');
-		$intersection = $first->getIntersection($second);
-		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 01:00:00)', (string) $intersection);
-		$intersection = $second->getIntersection($first);
-		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 01:00:00)', (string) $intersection);
 
-		$one = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
-		$intersection = $one->getIntersection($one);
-		Assert::equal((string) $one, (string) $intersection);
 
-		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
-		$second = Parser::parse('[2015-01-01 05:00:00, 2015-01-01 10:00:00)');
-		$intersection = $first->getIntersection($second);
-		Assert::null($intersection);
-
-		$first = Parser::parse('[2015-01-01 00:00:00, 2015-01-01 01:00:00)');
-		$second = Parser::parse('[2015-01-01 00:30:00, 2015-01-01 00:45:00)');
-		$intersection = $first->getIntersection($second);
-		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 00:45:00)', (string) $intersection);
-		$intersection = $second->getIntersection($first);
-		Assert::equal('[2015-01-01 00:30:00, 2015-01-01 00:45:00)', (string) $intersection);
+	/**
+	 * @return string[][]
+	 */
+	public function getDataForIntersectionTest(): array
+	{
+		return [
+			[
+				'[2015-01-01 22:30:00, 2015-01-02 01:00:00)',
+				'[2015-01-01 00:00:00, 2015-01-02 01:00:00)',
+				'[2015-01-01 22:30:00, 2015-01-02 02:00:00)',
+			],
+			[
+				'[2015-01-01 00:30:00, 2015-01-01 01:00:00)',
+				'[2015-01-01 00:00:00, 2015-01-01 01:00:00)',
+				'[2015-01-01 00:30:00, 2015-01-01 02:00:00)',
+			],
+			[
+				'[2015-01-01 00:00:00, 2015-01-01 01:00:00)',
+				'[2015-01-01 00:00:00, 2015-01-01 01:00:00)',
+				'[2015-01-01 00:00:00, 2015-01-01 01:00:00)',
+			],
+			[
+				NULL,
+				'[2015-01-01 00:00:00, 2015-01-01 01:00:00)',
+				'[2015-01-01 05:00:00, 2015-01-01 10:00:00)',
+			],
+			[
+				'[2015-01-01 00:30:00, 2015-01-01 00:45:00)',
+				'[2015-01-01 00:00:00, 2015-01-01 01:00:00)',
+				'[2015-01-01 00:30:00, 2015-01-01 00:45:00)',
+			],
+		];
 	}
 
 

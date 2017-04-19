@@ -60,23 +60,23 @@ $interval->isContainingElement(new Integer(3)); // false
 * Get intersection between two intervals
 ```php
 // (1, 3) ∩ (2, 4) ⟺ (2, 3)
-Parser::parse('(1, 3)')->getIntersection(Parser::parse('(2, 4)')); // (2, 3)
+Parser::parse('(1, 3)')->intersection(Parser::parse('(2, 4)')); // (2, 3)
 ```
 
 * Get union of two intervals
 ```php
 // Union of overlapping intervals
-Parser::parse('[1, 3]')->getUnion(Parser::parse('[2, 4]')); // ['[1, 4]']
+Parser::parse('[1, 3]')->union(Parser::parse('[2, 4]')); // ['[1, 4]']
 // Union of not overlapping intervals
-Parser::parse('[1, 2)')->getUnion(Parser::parse('[3, 4]')); // ['[1, 4]']
+Parser::parse('[1, 2)')->union(Parser::parse('[3, 4]')); // ['[1, 4]']
 // Union of two distant intervals is array of those two intervals 
-Parser::parse('[1, 2]')->getUnion(Parser::parse('[3, 4]')); // ['[1, 2], [3, 4]']
+Parser::parse('[1, 2]')->union(Parser::parse('[3, 4]')); // ['[1, 2], [3, 4]']
 ```
 
 * Diff two intervals
 ```php
 // [1, 4] \ [2, 3]
-Parser::parse('[1, 4]')->getDifference(Parser::parse('[2, 3]')); // ['[1,2)', '(3, 4]']
+Parser::parse('[1, 4]')->difference(Parser::parse('[2, 3]')); // ['[1,2)', '(3, 4]']
 ```
 
 * Test if one interval contains the other

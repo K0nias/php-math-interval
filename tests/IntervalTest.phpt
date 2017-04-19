@@ -195,71 +195,71 @@ final class IntervalTest extends TestCase
 	{
 		$intervalTwoTwoClosed = Parser::parse('[2, 2]');
 
-		$intersection = Parser::parse('[1, 2]')->getIntersection(Parser::parse('[2, 3]'));
+		$intersection = Parser::parse('[1, 2]')->intersection(Parser::parse('[2, 3]'));
 		$this->assertInterval($intervalTwoTwoClosed, $intersection);
 
-		$intersection = Parser::parse('[2, 3]')->getIntersection(Parser::parse('[1, 2]'));
+		$intersection = Parser::parse('[2, 3]')->intersection(Parser::parse('[1, 2]'));
 		$this->assertInterval($intervalTwoTwoClosed, $intersection);
 
-		Assert::null(Parser::parse('[1, 2]')->getIntersection(Parser::parse('(2, 3)')));
-		Assert::null(Parser::parse('(1, 2)')->getIntersection(Parser::parse('[2, 3]')));
+		Assert::null(Parser::parse('[1, 2]')->intersection(Parser::parse('(2, 3)')));
+		Assert::null(Parser::parse('(1, 2)')->intersection(Parser::parse('[2, 3]')));
 
 		$intervalTwoThreeOpened = Parser::parse('(2, 3)');
 
 		// (1, 3) ∩ (2, 4) ⟺ (2, 3)
-		$intersection = Parser::parse('(1, 3)')->getIntersection(Parser::parse('(2, 4)'));
+		$intersection = Parser::parse('(1, 3)')->intersection(Parser::parse('(2, 4)'));
 		$this->assertInterval($intervalTwoThreeOpened, $intersection);
 
-		$intersection = Parser::parse('(2, 4)')->getIntersection(Parser::parse('(1, 3)'));
+		$intersection = Parser::parse('(2, 4)')->intersection(Parser::parse('(1, 3)'));
 		$this->assertInterval($intervalTwoThreeOpened, $intersection);
 	}
 
 
 
-	public function testGetDifference()
+	public function testDifference()
 	{
 		// [1, 4] \ [0, 5]
-		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('[0, 5]'));
+		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('[0, 5]'));
 		Assert::count(0, $diff);
 
 		// [1, 4] \ [1, 4]
-		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('[1, 4]'));
+		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('[1, 4]'));
 		Assert::count(0, $diff);
 
 		// (1, 4) \ (1, 4)
-		$diff = Parser::parse('(1, 4)')->getDifference(Parser::parse('(1, 4)'));
+		$diff = Parser::parse('(1, 4)')->difference(Parser::parse('(1, 4)'));
 		Assert::count(0, $diff);
 
 		// [1, 4] \ [2, 4]
-		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('[2, 4]'));
+		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('[2, 4]'));
 		Assert::count(1, $diff);
 		Assert::equal('[1, 2)', (string) reset($diff));
 
 		// [1, 4] \ [1, 2]
-		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('[1, 2]'));
+		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('[1, 2]'));
 		Assert::count(1, $diff);
 		Assert::equal('(2, 4]', (string) reset($diff));
 
 		// [1, 4] \ (2, 4)
-		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('(2, 4)'));
+		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('(2, 4)'));
 		Assert::count(2, $diff);
 		Assert::equal('[1, 2]', (string) $diff[0]);
 		Assert::equal('[4, 4]', (string) $diff[1]);
 
 		// [1, 4] \ (1, 2)
-		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('(1, 2)'));
+		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('(1, 2)'));
 		Assert::count(2, $diff);
 		Assert::equal('[1, 1]', (string) $diff[0]);
 		Assert::equal('[2, 4]', (string) $diff[1]);
 
 		// [1, 4] \ [2, 3]
-		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('[2, 3]'));
+		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('[2, 3]'));
 		Assert::count(2, $diff);
 		Assert::equal('[1, 2)', (string) $diff[0]);
 		Assert::equal('(3, 4]', (string) $diff[1]);
 
 		// [1, 4] \ (2, 3)
-		$diff = Parser::parse('[1, 4]')->getDifference(Parser::parse('(2, 3)'));
+		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('(2, 3)'));
 		Assert::count(2, $diff);
 		Assert::equal('[1, 2]', (string) $diff[0]);
 		Assert::equal('[3, 4]', (string) $diff[1]);
@@ -274,9 +274,9 @@ final class IntervalTest extends TestCase
 	 * @param string $first
 	 * @param string $second
 	 */
-	public function testGetUnion(array $expected, string $first, string $second)
+	public function testUnion(array $expected, string $first, string $second)
 	{
-		$union = Parser::parse($first)->getUnion(Parser::parse($second));
+		$union = Parser::parse($first)->union(Parser::parse($second));
 		Assert::equal($expected, $this->intervalArrayToString($union));
 	}
 

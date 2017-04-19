@@ -285,7 +285,7 @@ class Interval
 	 * @param Interval $other
 	 * @return static|NULL
 	 */
-	public function getIntersection(Interval $other)
+	public function intersection(Interval $other)
 	{
 		$a = $this;
 		$b = $other;
@@ -353,9 +353,9 @@ class Interval
 	 * @param Interval $other
 	 * @return Interval[]
 	 */
-	public function getDifference(Interval $other): array
+	public function difference(Interval $other): array
 	{
-		if (($other = $this->getIntersection($other)) === NULL) {
+		if (($other = $this->intersection($other)) === NULL) {
 			return [$this];
 		}
 
@@ -396,7 +396,7 @@ class Interval
 	 * @param Interval $other
 	 * @return Interval[]
 	 */
-	public function getUnion(Interval $other): array
+	public function union(Interval $other): array
 	{
 		if ($this->isOverlappedFromRightBy($other) || $this->isFollowedBy($other)) {
 			return [new static($this->left, $other->getRight())];

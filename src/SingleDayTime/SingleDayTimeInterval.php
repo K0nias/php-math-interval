@@ -58,7 +58,7 @@ final class SingleDayTimeInterval extends Interval
 		$thisDayInterval = self::buildWholeDayInterval($date);
 
 		/** @var DateTimeImmutableInterval $intersection */
-		$intersection = $thisDayInterval->getIntersection($interval);
+		$intersection = $thisDayInterval->intersection($interval);
 
 		if ($intersection === NULL) {
 			throw new InvalidArgumentException('Given day does not hits given interval. No intersection possible.');
