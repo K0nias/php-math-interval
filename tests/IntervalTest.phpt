@@ -52,19 +52,32 @@ final class IntervalTest extends TestCase
 
 
 
-	public function testOpenedClosed()
+	/**
+	 * @dataProvider getDataForOpenedClosedTest
+	 *
+	 * @param bool $expectedOpened
+	 * @param bool $expectedClosed
+	 * @param string $interval
+	 */
+	public function testOpenedClosed(bool $expectedOpened, bool $expectedClosed, string $interval)
 	{
-		Assert::true(Parser::parse('[1, 4]')->isClosed());
-		Assert::false(Parser::parse('[1, 4]')->isOpened());
+		Assert::equal($expectedOpened, Parser::parse($interval)->isOpened());
+		Assert::equal($expectedClosed, Parser::parse($interval)->isClosed());
+	}
 
-		Assert::false(Parser::parse('(1, 4)')->isClosed());
-		Assert::true(Parser::parse('(1, 4)')->isOpened());
 
-		Assert::false((Parser::parse('[1, 2)')->isOpened()));
-		Assert::false((Parser::parse('[1, 2)')->isClosed()));
 
-		Assert::false((Parser::parse('(1, 2]')->isOpened()));
-		Assert::false((Parser::parse('(1, 2]')->isClosed()));
+	/**
+	 * @return bool[][]|string[]
+	 */
+	public function getDataForOpenedClosedTest(): array
+	{
+		return [
+			[FALSE, TRUE, '[1, 4]'],
+			[TRUE, FALSE, '(1, 4)'],
+			[FALSE, FALSE, '[1, 2)'],
+			[FALSE, FALSE, '(1, 2]'],
+		];
 	}
 
 
