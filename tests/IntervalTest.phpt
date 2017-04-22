@@ -82,62 +82,136 @@ final class IntervalTest extends TestCase
 
 
 
-	public function testIsDegenerate()
+	/**
+	 * @dataProvider getDataForIsDegenerate
+	 *
+	 * @param bool $expected
+	 * @param string $given
+	 */
+	public function testIsDegenerate(bool $expected, string $given)
 	{
-		Assert::true((Parser::parse('[1, 1]')->isDegenerate()));
-
-		Assert::false((Parser::parse('(1, 1)')->isDegenerate()));
-		Assert::false((Parser::parse('(1, 1]')->isDegenerate()));
-
-		Assert::false(Parser::parse('[1, 4]')->isDegenerate());
-		Assert::false(Parser::parse('(1, 4)')->isDegenerate());
+		Assert::equal($expected, Parser::parse($given)->isDegenerate());
 	}
 
 
 
-	public function testIsProper()
+	/**
+	 * @return bool[][]|string[][]
+	 */
+	public function getDataForIsDegenerate(): array
 	{
-		Assert::false((Parser::parse('[1, 1]')->isProper()));
-		Assert::false((Parser::parse('(1, 1)')->isProper()));
-		Assert::false((Parser::parse('(1, 1]')->isProper()));
+		return [
+			[TRUE, '[1, 1]'],
+			[FALSE, '(1, 1)'],
+			[FALSE, '(1, 1]'],
 
-		Assert::true(Parser::parse('[1, 4]')->isProper());
-		Assert::true(Parser::parse('(1, 4)')->isProper());
+			[FALSE, '[1, 4]'],
+			[FALSE, '[1, 4)'],
+			[FALSE, '(1, 4]'],
+			[FALSE, '(1, 4)'],
+		];
 	}
 
 
 
-	public function testIsEmpty()
+	/**
+	 * @dataProvider getDataForIsProper
+	 *
+	 * @param bool $expected
+	 * @param string $given
+	 */
+	public function testIsProper(bool $expected, string $given)
 	{
-		Assert::true((Parser::parse('(1, 1)')->isEmpty()));
-		Assert::true((Parser::parse('(1, 1]')->isEmpty()));
-		Assert::false((Parser::parse('[1, 1]')->isEmpty()));
-
-		Assert::false(Parser::parse('[1, 4]')->isEmpty());
-		Assert::false(Parser::parse('(1, 4)')->isEmpty());
+		Assert::equal($expected, Parser::parse($given)->isProper());
 	}
 
 
 
-	public function testIsContainingElement()
+	/**
+	 * @return bool[][]|string[][]
+	 */
+	public function getDataForIsProper(): array
 	{
-		$interval = Parser::parse('[1, 2]');
-		Assert::true($interval->isContainingElement(new Integer(1)));
-		Assert::true($interval->isContainingElement(new Integer(2)));
+		return [
+			[FALSE, '[1, 1]'],
+			[FALSE, '(1, 1)'],
+			[FALSE, '(1, 1]'],
 
-		$interval = Parser::parse('(1, 2)');
-		Assert::false($interval->isContainingElement(new Integer(1)));
-		Assert::false($interval->isContainingElement(new Integer(2)));
+			[TRUE, '[1, 4]'],
+			[TRUE, '[1, 4)'],
+			[TRUE, '(1, 4]'],
+			[TRUE, '(1, 4)'],
+		];
+	}
 
-		$interval = Parser::parse('[1, 3)');
-		Assert::true($interval->isContainingElement(new Integer(1)));
-		Assert::true($interval->isContainingElement(new Integer(2)));
-		Assert::false($interval->isContainingElement(new Integer(3)));
 
-		$interval = Parser::parse('(1, 3]');
-		Assert::false($interval->isContainingElement(new Integer(1)));
-		Assert::true($interval->isContainingElement(new Integer(2)));
-		Assert::true($interval->isContainingElement(new Integer(3)));
+
+	/**
+	 * @dataProvider getDataForIsEmpty
+	 *
+	 * @param bool $expected
+	 * @param string $given
+	 */
+	public function testIsEmpty(bool $expected, string $given)
+	{
+		Assert::equal($expected, Parser::parse($given)->isEmpty());
+	}
+
+
+
+	/**
+	 * @return bool[][]|string[][]
+	 */
+	public function getDataForIsEmpty(): array
+	{
+		return [
+			[FALSE, '[1, 1]'],
+			[TRUE, '(1, 1)'],
+			[TRUE, '(1, 1]'],
+
+			[FALSE, '[1, 4]'],
+			[FALSE, '[1, 4)'],
+			[FALSE, '(1, 4]'],
+			[FALSE, '(1, 4)'],
+		];
+	}
+
+
+
+	/**
+	 * @dataProvider getDataForIsContainingElement
+	 *
+	 * @param bool $expected
+	 * @param string $interval
+	 * @param int $element
+	 */
+	public function testIsContainingElement(bool $expected, string $interval, Integer $element)
+	{
+		Assert::equal($expected, Parser::parse($interval)->isContainingElement($element));
+	}
+
+
+
+	/**
+	 * @return bool[][]|string[][]|Integer
+	 */
+	public function getDataForIsContainingElement(): array
+	{
+		return [
+			[TRUE, '[1, 2]', new Integer(1)],
+			[TRUE, '[1, 2]', new Integer(2)],
+
+			[FALSE, '(1, 2)', new Integer(1)],
+			[FALSE, '(1, 2)', new Integer(2)],
+
+			[TRUE, '[1, 3)', new Integer(1)],
+			[TRUE, '[1, 3)', new Integer(2)],
+			[FALSE, '[1, 3)', new Integer(3)],
+
+			[FALSE, '(1, 3]', new Integer(1)],
+			[TRUE, '(1, 3]', new Integer(2)],
+			[TRUE, '(1, 3]', new Integer(3)],
+		];
 	}
 
 
