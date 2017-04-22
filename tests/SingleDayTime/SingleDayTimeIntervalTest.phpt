@@ -14,7 +14,6 @@ use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutableIntervalStringParser as ImmutableParser;
 use Achse\Math\Interval\SingleDayTime\SingleDayTimeInterval;
 use Achse\Math\Interval\SingleDayTime\SingleDayTimeIntervalStringParser as Parser;
-use InvalidArgumentException;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -56,21 +55,8 @@ final class SingleDayTimeIntervalTest extends TestCase
 			['[12:13:14, 23:59:59]', '2015-05-10'],
 			['[00:00:00, 23:59:59]', '2015-05-11'],
 			['[00:00:00, 21:22:23)', '2015-05-12'],
+			'No intersection results in empty interval' => ['(00:00:00, 00:00:00)', '2015-05-13'],
 		];
-	}
-
-
-
-	public function testFromDateTimeIntervalInvalidInput()
-	{
-		$dateTimeInterval = ImmutableParser::parse('[2015-05-10 12:13:14, 2015-05-12 21:22:23)');
-
-		Assert::exception(
-			function () use ($dateTimeInterval) {
-				SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTimeImmutable('2015-05-13'));
-			},
-			InvalidArgumentException::class
-		);
 	}
 
 

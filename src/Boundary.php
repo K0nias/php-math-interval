@@ -125,6 +125,26 @@ class Boundary implements IComparable
 
 
 	/**
+	 * @return static
+	 */
+	public function asOpened(): Boundary
+	{
+		return new static($this->element, Boundary::OPENED);
+	}
+
+
+
+	/**
+	 * @return static
+	 */
+	public function asClosed(): Boundary
+	{
+		return new static($this->element, Boundary::CLOSED);
+	}
+
+
+
+	/**
 	 * @param IComparable $element
 	 * @param string $type
 	 */

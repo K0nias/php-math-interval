@@ -25,6 +25,60 @@ final class BoundaryTest extends TestCase
 
 
 	/**
+	 * @dataProvider getDataForAsOpened
+	 *
+	 * @param Boundary $boundary
+	 */
+	public function testAsOpened(Boundary $boundary)
+	{
+		$openedBoundary = $boundary->asOpened();
+		Assert::notSame($boundary, $openedBoundary);
+		Assert::true($openedBoundary->isOpened());
+	}
+
+
+
+	/**
+	 * @return Boundary[][]
+	 */
+	public function getDataForAsOpened(): array
+	{
+		return [
+			[new Boundary(new Integer(1), Boundary::OPENED)],
+			[new Boundary(new Integer(1), Boundary::CLOSED)],
+		];
+	}
+
+
+
+	/**
+	 * @dataProvider getDataForAsClosed
+	 *
+	 * @param Boundary $boundary
+	 */
+	public function testAsClosed(Boundary $boundary)
+	{
+		$closedBoundary = $boundary->asClosed();
+		Assert::notSame($boundary, $closedBoundary);
+		Assert::true($closedBoundary->isClosed());
+	}
+
+
+
+	/**
+	 * @return Boundary[]
+	 */
+	public function getDataForAsClosed(): array
+	{
+		return [
+			[new Boundary(new Integer(1), Boundary::OPENED)],
+			[new Boundary(new Integer(1), Boundary::CLOSED)],
+		];
+	}
+
+
+
+	/**
 	 * @dataProvider getDataForComparison
 	 *
 	 * @param Boundary $smaller

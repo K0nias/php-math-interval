@@ -12,7 +12,6 @@ use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutableInterval;
 use Achse\Math\Interval\Interval;
 use Achse\Math\Interval\ModificationNotPossibleException;
 use DateTimeInterface;
-use InvalidArgumentException;
 
 
 
@@ -59,10 +58,6 @@ final class SingleDayTimeInterval extends Interval
 
 		/** @var DateTimeImmutableInterval $intersection */
 		$intersection = $thisDayInterval->intersection($interval);
-
-		if ($intersection === NULL) {
-			throw new InvalidArgumentException('Given day does not hits given interval. No intersection possible.');
-		}
 
 		$left = SingleDayTime::fromDateTime($intersection->getLeft()->getValue());
 		$right = SingleDayTime::fromDateTime($intersection->getRight()->getValue());

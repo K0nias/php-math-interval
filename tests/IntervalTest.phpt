@@ -329,11 +329,7 @@ final class IntervalTest extends TestCase
 	public function testIntersection(string $expected = NULL, string $left, string $right)
 	{
 		$intersection = Parser::parse($left)->intersection(Parser::parse($right));
-		if ($expected === NULL) {
-			Assert::null($intersection);
-		} else {
-			Assert::equal($expected, (string) $intersection);
-		}
+		Assert::equal($expected, (string) $intersection);
 	}
 
 
@@ -347,8 +343,8 @@ final class IntervalTest extends TestCase
 			['[2, 2]', '[1, 2]', '[2, 3]'],
 			['[2, 2]', '[2, 3]', '[1, 2]'],
 
-			[NULL, '[1, 2]', '(2, 3)'],
-			[NULL, '(1, 2)', '[2, 3]'],
+			['(1, 1)', '[1, 2]', '(2, 3)'],
+			['(1, 1)', '(1, 2)', '[2, 3]'],
 
 			'(1, 3) ∩ (2, 4) ⟺ (2, 3)' => ['(2, 3)', '(1, 3)', '(2, 4)'],
 			['(2, 3)', '(2, 4)', '(1, 3)'],

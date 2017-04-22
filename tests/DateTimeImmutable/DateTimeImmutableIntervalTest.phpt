@@ -165,18 +165,44 @@ final class DateTimeImmutableIntervalTest extends TestCase
 
 
 	/**
-	 * @dataProvider getDataForIntersectionTest
+	 * @dataProvider getDataForIntersectionWhenIsEmpty
 	 *
-	 * @param string|null $expected
 	 * @param string $first
 	 * @param string $second
 	 */
-	public function testIntersection(string $expected = NULL, string $first, string $second)
+	public function testIntersectionWhenIsEmpty(string $first, string $second)
 	{
 		$intersection = Parser::parse($first)->intersection(Parser::parse($second));
-		Assert::equal($expected, $intersection === NULL ? $intersection : (string) $intersection);
+		Assert::true($intersection->isEmpty());
+	}
+
+
+
+	/**
+	 * @return string[][]
+	 */
+	public function getDataForIntersectionWhenIsEmpty(): array
+	{
+		return [
+			['[2015-01-01 00:00:00, 2015-01-01 01:00:00)', '[2015-01-01 05:00:00, 2015-01-01 10:00:00)'],
+		];
+	}
+
+
+
+	/**
+	 * @dataProvider getDataForIntersectionTest
+	 *
+	 * @param string $expected
+	 * @param string $first
+	 * @param string $second
+	 */
+	public function testIntersection(string $expected, string $first, string $second)
+	{
+		$intersection = Parser::parse($first)->intersection(Parser::parse($second));
+		Assert::equal($expected, (string) $intersection);
 		$intersection = Parser::parse($second)->intersection(Parser::parse($first));
-		Assert::equal($expected, $intersection === NULL ? $intersection : (string) $intersection);
+		Assert::equal($expected, (string) $intersection);
 	}
 
 
@@ -201,11 +227,6 @@ final class DateTimeImmutableIntervalTest extends TestCase
 				'[2015-01-01 00:00:00, 2015-01-01 01:00:00)',
 				'[2015-01-01 00:00:00, 2015-01-01 01:00:00)',
 				'[2015-01-01 00:00:00, 2015-01-01 01:00:00)',
-			],
-			[
-				NULL,
-				'[2015-01-01 00:00:00, 2015-01-01 01:00:00)',
-				'[2015-01-01 05:00:00, 2015-01-01 10:00:00)',
 			],
 			[
 				'[2015-01-01 00:30:00, 2015-01-01 00:45:00)',

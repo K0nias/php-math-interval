@@ -311,7 +311,9 @@ class Interval
 			return new static($a->getLeft(), $b->getRight());
 		}
 
-		return NULL;
+		$dummy = $this->left->asOpened();
+
+		return new static($dummy, $dummy);
 	}
 
 
