@@ -29,6 +29,45 @@ final class SingleDayTimeTest extends TestCase
 
 
 
+	/**
+	 * @dataProvider getDataForConstructorValidity
+	 *
+	 * @param string $expectedErrorMessage
+	 * @param int $hours
+	 * @param int $minutes
+	 * @param float $seconds
+	 */
+	public function testConstructorValidity(string $expectedErrorMessage, int $hours, int $minutes, float $seconds)
+	{
+		Assert::exception(
+			function () use ($hours, $minutes, $seconds) {
+				new SingleDayTime($hours, $minutes, $seconds);
+			},
+			InvalidArgumentException::class,
+			$expectedErrorMessage
+		);
+	}
+
+
+
+	/**
+	 * @return int[][]|float[][]
+	 */
+	public function getDataForConstructorValidity(): array
+	{
+		return [
+			['Hours have to be 0-23.', -1, 0, 0],
+			['Minutes have to be 0-59.', 0, -1, 0],
+			['Seconds have to be 0-59.', 0, 0, -1],
+
+			['Hours have to be 0-23.', 60, 0, 0],
+			['Minutes have to be 0-59.', 0, 60, 0],
+			['Seconds have to be 0-59.', 0, 0, 60],
+		];
+	}
+
+
+
 	public function testCompare()
 	{
 		$this->assertForComparison(new SingleDayTime(0, 5, 0), new SingleDayTime(0, 6, 0));

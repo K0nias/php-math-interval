@@ -101,14 +101,14 @@ final class SingleDayTime implements IComparable
 	 */
 	public function __construct(int $hours, int $minutes, float $seconds)
 	{
-		if ($hours > 23) {
-			throw new InvalidArgumentException('Hours have to be less then 24.');
+		if ($hours < 0 || $hours > 23) {
+			throw new InvalidArgumentException('Hours have to be 0-23.');
 		}
-		if ($minutes > 59) {
-			throw new InvalidArgumentException('Minutes have to be less then 60.');
+		if ($minutes < 0 || $minutes > 59) {
+			throw new InvalidArgumentException('Minutes have to be 0-59.');
 		}
-		if ($seconds > 59) {
-			throw new InvalidArgumentException('Seconds have to be less then 60.');
+		if ($seconds < 0 || $seconds > 59) {
+			throw new InvalidArgumentException('Seconds have to be 0-59.');
 		}
 
 		$this->hours = $hours;
