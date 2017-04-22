@@ -29,6 +29,16 @@ final class SingleDayTimeTest extends TestCase
 
 
 
+	public function testWithXy()
+	{
+		$interval = new SingleDayTime(0, 0, 0);
+		Assert::equal('01:00:00', $interval->withHours(1));
+		Assert::equal('00:01:00', $interval->withMinutes(1));
+		Assert::equal('00:00:01', $interval->withSeconds(1));
+	}
+
+
+
 	/**
 	 * @dataProvider getDataForConstructorValidity
 	 *
