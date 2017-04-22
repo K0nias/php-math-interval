@@ -20,7 +20,8 @@
 		"achse/php-comparable-interface": "^1.0"
 	},
 	"require-dev": {
-		"nette/tester": "@dev"
+		"nette/tester": "@dev",
+		"phpstan/phpstan": "^0.6.4"
 	},
 	"autoload": {
 		"psr-4": {

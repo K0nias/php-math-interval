@@ -1,0 +1,29 @@
+parameters:
+    autoload_directories:
+        - %rootDir%/../../../src
+        - %rootDir%/../../../tests
+
+    ignoreErrors:
+        # A lot of notices is ignored becaue they are caused by mising generics
+        - '#Method Achse\\Math\\Interval\\SingleDayTime\\SingleDayTimeBoundary\:\:getValue\(\) should return Achse\\Math\\Interval\\SingleDayTime\\SingleDayTime but returns Achse\\Comparable\\IComparable#'
+        - '#Method Achse\\Math\\Interval\\SingleDayTime\\SingleDayTimeInterval\:\:getRight\(\) should return Achse\\Math\\Interval\\SingleDayTime\\SingleDayTimeBoundary but returns Achse\\Math\\Interval\\Boundary#'
+        - '#Method Achse\\Math\\Interval\\SingleDayTime\\SingleDayTimeInterval\:\:getLeft\(\) should return Achse\\Math\\Interval\\SingleDayTime\\SingleDayTimeBoundary but returns Achse\\Math\\Interval\\Boundary#'
+        - '#Method Achse\\Math\\Interval\\DateTime\\DateTimeBoundary\:\:getValue\(\) should return Achse\\Math\\Interval\\DateTime\\DateTime but returns Achse\\Comparable\\IComparable#'
+        - '#Method Achse\\Math\\Interval\\DateTime\\DateTimeInterval\:\:getLeft\(\) should return Achse\\Math\\Interval\\DateTime\\DateTimeBoundary but returns Achse\\Math\\Interval\\Boundary#'
+        - '#Method Achse\\Math\\Interval\\DateTime\\DateTimeInterval\:\:getRight\(\) should return Achse\\Math\\Interval\\DateTime\\DateTimeBoundary but returns Achse\\Math\\Interval\\Boundary#'
+        - '#Method Achse\\Math\\Interval\\DateTimeImmutable\\DateTimeImmutableBoundary\:\:getValue\(\) should return Achse\\Math\\Interval\\DateTimeImmutable\\DateTimeImmutable but returns Achse\\Comparable\\IComparable#'
+        - '#Method Achse\\Math\\Interval\\DateTimeImmutable\\DateTimeImmutableInterval\:\:getLeft\(\) should return Achse\\Math\\Interval\\DateTimeImmutable\\DateTimeImmutableBoundary but returns Achse\\Math\\Interval\\Boundary#'
+        - '#Method Achse\\Math\\Interval\\DateTimeImmutable\\DateTimeImmutableInterval\:\:getRight\(\) should return Achse\\Math\\Interval\\DateTimeImmutable\\DateTimeImmutableBoundary but returns Achse\\Math\\Interval\\Boundary#'
+        - '#Method Achse\\Math\\Interval\\Integer\\IntegerInterval\:\:getLeft\(\) should return Achse\\Math\\Interval\\Integer\\IntegerBoundary but returns Achse\\Math\\Interval\\Boundary#'
+        - '#Method Achse\\Math\\Interval\\Integer\\IntegerInterval\:\:getRight\(\) should return Achse\\Math\\Interval\\Integer\\IntegerBoundary but returns Achse\\Math\\Interval\\Boundary#'
+
+        # This is because that following code is not accepted by PHP as "instanceof" check, again we hit missing generics here
+        #
+        #    /** @var static $other */
+        #    Utils::validateClassType(static::class, $other);
+        #
+        - '#Call to an undefined method Achse\\Comparable\\IComparable\:\:getTimestamp\(\)#'
+        - '#Call to an undefined method Achse\\Comparable\\IComparable\:\:toInt\(\)#'
+        - '#Call to an undefined method Achse\\Comparable\\IComparable\:\:toSeconds\(\)#'
+        - '#Access to an undefined property Achse\\Comparable\\IComparable\:\:\$element#'
+        - '#Access to an undefined property Achse\\Comparable\\IComparable\:\:\$state#'

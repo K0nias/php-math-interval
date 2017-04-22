@@ -9,9 +9,9 @@ final class SingleDayTimeIntervalFactory
 {
 
 	/**
-	 * @param \DateTime|string|int $leftElement
+	 * @param \DateTime|string $leftElement
 	 * @param bool $leftState
-	 * @param \DateTime|string|int $rightElement
+	 * @param \DateTime|string $rightElement
 	 * @param bool $rightState
 	 * @return SingleDayTimeInterval
 	 */
