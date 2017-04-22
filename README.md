@@ -7,7 +7,7 @@
 [![Dependency Status](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef/badge.svg?style=flat)](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef)
 
 ## It's awesome!
-* Heavily **tested** (nearly 100% coverage),
+* Heavily **tested**,
 * all object are **immutable**,
 * code is **clean and predictable**,
 * interval is modeled as **mathematical entity**.
