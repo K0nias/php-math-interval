@@ -231,7 +231,7 @@ final class IntervalTest extends TestCase
 
 
 	/**
-	 * @return array
+	 * @return bool[][]|string[][]
 	 */
 	public function getDataForIsContaining(): array
 	{
@@ -255,56 +255,105 @@ final class IntervalTest extends TestCase
 
 
 
-	public function testIsOverlappedFromRightBy()
+	/**
+	 * @dataProvider getDataForIsOverlappedFromRightBy
+	 *
+	 * @param bool $expected
+	 * @param string $left
+	 * @param string $right
+	 */
+	public function testIsOverlappedFromRightBy(bool $expected, string $left, string $right)
 	{
-		Assert::true(Parser::parse('[1, 2]')->isOverlappedFromRightBy(Parser::parse('[2, 3]')));
-		Assert::false(Parser::parse('[2, 3]')->isOverlappedFromRightBy(Parser::parse('[1, 2]')));
-
-		// (1, 2) ~ [2, 3]
-		Assert::false(Parser::parse('(1, 2)')->isOverlappedFromRightBy(Parser::parse('[2, 3]')));
-		// [1, 2] ~ (2, 3)
-		Assert::false(Parser::parse('[1, 2]')->isOverlappedFromRightBy(Parser::parse('(2, 3)')));
-
-		Assert::true(Parser::parse('(1, 3)')->isOverlappedFromRightBy(Parser::parse('(2, 4)')));
+		Assert::equal($expected, Parser::parse($left)->isOverlappedFromRightBy(Parser::parse($right)));
 	}
 
 
 
-	public function testIsColliding()
+	/**
+	 * @return bool[][]|string[][]
+	 */
+	public function getDataForIsOverlappedFromRightBy(): array
 	{
-		Assert::true(Parser::parse('[1, 2]')->isColliding(Parser::parse('[2, 3]')));
-		Assert::true(Parser::parse('[2, 3]')->isColliding(Parser::parse('[1, 2]')));
+		return [
+			[TRUE, '[1, 2]', '[2, 3]'],
+			[FALSE, '[2, 3]', '[1, 2]'],
 
-		Assert::false(Parser::parse('[1, 2]')->isColliding(Parser::parse('(2, 3)')));
-		Assert::false(Parser::parse('(1, 2)')->isColliding(Parser::parse('[2, 3]')));
+			'(1, 2) ~ [2, 3]' => [FALSE, '(1, 2)', '[2, 3]'],
+			'[1, 2] ~ (2, 3)' => [FALSE, '[1, 2]', '(2, 3)'],
 
-		Assert::true(Parser::parse('(1, 3)')->isColliding(Parser::parse('(2, 4)')));
-		Assert::true(Parser::parse('(2, 4)')->isColliding(Parser::parse('(1, 3)')));
+			[TRUE, '(1, 3)', '(2, 4)'],
+		];
 	}
 
 
 
-	public function testGetIntersection()
+	/**
+	 * @dataProvider getDataFomIsColliding
+	 *
+	 * @param bool $expected
+	 * @param string $left
+	 * @param string $right
+	 */
+	public function testIsColliding(bool $expected, string $left, string $right)
 	{
-		$intervalTwoTwoClosed = Parser::parse('[2, 2]');
+		Assert::equal($expected, Parser::parse($left)->isColliding(Parser::parse($right)));
+	}
 
-		$intersection = Parser::parse('[1, 2]')->intersection(Parser::parse('[2, 3]'));
-		$this->assertInterval($intervalTwoTwoClosed, $intersection);
 
-		$intersection = Parser::parse('[2, 3]')->intersection(Parser::parse('[1, 2]'));
-		$this->assertInterval($intervalTwoTwoClosed, $intersection);
 
-		Assert::null(Parser::parse('[1, 2]')->intersection(Parser::parse('(2, 3)')));
-		Assert::null(Parser::parse('(1, 2)')->intersection(Parser::parse('[2, 3]')));
+	/**
+	 * @return bool[][]|string[][]
+	 */
+	public function getDataFomIsColliding(): array
+	{
+		return [
+			[TRUE, '[1, 2]', '[2, 3]'],
+			[TRUE, '[2, 3]', '[1, 2]'],
 
-		$intervalTwoThreeOpened = Parser::parse('(2, 3)');
+			[FALSE, '[1, 2]', '(2, 3)'],
+			[FALSE, '(1, 2)', '[2, 3]'],
 
-		// (1, 3) ∩ (2, 4) ⟺ (2, 3)
-		$intersection = Parser::parse('(1, 3)')->intersection(Parser::parse('(2, 4)'));
-		$this->assertInterval($intervalTwoThreeOpened, $intersection);
+			[TRUE, '(1, 3)', '(2, 4)'],
+			[TRUE, '(2, 4)', '(1, 3)'],
+		];
+	}
 
-		$intersection = Parser::parse('(2, 4)')->intersection(Parser::parse('(1, 3)'));
-		$this->assertInterval($intervalTwoThreeOpened, $intersection);
+
+
+	/**
+	 * @dataProvider getDataForIntersectionTest
+	 *
+	 * @param string $expected
+	 * @param string $left
+	 * @param string $right
+	 */
+	public function testIntersection(string $expected = NULL, string $left, string $right)
+	{
+		$intersection = Parser::parse($left)->intersection(Parser::parse($right));
+		if ($expected === NULL) {
+			Assert::null($intersection);
+		} else {
+			$this->assertInterval(Parser::parse($expected), $intersection);
+		}
+	}
+
+
+
+	/**
+	 * @return null[][]|string[][]
+	 */
+	public function getDataForIntersectionTest(): array
+	{
+		return [
+			['[2, 2]', '[1, 2]', '[2, 3]'],
+			['[2, 2]', '[2, 3]', '[1, 2]'],
+
+			[NULL, '[1, 2]', '(2, 3)'],
+			[NULL, '(1, 2)', '[2, 3]'],
+
+			'(1, 3) ∩ (2, 4) ⟺ (2, 3)' => ['(2, 3)', '(1, 3)', '(2, 4)'],
+			['(2, 3)', '(2, 4)', '(1, 3)'],
+		];
 	}
 
 
