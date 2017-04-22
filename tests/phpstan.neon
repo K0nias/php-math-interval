@@ -4,6 +4,8 @@ parameters:
         - %rootDir%/../../../tests
 
     ignoreErrors:
+        - '#Achse\\Math\\Interval\\SingleDayTime\\SingleDayTimeInterval\:\:__construct\(\) does not call parent constructor from Achse\\Math\\Interval\\Interval#'
+
         # A lot of notices is ignored becaue they are caused by mising generics
         - '#Method Achse\\Math\\Interval\\SingleDayTime\\SingleDayTimeBoundary\:\:getValue\(\) should return Achse\\Math\\Interval\\SingleDayTime\\SingleDayTime but returns Achse\\Comparable\\IComparable#'
         - '#Method Achse\\Math\\Interval\\SingleDayTime\\SingleDayTimeInterval\:\:getRight\(\) should return Achse\\Math\\Interval\\SingleDayTime\\SingleDayTimeBoundary but returns Achse\\Math\\Interval\\Boundary#'

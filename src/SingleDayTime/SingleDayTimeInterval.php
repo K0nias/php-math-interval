@@ -10,6 +10,7 @@ use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutableBoundary;
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutableInterval;
 use Achse\Math\Interval\Interval;
+use Achse\Math\Interval\IntervalRangesInvalidException;
 use Achse\Math\Interval\ModificationNotPossibleException;
 use DateTimeInterface;
 
@@ -25,7 +26,26 @@ final class SingleDayTimeInterval extends Interval
 	{
 		$this->validateBoundaryChecks($left, $right, SingleDayTimeBoundary::class);
 
-		parent::__construct($left, $right);
+		if ($left->isGreaterThan($right) && !$this->isEndingAtMidnightNextDay($left, $right)) {
+			throw new IntervalRangesInvalidException('Left endpoint cannot be greater then Right endpoint.');
+		}
+
+		$this->left = $left;
+		$this->right = $right;
+
+		// intentionally, no parent constructor calling
+	}
+
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function isContainingElementRightCheck(IComparable $element): bool
+	{
+		return $this->isRightOpened() && $this->getRight()->getValue()->isGreaterThan($element)
+			|| $this->isRightClosed() && $this->getRight()->getValue()->isGreaterThanOrEqual($element)
+			|| $this->isEndingAtMidnightNextDay($this->left, $this->right);
 	}
 
 
@@ -103,7 +123,6 @@ final class SingleDayTimeInterval extends Interval
 			return FALSE;
 		}
 
-
 		$dummyDay = new DateTimeImmutable('2001-01-01 00:00:00');
 
 		return $this->toDateTimeInterval($dummyDay)->isFollowedByWithPrecision(
@@ -160,6 +179,30 @@ final class SingleDayTimeInterval extends Interval
 	protected function buildBoundary(IComparable $element, bool $state): Boundary
 	{
 		return new SingleDayTimeBoundary($element, $state);
+	}
+
+
+
+	/**
+	 * @param Boundary $left
+	 * @param Boundary $right
+	 * @return bool
+	 */
+	private function isEndingAtMidnightNextDay(Boundary $left, Boundary $right): bool
+	{
+		return !($left->isOpened() && $left->getValue()->isEqual($right))
+			&& $right->isOpened()
+			&& $right->getValue()->isEqual($this->getZeroElement());
+	}
+
+
+
+	/**
+	 * @return SingleDayTime
+	 */
+	private function getZeroElement(): SingleDayTime
+	{
+		return new SingleDayTime(0, 0, 0);
 	}
 
 }

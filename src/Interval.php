@@ -16,12 +16,12 @@ class Interval
 	/**
 	 * @var Boundary
 	 */
-	private $left;
+	protected $left;
 
 	/**
 	 * @var Boundary
 	 */
-	private $right;
+	protected $right;
 
 
 
@@ -130,8 +130,6 @@ class Interval
 
 
 	/**
-	 * An open interval does not include its endpoints.
-	 *
 	 * @return bool
 	 */
 	public function isOpened(): bool
@@ -142,8 +140,6 @@ class Interval
 
 
 	/**
-	 * Does not include left endpoint.
-	 *
 	 * @return bool
 	 */
 	public function isLeftOpened(): bool
@@ -154,8 +150,6 @@ class Interval
 
 
 	/**
-	 * Does not include right endpoint.
-	 *
 	 * @return bool
 	 */
 	public function isRightOpened(): bool
@@ -201,19 +195,7 @@ class Interval
 	 */
 	public function isContainingElement(IComparable $element): bool
 	{
-		$leftBoundaryCheck = (
-			$this->isLeftOpened() && $this->getLeft()->getValue()->isLessThan($element)
-			||
-			$this->isLeftClosed() && $this->getLeft()->getValue()->isLessThanOrEqual($element)
-		);
-
-		$rightBoundaryCheck = (
-			$this->isRightOpened() && $this->getRight()->getValue()->isGreaterThan($element)
-			||
-			$this->isRightClosed() && $this->getRight()->getValue()->isGreaterThanOrEqual($element)
-		);
-
-		return $leftBoundaryCheck && $rightBoundaryCheck;
+		return $this->isContainingElementLeftCheck($element) && $this->isContainingElementRightCheck($element);
 	}
 
 
@@ -291,23 +273,23 @@ class Interval
 		$b = $other;
 
 		if ($a->isContaining($b)) {
-			return clone $b;
+			return $b;
 
 		} elseif ($b->isContaining($a)) {
-			return clone $a;
+			return $a;
 
+		} elseif ($a->isOverlappedFromRightBy($b)) {
 			// A: □□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□
 			// B: □□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□
 			//    $b->from   |   | <- $a-till
 
-		} elseif ($a->isOverlappedFromRightBy($b)) {
 			return new static($b->getLeft(), $a->getRight());
 
+		} elseif ($b->isOverlappedFromRightBy($this)) {
 			// A: □□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□
 			// B: □□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□
 			//    $a->from -> |   | <- $b-till
 
-		} elseif ($b->isOverlappedFromRightBy($this)) {
 			return new static($a->getLeft(), $b->getRight());
 		}
 
@@ -458,6 +440,30 @@ class Interval
 	protected function getRightBracket(): string
 	{
 		return $this->isRightOpened() ? Boundary::STRING_OPENED_RIGHT : Boundary::STRING_CLOSED_RIGHT;
+	}
+
+
+
+	/**
+	 * @param IComparable $element
+	 * @return bool
+	 */
+	protected function isContainingElementLeftCheck(IComparable $element): bool
+	{
+		return $this->isLeftOpened() && $this->getLeft()->getValue()->isLessThan($element)
+			|| $this->isLeftClosed() && $this->getLeft()->getValue()->isLessThanOrEqual($element);
+	}
+
+
+
+	/**
+	 * @param IComparable $element
+	 * @return bool
+	 */
+	protected function isContainingElementRightCheck(IComparable $element): bool
+	{
+		return $this->isRightOpened() && $this->getRight()->getValue()->isGreaterThan($element)
+			|| $this->isRightClosed() && $this->getRight()->getValue()->isGreaterThanOrEqual($element);
 	}
 
 

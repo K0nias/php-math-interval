@@ -22,10 +22,87 @@ use Tester\TestCase;
 final class SingleDayTimeIntervalTest extends TestCase
 {
 
-	public function testFromString()
+	/**
+	 * @dataProvider getDataForFromString
+	 *
+	 * @param string $expected
+	 * @param string $left
+	 * @param string $right
+	 */
+	public function testFromString(string $expected, string $left, string $right)
 	{
-		$interval = SingleDayTimeInterval::fromString('01:02:03', '04:05:06');
-		Assert::equal('[01:02:03, 04:05:06)', (string) $interval);
+		Assert::equal($expected, (string) SingleDayTimeInterval::fromString($left, $right));
+	}
+
+
+
+	/**
+	 * @return string[][]
+	 */
+	public function getDataForFromString(): array
+	{
+		return [
+			['[01:02:03, 04:05:06)', '01:02:03', '04:05:06'],
+			['[00:00:00, 00:00:00)', '00:00:00', '00:00:00'],
+			['[23:59:59, 00:00:00)', '23:59:59', '00:00:00'],
+		];
+	}
+
+
+
+	/**
+	 * @dataProvider getDataForIntersectionTest
+	 *
+	 * @param string $expected
+	 * @param string $first
+	 * @param string $second
+	 */
+	public function testIntersection(string $expected, string $first, string $second)
+	{
+		$intersection = Parser::parse($first)->intersection(Parser::parse($second));
+		Assert::equal($expected, (string) $intersection);
+		$intersection = Parser::parse($second)->intersection(Parser::parse($first));
+		Assert::equal($expected, (string) $intersection);
+	}
+
+
+
+	/**
+	 * @return string[][]
+	 */
+	public function getDataForIntersectionTest(): array
+	{
+		return [
+			'Full day with itself' => ['[00:00:00, 00:00:00)', '[00:00:00, 00:00:00)', '[00:00:00, 00:00:00)'],
+			['[01:00:00, 23:00:00]', '[00:00:00, 00:00:00)', '[01:00:00, 23:00:00]'],
+			['[01:00:00, 00:00:00)', '[00:00:00, 00:00:00)', '[01:00:00, 00:00:00)'],
+		];
+	}
+
+
+
+	/**
+	 * @dataProvider getDataForIsEmpty
+	 *
+	 * @param bool $expected
+	 * @param string $given
+	 */
+	public function testIsEmpty(bool $expected, string $given)
+	{
+		Assert::equal($expected, Parser::parse($given)->isEmpty());
+	}
+
+
+
+	/**
+	 * @return bool[][]|string[][]
+	 */
+	public function getDataForIsEmpty(): array
+	{
+		return [
+			[TRUE, '(00:00:00, 00:00:00)'],
+			'Fill day interval is NOT empty' => [FALSE, '[00:00:00, 00:00:00)'],
+		];
 	}
 
 
