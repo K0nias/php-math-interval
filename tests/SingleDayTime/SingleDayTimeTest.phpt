@@ -17,6 +17,7 @@ use Achse\Math\Interval\SingleDayTime\SingleDayTime;
 use Achse\Tests\Interval\TestComparison;
 use InvalidArgumentException;
 use LogicException;
+use stdClass;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -32,9 +33,9 @@ final class SingleDayTimeTest extends TestCase
 	public function testWithXy()
 	{
 		$interval = new SingleDayTime(0, 0, 0);
-		Assert::equal('01:00:00', $interval->withHours(1));
-		Assert::equal('00:01:00', $interval->withMinutes(1));
-		Assert::equal('00:00:01', $interval->withSeconds(1));
+		Assert::equal('01:00:00', (string) $interval->withHours(1));
+		Assert::equal('00:01:00', (string) $interval->withMinutes(1));
+		Assert::equal('00:00:01', (string) $interval->withSeconds(1));
 	}
 
 
@@ -325,15 +326,18 @@ final class SingleDayTimeTest extends TestCase
 
 	/**
 	 * @dataProvider getDataForFromFail
-	 * @param string $from
+	 *
+	 * @param string $expectedErrorMessage
+	 * @param mixed $from
 	 */
-	public function testFromFail(string $from)
+	public function testFromFail(string $expectedErrorMessage, $from)
 	{
 		Assert::exception(
 			function () use ($from) {
 				SingleDayTime::from($from);
 			},
-			InvalidArgumentException::class
+			InvalidArgumentException::class,
+			$expectedErrorMessage
 		);
 	}
 
@@ -345,10 +349,16 @@ final class SingleDayTimeTest extends TestCase
 	public function getDataForFromFail()
 	{
 		return [
-			[''],
-			['1:2:3'],
-			['100:200:300'],
-			['99:99:00'],
+			['Given string  not valid H:i:s time.', ''],
+			['Given string 1:2:3 not valid H:i:s time.', '1:2:3'],
+			['Given string 100:200:300 not valid H:i:s time.', '100:200:300'],
+			['Given string 99:99:00 not valid H:i:s time.', '99:99:00'],
+			['Argument is not type of DateTimeInterface or SingleDayTime or string. Type: NULL given.', NULL],
+			['Argument is not type of DateTimeInterface or SingleDayTime or string. Type: integer given.', 123456],
+			[
+				'Argument is not type of DateTimeInterface or SingleDayTime or string. Type: stdClass given.',
+				new stdClass(),
+			],
 		];
 	}
 

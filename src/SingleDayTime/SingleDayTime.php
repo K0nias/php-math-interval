@@ -142,8 +142,8 @@ final class SingleDayTime implements IComparable
 
 		throw new InvalidArgumentException(
 			sprintf(
-				'Argument is not type of DateTimeInterface or SingleDayTime or string. Type: %s given',
-				gettype($time)
+				'Argument is not type of DateTimeInterface or SingleDayTime or string. Type: %s given.',
+				is_object($time) ? get_class($time) : gettype($time)
 			)
 		);
 	}
