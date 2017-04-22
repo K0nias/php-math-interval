@@ -102,8 +102,8 @@ final class SingleDayTimeInterval extends Interval
 	public function isFollowedByWithPrecision(Interval $other, $precision): bool
 	{
 		try {
-			$this->getRight()->getValue()->modify("+{$precision}");
-			$other->getLeft()->getValue()->modify("-{$precision}");
+			$this->getRight()->getValue()->modify('+' . $precision);
+			$other->getLeft()->getValue()->modify('-' . $precision);
 		} catch (ModificationNotPossibleException $e) {
 			return FALSE;
 		}

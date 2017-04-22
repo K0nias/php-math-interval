@@ -131,7 +131,9 @@ class Boundary implements IComparable
 	protected function validateElement(IComparable $element, string $type)
 	{
 		if (!$element instanceof $type) {
-			throw new LogicException("You have to provide {$type} as element. " . get_class($element) . ' given.');
+			throw new LogicException(
+				sprintf('You have to provide %s as element. %s given.', $type, get_class($element))
+			);
 		}
 	}
 

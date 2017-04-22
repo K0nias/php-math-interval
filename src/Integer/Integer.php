@@ -40,7 +40,7 @@ final class Integer implements IComparable
 	public static function fromString(string $string): Integer
 	{
 		if (!is_numeric($string) || (string) (int) $string !== $string) {
-			throw new InvalidArgumentException("'$string' in not integer-like.");
+			throw new InvalidArgumentException(sprintf('\'%s\' in not integer-like.', $string));
 		}
 
 		return new static((int) $string);

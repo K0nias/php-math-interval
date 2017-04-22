@@ -55,11 +55,11 @@ final class DateTimeInterval extends Interval
 
 		/** @var DateTime $modifiedPlus */
 		$modifiedPlus = clone $this->getRight()->getValue();
-		$modifiedPlus = $modifiedPlus->modify("+{$precision}");
+		$modifiedPlus = $modifiedPlus->modify('+' . $precision);
 
 		/** @var DateTime $modifiedMinus */
 		$modifiedMinus = clone $other->getLeft()->getValue();
-		$modifiedMinus = $modifiedMinus->modify("-{$precision}");
+		$modifiedMinus = $modifiedMinus->modify('-' . $precision);
 
 		return (
 			$modifiedPlus->isGreaterThanOrEqual($other->getLeft()->getValue())

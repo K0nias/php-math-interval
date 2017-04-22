@@ -6,7 +6,7 @@ php:
 before_script:
   - rm -R -f ./tests/tmp/*
   - sudo pip install codecov
-  - composer self-update || echo "[ERROR] update-composer failed!"
+  - composer self-update || echo '[ERROR] update-composer failed!'
   - composer install --no-interaction --optimize-autoloader
 
 script:

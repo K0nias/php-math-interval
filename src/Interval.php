@@ -430,11 +430,11 @@ class Interval
 	protected function validateBoundaryChecks(Boundary $left, Boundary $right, string $type)
 	{
 		if (!($left instanceof $type)) {
-			throw new InvalidBoundaryTypeException("\$left have to be instance of {$type}.");
+			throw new InvalidBoundaryTypeException(sprintf('$left have to be instance of %s.', $type));
 		}
 
 		if (!($right instanceof $type)) {
-			throw new InvalidBoundaryTypeException("\$right have to be instance of {$type}.");
+			throw new InvalidBoundaryTypeException(sprintf('$right have to be instance of %s.', $type));
 		}
 	}
 

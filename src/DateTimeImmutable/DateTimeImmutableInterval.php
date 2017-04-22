@@ -51,10 +51,10 @@ final class DateTimeImmutableInterval extends Interval
 		}
 
 		/** @var DateTimeImmutable $modifiedPlus */
-		$modifiedPlus = $this->getRight()->getValue()->modify("+{$precision}");
+		$modifiedPlus = $this->getRight()->getValue()->modify('+' . $precision);
 
 		/** @var DateTimeImmutable $modifiedMinus */
-		$modifiedMinus = $other->getLeft()->getValue()->modify("-{$precision}");
+		$modifiedMinus = $other->getLeft()->getValue()->modify('-' . $precision);
 
 		return (
 			$modifiedPlus->isGreaterThanOrEqual($other->getLeft()->getValue())

@@ -8,8 +8,8 @@ use Achse\Comparable\ComparisonMethods;
 use Achse\Comparable\IComparable;
 use Achse\DateTimeFormatTools\Tools;
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
-use Achse\Math\Interval\Utils;
 use Achse\Math\Interval\ModificationNotPossibleException;
+use Achse\Math\Interval\Utils;
 use DateTimeInterface;
 use InvalidArgumentException;
 use LogicException;
@@ -197,7 +197,9 @@ final class SingleDayTime implements IComparable
 		$modified = $thisDateTime->modify($modifier);
 
 		if ($thisDateTime->format('Y-m-d') !== $modified->format('Y-m-d')) {
-			throw new ModificationNotPossibleException("Modifying this by '{$modifier}' leaves a single day range.");
+			throw new ModificationNotPossibleException(
+				sprintf('Modifying this by \'%s\' leaves a single day range.', $modifier)
+			);
 		}
 
 		return new static(

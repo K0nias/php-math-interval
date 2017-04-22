@@ -66,8 +66,12 @@ abstract class IntervalStringParser
 
 		if (count($letters) < 2) {
 			throw new IntervalParseErrorException(
-				"Boundary part '{$string}' is too short. It must be at leas 2 character long. Example: '"
-				. Boundary::STRING_OPENED_LEFT . "1' or '9" . Boundary::STRING_CLOSED_RIGHT . "'."
+				sprintf(
+					'Boundary part \'%s\' is too short. It must be at leas 2 character long. Example: \'%s1\' or \'9%s\'.',
+					$string,
+					Boundary::STRING_OPENED_LEFT,
+					Boundary::STRING_CLOSED_RIGHT
+				)
 			);
 		}
 

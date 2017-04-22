@@ -61,7 +61,10 @@ final class IntervalStringParserTest extends TestCase
 		return [
 			['Whatever!', 'Unexpected number of boundaries. Check if given string contains only one delimiter (,).'],
 			['[]', 'Unexpected number of boundaries. Check if given string contains only one delimiter (,).'],
-			['[,]', "Boundary part '[' is too short. It must be at leas 2 character long. Example: '(1' or '9]'."],
+			[
+				'[,]',
+				'Boundary part \'[\' is too short. It must be at leas 2 character long. Example: \'(1\' or \'9]\'.',
+			],
 		];
 	}
 
