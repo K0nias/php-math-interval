@@ -216,35 +216,41 @@ final class IntervalTest extends TestCase
 
 
 
-	public function testIsContaining()
+	/**
+	 * @dataProvider getDataForIsContaining
+	 *
+	 * @param bool $expected
+	 * @param string $left
+	 * @param string $right
+	 */
+	public function testIsContaining(bool $expected, string $left, string $right)
 	{
-
-		// [1, 4] contains (1, 4)
-		Assert::true(Parser::parse('[1, 4]')->isContaining(Parser::parse('(1, 4)')));
-		// (1, 4) NOT contains [1, 4]
-		Assert::false(Parser::parse('(1, 4)')->isContaining(Parser::parse('[1, 4]')));
-
-		// [1, 4] contains [2, 3]
-		Assert::true(Parser::parse('[1, 4]')->isContaining(Parser::parse('[2, 3]')));
-		// [2, 3] NOT contains [1, 4]
-		Assert::false(Parser::parse('[2, 3]')->isContaining(Parser::parse('[1, 4]')));
-
-		// [1, 4] contains (2, 3)
-		Assert::true(Parser::parse('[1, 4]')->isContaining(Parser::parse('(2, 3)')));
-		// (2, 3) NOT contains [1, 4]
-		Assert::false(Parser::parse('(2, 3)')->isContaining(Parser::parse('[1, 4]')));
+		Assert::equal($expected, Parser::parse($left)->isContaining(Parser::parse($right)));
+	}
 
 
-		// (1, 4) NOT contains [3, 4]
-		Assert::false(Parser::parse('(1, 4)')->isContaining(Parser::parse('[3, 4]')));
-		// (1, 4) NOT contains [1, 2]
-		Assert::false(Parser::parse('(1, 4)')->isContaining(Parser::parse('[1, 2]')));
 
-		$left = Parser::parse('[1, 3]');
-		$right = Parser::parse('[3, 4]');
+	/**
+	 * @return array
+	 */
+	public function getDataForIsContaining(): array
+	{
+		return [
+			'[1, 4] contains (1, 4)' => [TRUE, '[1, 4]', '(1, 4)'],
+			'(1, 4) NOT contains [1, 4]' => [FALSE, '(1, 4)', '[1, 4]'],
 
-		Assert::false($left->isContaining($right));
-		Assert::false($right->isContaining($left));
+			'[1, 4] contains [2, 3]' => [TRUE, '[1, 4]', '[2, 3]'],
+			'[2, 3] NOT contains [1, 4]' => [FALSE, '[2, 3]', '[1, 4]'],
+
+			'[1, 4] contains (2, 3)' => [TRUE, '[1, 4]', '(2, 3)'],
+			'(2, 3) NOT contains [1, 4]' => [FALSE, '(2, 3)', '[1, 4]'],
+
+			'(1, 4) NOT contains [3, 4]' => [FALSE, '(1, 4)', '[3, 4]'],
+			'(1, 4) NOT contains [1, 2]' => [FALSE, '(1, 4)', '[1, 2]'],
+
+			[FALSE, '[1, 3]', '[3, 4]'],
+			[FALSE, '[3, 4]', '[1, 3]'],
+		];
 	}
 
 
