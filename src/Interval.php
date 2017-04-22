@@ -269,28 +269,25 @@ class Interval
 	 */
 	public function intersection(Interval $other)
 	{
-		$a = $this;
-		$b = $other;
+		if ($this->isContaining($other)) {
+			return $other;
 
-		if ($a->isContaining($b)) {
-			return $b;
+		} elseif ($other->isContaining($this)) {
+			return $this;
 
-		} elseif ($b->isContaining($a)) {
-			return $a;
+		} elseif ($this->isOverlappedFromRightBy($other)) {
+			// This:  □□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□
+			// Other: □□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□
+			//    $other->from   |   | <- $this-till
 
-		} elseif ($a->isOverlappedFromRightBy($b)) {
-			// A: □□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□
-			// B: □□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□
-			//    $b->from   |   | <- $a-till
+			return new static($other->getLeft(), $this->getRight());
 
-			return new static($b->getLeft(), $a->getRight());
+		} elseif ($other->isOverlappedFromRightBy($this)) {
+			// This:  □□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□
+			// Other: □□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□
+			//    $this->from -> |   | <- $other-till
 
-		} elseif ($b->isOverlappedFromRightBy($this)) {
-			// A: □□□□□□□□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□
-			// B: □□□□□□■■■■■■■■■■■□□□□□□□□□□□□□□□□□□□□□□□
-			//    $a->from -> |   | <- $b-till
-
-			return new static($a->getLeft(), $b->getRight());
+			return new static($this->getLeft(), $other->getRight());
 		}
 
 		$dummy = $this->left->asOpened();

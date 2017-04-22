@@ -33,9 +33,9 @@ final class DateTimeIntervalStringParser extends IntervalStringParser
 	 * @param string $string
 	 * @return DateTimeBoundary
 	 */
-	protected static function parseBoundary(string $string): Boundary
+	protected static function parseBoundary(string $input): Boundary
 	{
-		list($elementString, $state) = self::parseBoundaryDataFromString($string);
+		list($elementString, $state) = self::parseBoundaryDataFromString($input);
 
 		/** @var DateTime $dateTime */
 		$dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $elementString);

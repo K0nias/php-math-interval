@@ -432,22 +432,22 @@ final class IntervalTest extends TestCase
 
 	public function testWithLeftIsImmutable()
 	{
-		$a = Parser::parse('[1, 4]');
-		$b = $a->withLeft(new IntegerBoundary(new Integer(0), Boundary::OPENED));
-		Assert::notSame($a, $b);
-		Assert::equal('[1, 4]', (string) $a);
-		Assert::equal('(0, 4]', (string) $b);
+		$interval = Parser::parse('[1, 4]');
+		$newInterval = $interval->withLeft(new IntegerBoundary(new Integer(0), Boundary::OPENED));
+		Assert::notSame($interval, $newInterval);
+		Assert::equal('[1, 4]', (string) $interval);
+		Assert::equal('(0, 4]', (string) $newInterval);
 	}
 
 
 
 	public function testWithRightIsImmutable()
 	{
-		$a = Parser::parse('[1, 4]');
-		$b = $a->withRight(new IntegerBoundary(new Integer(5), Boundary::OPENED));
-		Assert::notSame($a, $b);
-		Assert::equal('[1, 4]', (string) $a);
-		Assert::equal('[1, 5)', (string) $b);
+		$interval = Parser::parse('[1, 4]');
+		$newInterval = $interval->withRight(new IntegerBoundary(new Integer(5), Boundary::OPENED));
+		Assert::notSame($interval, $newInterval);
+		Assert::equal('[1, 4]', (string) $interval);
+		Assert::equal('[1, 5)', (string) $newInterval);
 	}
 
 

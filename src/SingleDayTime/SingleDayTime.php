@@ -126,8 +126,10 @@ final class SingleDayTime implements IComparable
 	{
 		if ($time instanceof static) {
 			return clone $time;
+
 		} elseif ($time instanceof DateTimeInterface) {
 			return static::fromDateTime($time);
+
 		} elseif (is_string($time)) {
 			$dateTime = DateTimeImmutable::createFromFormat('Y-m-d ' . self::TIME_FORMAT, '2001-01-01 ' . $time);
 

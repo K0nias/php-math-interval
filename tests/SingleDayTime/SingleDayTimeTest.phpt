@@ -136,11 +136,11 @@ final class SingleDayTimeTest extends TestCase
 
 	public function testAddDoesNotModify()
 	{
-		$a = new SingleDayTime(1, 1, 1);
-		$b = $a->add(new SingleDayTime(1, 1, 1));
-		Assert::notSame($a, $b);
-		Assert::equal('01:01:01', (string) $a);
-		Assert::equal('02:02:02', (string) $b);
+		$interval = new SingleDayTime(1, 1, 1);
+		$newInterval = $interval->add(new SingleDayTime(1, 1, 1));
+		Assert::notSame($interval, $newInterval);
+		Assert::equal('01:01:01', (string) $interval);
+		Assert::equal('02:02:02', (string) $newInterval);
 	}
 
 
@@ -189,11 +189,11 @@ final class SingleDayTimeTest extends TestCase
 
 	public function testSubDoesNotModify()
 	{
-		$a = new SingleDayTime(1, 1, 1);
-		$b = $a->sub(new SingleDayTime(1, 1, 1));
-		Assert::notSame($a, $b);
-		Assert::equal('01:01:01', (string) $a);
-		Assert::equal('00:00:00', (string) $b);
+		$interval = new SingleDayTime(1, 1, 1);
+		$newInterval = $interval->sub(new SingleDayTime(1, 1, 1));
+		Assert::notSame($interval, $newInterval);
+		Assert::equal('01:01:01', (string) $interval);
+		Assert::equal('00:00:00', (string) $newInterval);
 	}
 
 

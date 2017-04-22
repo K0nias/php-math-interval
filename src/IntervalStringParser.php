@@ -134,10 +134,10 @@ abstract class IntervalStringParser
 
 
 	/**
-	 * @param string $string
+	 * @param string $input
 	 * @return Boundary
 	 */
-	protected static function parseBoundary(string $string): Boundary
+	protected static function parseBoundary(string $input): Boundary
 	{
 		throw new LogicException('Not implemented in this abstract class. Implement this in child.');
 	}

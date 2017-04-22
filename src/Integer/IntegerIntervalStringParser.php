@@ -30,9 +30,9 @@ final class IntegerIntervalStringParser extends IntervalStringParser
 	 * @param string $string
 	 * @return IntegerBoundary
 	 */
-	protected static function parseBoundary(string $string): Boundary
+	protected static function parseBoundary(string $input): Boundary
 	{
-		list($elementString, $state) = self::parseBoundaryDataFromString($string);
+		list($elementString, $state) = self::parseBoundaryDataFromString($input);
 
 		return new IntegerBoundary(Integer::fromString($elementString), $state);
 	}
