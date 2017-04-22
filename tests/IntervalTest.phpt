@@ -14,7 +14,6 @@ require __DIR__ . '/DummyInt.php';
 use Achse\Math\Interval\Boundary;
 use Achse\Math\Interval\Integer\Integer;
 use Achse\Math\Interval\Integer\IntegerBoundary;
-use Achse\Math\Interval\Integer\IntegerInterval;
 use Achse\Math\Interval\Integer\IntegerIntervalStringParser as Parser;
 use Achse\Math\Interval\Interval;
 use Achse\Math\Interval\IntervalRangesInvalidException;
@@ -333,7 +332,7 @@ final class IntervalTest extends TestCase
 		if ($expected === NULL) {
 			Assert::null($intersection);
 		} else {
-			$this->assertInterval(Parser::parse($expected), $intersection);
+			Assert::equal($expected, (string) $intersection);
 		}
 	}
 
@@ -358,53 +357,37 @@ final class IntervalTest extends TestCase
 
 
 
-	public function testDifference()
+	/**
+	 * @dataProvider getDataForDifferenceTest
+	 *
+	 * @param string[] $expected
+	 * @param string $left
+	 * @param string $right
+	 */
+	public function testDifference(array $expected, string $left, string $right)
 	{
-		// [1, 4] \ [0, 5]
-		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('[0, 5]'));
-		Assert::count(0, $diff);
+		$difference = Parser::parse($left)->difference(Parser::parse($right));
+		Assert::equal($expected, $this->intervalArrayToString($difference));
+	}
 
-		// [1, 4] \ [1, 4]
-		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('[1, 4]'));
-		Assert::count(0, $diff);
 
-		// (1, 4) \ (1, 4)
-		$diff = Parser::parse('(1, 4)')->difference(Parser::parse('(1, 4)'));
-		Assert::count(0, $diff);
 
-		// [1, 4] \ [2, 4]
-		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('[2, 4]'));
-		Assert::count(1, $diff);
-		Assert::equal('[1, 2)', (string) reset($diff));
-
-		// [1, 4] \ [1, 2]
-		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('[1, 2]'));
-		Assert::count(1, $diff);
-		Assert::equal('(2, 4]', (string) reset($diff));
-
-		// [1, 4] \ (2, 4)
-		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('(2, 4)'));
-		Assert::count(2, $diff);
-		Assert::equal('[1, 2]', (string) $diff[0]);
-		Assert::equal('[4, 4]', (string) $diff[1]);
-
-		// [1, 4] \ (1, 2)
-		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('(1, 2)'));
-		Assert::count(2, $diff);
-		Assert::equal('[1, 1]', (string) $diff[0]);
-		Assert::equal('[2, 4]', (string) $diff[1]);
-
-		// [1, 4] \ [2, 3]
-		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('[2, 3]'));
-		Assert::count(2, $diff);
-		Assert::equal('[1, 2)', (string) $diff[0]);
-		Assert::equal('(3, 4]', (string) $diff[1]);
-
-		// [1, 4] \ (2, 3)
-		$diff = Parser::parse('[1, 4]')->difference(Parser::parse('(2, 3)'));
-		Assert::count(2, $diff);
-		Assert::equal('[1, 2]', (string) $diff[0]);
-		Assert::equal('[3, 4]', (string) $diff[1]);
+	/**
+	 * @return string[][][]|string[][]
+	 */
+	public function getDataForDifferenceTest(): array
+	{
+		return [
+			'[1, 4] \ [0, 5]' => [[], '[1, 4]', '[0, 5]'],
+			'[1, 4] \ [1, 4]' => [[], '[1, 4]', '[1, 4]'],
+			'(1, 4) \ (1, 4)' => [[], '(1, 4)', '(1, 4)'],
+			'[1, 4] \ [2, 4]' => [['[1, 2)'], '[1, 4]', '[2, 4]'],
+			'[1, 4] \ [1, 2]' => [['(2, 4]'], '[1, 4]', '[1, 2]'],
+			'[1, 4] \ (2, 4)' => [['[1, 2]', '[4, 4]'], '[1, 4]', '(2, 4)'],
+			'[1, 4] \ (1, 2)' => [['[1, 1]', '[2, 4]'], '[1, 4]', '(1, 2)'],
+			'[1, 4] \ [2, 3]' => [['[1, 2)', '(3, 4]'], '[1, 4]', '[2, 3]'],
+			'[1, 4] \ (2, 3)' => [['[1, 2]', '[3, 4]'], '[1, 4]', '(2, 3)'],
+		];
 	}
 
 
@@ -469,17 +452,6 @@ final class IntervalTest extends TestCase
 		Assert::notSame($a, $b);
 		Assert::equal('[1, 4]', (string) $a);
 		Assert::equal('[1, 5)', (string) $b);
-	}
-
-
-
-	/**
-	 * @param IntegerInterval $expected
-	 * @param IntegerInterval $actual
-	 */
-	private function assertInterval(IntegerInterval $expected, IntegerInterval $actual)
-	{
-		Assert::equal((string) $expected, (string) $actual);
 	}
 
 
