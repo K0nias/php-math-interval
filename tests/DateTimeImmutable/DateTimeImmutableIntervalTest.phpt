@@ -171,7 +171,7 @@ final class DateTimeImmutableIntervalTest extends TestCase
 	 * @param string $first
 	 * @param string $second
 	 */
-	public function testIntersection(?string $expected, string $first, string $second)
+	public function testIntersection(string $expected = NULL, string $first, string $second)
 	{
 		$intersection = Parser::parse($first)->intersection(Parser::parse($second));
 		Assert::equal($expected, $intersection === NULL ? $intersection : (string) $intersection);
