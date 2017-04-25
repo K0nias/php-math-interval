@@ -6,7 +6,20 @@
 [![Coverage Status](https://coveralls.io/repos/github/Achse/php-math-interval/badge.svg?branch=master)](https://coveralls.io/github/Achse/php-math-interval?branch=master)
 [![Dependency Status](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef/badge.svg?style=flat)](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef)
 
+## What it does?
+
+Filters, calendars, opening hours, activity logs, ... all where since-till appears you can find intervals. Many times it looks like this:
+```php
+pubflic function foo(DateTimeImmutable $sice, DateTimeImmutable $till) {
+   / ...
+}
+```
+In such an implementation you have to repeat chceck `$since > $till` all over again. Also you have to write your own tooling to work with intervals.
+
+Library `php-math-interval` brings **Value Objects** for representation and powerful tooling to easy manipulation.
+
 ## It's awesome!
+
 * Heavily **tested**,
 * all object are **immutable**,
 * code is **clean and predictable**,
