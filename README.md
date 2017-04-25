@@ -10,13 +10,15 @@
 
 Filters, calendars, opening hours, activity logs, ... all where since-till appears you can find intervals. Many times it looks like this:
 ```php
-pubflic function foo(DateTimeImmutable $sice, DateTimeImmutable $till) {
-   / ...
-}
+public function foo(DateTimeImmutable $sice, DateTimeImmutable $till) { ... }
 ```
 In such an implementation you have to repeat chceck `$since > $till` all over again. Also you have to write your own tooling to work with intervals.
 
 Library `php-math-interval` brings **Value Objects** for representation and powerful tooling to easy manipulation.
+
+```php
+public function foo(DateTimeImmutableInterval $interval) { ... }
+```
 
 ## It's awesome!
 
