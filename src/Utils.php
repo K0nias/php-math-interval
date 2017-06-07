@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Achse\Math\Interval;
 
+use DateTimeInterface;
 use InvalidArgumentException;
 
 
@@ -34,12 +35,23 @@ final class Utils
 	 * @internal This method is supposed to be used only in this library. Please do not use code from here
 	 * in your project. Back compatibility of API is not guaranteed here.
 	 *
-	 * @param \DateTimeInterface $first
-	 * @param \DateTimeInterface $second
+	 * @param DateTimeInterface $first
+	 * @param DateTimeInterface $second
 	 * @return bool
 	 */
-	public static function isSameDate(\DateTimeInterface $first, \DateTimeInterface $second): bool
+	public static function isSameDate(DateTimeInterface $first, DateTimeInterface $second): bool
 	{
+		if ($first->getTimezone()->getName() !== $second->getTimezone()->getName()) {
+			throw new InvalidArgumentException(
+				sprintf(
+					'You cannot compare times from two different timezones (%s, %s) for same date.'
+					. ' Date is not always same at a time in different locations.',
+					$first->getTimezone()->getName(),
+					$second->getTimezone()->getName()
+				)
+			);
+		}
+
 		return $first->format('Y-m-d') === $second->format('Y-m-d');
 	}
 
