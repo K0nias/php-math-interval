@@ -389,7 +389,7 @@ final class SingleDayTimeTest extends TestCase
 			[
 				'pm, PM, 805, 6, 18, 06, 18, 19, 20, 000000',
 				'18:19:20',
-				'a, A, B, g, G, h, H, i, s, u'
+				'a, A, B, g, G, h, H, i, s, u',
 			],
 			['Y-m-d 18:19:20', '18:19:20', '\Y-\m-\d H:i:s'],
 		];
