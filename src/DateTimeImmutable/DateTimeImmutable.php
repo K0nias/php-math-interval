@@ -7,7 +7,7 @@ namespace Achse\Math\Interval\DateTimeImmutable;
 use Achse\Comparable\ComparisonMethods;
 use Achse\Comparable\IComparable;
 use Achse\Math\Interval\Utils;
-use LogicException;
+use DateTimeInterface;
 
 
 
@@ -19,10 +19,10 @@ final class DateTimeImmutable extends \DateTimeImmutable implements IComparable
 
 
 	/**
-	 * @param \DateTimeInterface $dateTime
+	 * @param DateTimeInterface $dateTime
 	 * @return static
 	 */
-	public static function from(\DateTimeInterface $dateTime): DateTimeImmutable
+	public static function from(DateTimeInterface $dateTime): DateTimeImmutable
 	{
 		return new static($dateTime->format('Y-m-d H:i:s.u'), $dateTime->getTimezone());
 	}

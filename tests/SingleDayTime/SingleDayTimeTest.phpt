@@ -387,7 +387,7 @@ final class SingleDayTimeTest extends TestCase
 		return [
 			['18:19:20', '18:19:20', 'H:i:s'],
 			[
-				'pm, PM, 763, 6, 18, 06, 18, 19, 20, 000000',
+				'pm, PM, 805, 6, 18, 06, 18, 19, 20, 000000',
 				'18:19:20',
 				'a, A, B, g, G, h, H, i, s, u'
 			],

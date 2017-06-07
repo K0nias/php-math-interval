@@ -11,6 +11,7 @@ use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
 use Achse\Math\Interval\ModificationNotPossibleException;
 use Achse\Math\Interval\Utils;
 use DateTimeInterface;
+use DateTimeZone;
 use InvalidArgumentException;
 use LogicException;
 
@@ -153,10 +154,10 @@ final class SingleDayTime implements IComparable
 
 
 	/**
-	 * @param \DateTimeInterface $dateTime
+	 * @param DateTimeInterface $dateTime
 	 * @return static
 	 */
-	public static function fromDateTime(\DateTimeInterface $dateTime): SingleDayTime
+	public static function fromDateTime(DateTimeInterface $dateTime): SingleDayTime
 	{
 		return new static((int) $dateTime->format('H'), (int) $dateTime->format('i'), (float) $dateTime->format('s'));
 	}
@@ -218,16 +219,16 @@ final class SingleDayTime implements IComparable
 	 */
 	private function toInternalDateTime(): DateTimeImmutable
 	{
-		return $this->toDateTime(new DateTimeImmutable(self::INTERNAL_DATE));
+		return $this->toDateTime(new DateTimeImmutable(self::INTERNAL_DATE, new DateTimeZone('UTC')));
 	}
 
 
 
 	/**
-	 * @param \DateTimeInterface $day
+	 * @param DateTimeInterface $day
 	 * @return DateTimeImmutable
 	 */
-	public function toDateTime(\DateTimeInterface $day): DateTimeImmutable
+	public function toDateTime(DateTimeInterface $day): DateTimeImmutable
 	{
 		$day = DateTimeImmutable::from($day)
 			->setTime($this->hours, $this->minutes, (int) round($this->seconds));
