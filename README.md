@@ -120,7 +120,7 @@ Parser::parse('[1, 2]')->isColliding(Parser::parse('(2, 3)')); // false
 Library contains intervals for those types:
 * `Integer` - classic int,
 * `DateTimeImmutable` and `DateTime` (I strongly advise you to use Immutable only),
-* `SingeDayTime` - represents "clock-time" from *00:00:00* to *23:59:59*.
+* `SingeDayTime` - represents "clock-time" of one day. From *[00:00:00* one day to *00:00:00)* another.
 
 ## Creating your own type
 `Interval` (its `Boundary`) can contains any type that implements `IComparable`, but if you want
