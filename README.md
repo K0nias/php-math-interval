@@ -27,8 +27,6 @@ public function foo(DateTimeImmutableInterval $interval) { ... }
 * code is **clean and predictable**,
 * interval is modeled as **mathematical entity**.
 
-<img src="https://img.memesuper.com/85f5a4055aca191d4d841341c41a431e_10-memes-sobre-leonardo-meme-dicaprio_440-264.jpeg" width="150">
-
 ```
 composer require achse/php-math-interval
 ```
