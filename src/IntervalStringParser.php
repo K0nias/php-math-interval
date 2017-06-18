@@ -81,7 +81,7 @@ abstract class IntervalStringParser
 
 
 	/**
-	 * @param int[] $letters
+	 * @param string[] $letters
 	 * @return array
 	 * @throws IntervalParseErrorException
 	 */
@@ -91,8 +91,8 @@ abstract class IntervalStringParser
 			throw new IntervalParseErrorException('No letters given.');
 		}
 
-		/** @var int $firstCharacter */
-		/** @var int $lastCharacter */
+		/** @var string $firstCharacter */
+		/** @var string $lastCharacter */
 
 		if (self::isCharacterBoundaryType($firstCharacter)) {
 			array_shift($letters);
