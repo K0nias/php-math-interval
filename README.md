@@ -37,26 +37,26 @@ composer require achse/php-math-interval
 Via factories (most simple):
 ```php
 $interval = DateTimeImmutableIntervalFactory::create(
-	new \DateTimeImmutable('2015-10-07 12:00:00'), 
+	new \DateTimeImmutable('2015-10-07T12:00:00+02:00'), 
 	Boundary::CLOSED, 
-	new \DateTimeImmutable('2015-10-07 14:00:00'), 
+	new \DateTimeImmutable('2015-10-07T14:00:00+02:00'), 
 	Boundary::OPENED
 );
-echo (string)$interval; // [2015-10-07 12:00:00, 2015-10-07 14:00:00)
+echo (string)$interval; // [2015-10-07T12:00:00+02:00, 2015-10-07T14:00:00+02:00)
 ```
 
 Directly via constructors:
 ```php
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable; // We need object implementing IComparable
 
-$left = new IntegerBoundary(new DateTimeImmutable('2015-10-07 12:00:00'), Boundary::CLOSED);
-$right = new IntegerBoundary(new DateTimeImmutable('2015-10-07 14:00:00'), Boundary::OPENED);
+$left = new IntegerBoundary(new DateTimeImmutable('2015-10-07T12:00:00+02:00'), Boundary::CLOSED);
+$right = new IntegerBoundary(new DateTimeImmutable('2015-10-07T14:00:00+02:00'), Boundary::OPENED);
 $interval = new DateTimeImmutableInterval($left, $right);
 ```
 
 Parsed from string (used for tests mostly):
 ```php
-$interval = DateTimeImmutableIntervalStringParser::parse('[2015-01-01 05:00:00, 2015-01-01 10:00:00)');
+$interval = DateTimeImmutableIntervalStringParser::parse('[2015-01-01T05:00:00+02:00, 2015-01-01T10:00:00+02:00)');
 ```
 
 ## Methods

@@ -96,9 +96,9 @@ final class SingleDayTimeTest extends TestCase
 
 	public function testToDateTime()
 	{
-		$day = new DateTimeImmutable('2015-12-24 00:00:00');
+		$day = new DateTimeImmutable('2015-12-24T00:00:00+02:00');
 
-		Assert::equal('2015-12-24 12:13:14', (string) (new SingleDayTime(12, 13, 14))->toDateTime($day));
+		Assert::equal('2015-12-24T12:13:14+02:00', (string) (new SingleDayTime(12, 13, 14))->toDateTime($day));
 	}
 
 
@@ -285,7 +285,7 @@ final class SingleDayTimeTest extends TestCase
 
 	public function testFromDateTime()
 	{
-		$time = SingleDayTime::fromDateTime(new \DateTimeImmutable('2015-05-14 09:10:11'));
+		$time = SingleDayTime::fromDateTime(new \DateTimeImmutable('2015-05-14T09:10:11+02:00'));
 		Assert::equal('09:10:11', $time->format('H:i:s'));
 	}
 
@@ -314,11 +314,11 @@ final class SingleDayTimeTest extends TestCase
 			['01:02:03', '01:02:03'],
 			['04:17:39', new SingleDayTime(4, 17, 39)],
 
-			['04:17:39', new \DateTime('2017-04-18 04:17:39')],
-			['04:17:39', new \DateTimeImmutable('2017-04-18 04:17:39')],
+			['04:17:39', new \DateTime('2017-04-18T04:17:39+02:00')],
+			['04:17:39', new \DateTimeImmutable('2017-04-18T04:17:39+02:00')],
 
-			['04:17:39', new DateTime('2017-04-18 04:17:39')],
-			['04:17:39', new DateTimeImmutable('2017-04-18 04:17:39')],
+			['04:17:39', new DateTime('2017-04-18T04:17:39+02:00')],
+			['04:17:39', new DateTimeImmutable('2017-04-18T04:17:39+02:00')],
 		];
 	}
 

@@ -125,9 +125,9 @@ final class DateTimeInterval extends Interval
 		$right = $this->getRight()->getValue();
 
 		return (
-			$this->getLeftBracket() . $left->format('Y-m-d H:i:s')
+			$this->getLeftBracket() . $left->format(\DateTime::ATOM)
 			. self::STRING_DELIMITER . ' '
-			. $right->format('Y-m-d H:i:s') . $this->getRightBracket()
+			. $right->format(\DateTime::ATOM) . $this->getRightBracket()
 		);
 	}
 

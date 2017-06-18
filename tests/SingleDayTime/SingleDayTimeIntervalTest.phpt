@@ -115,7 +115,7 @@ final class SingleDayTimeIntervalTest extends TestCase
 	 */
 	public function testFromDateTimeInterval(string $expected, string $input)
 	{
-		$dateTimeInterval = ImmutableParser::parse('[2015-05-10 12:13:14, 2015-05-12 21:22:23)');
+		$dateTimeInterval = ImmutableParser::parse('[2015-05-10T12:13:14+02:00, 2015-05-12T21:22:23+02:00)');
 
 		$interval = SingleDayTimeInterval::fromDateTimeInterval($dateTimeInterval, new DateTimeImmutable($input));
 		Assert::equal($expected, (string) $interval);
@@ -171,8 +171,8 @@ final class SingleDayTimeIntervalTest extends TestCase
 	public function testToDateTimeInterval()
 	{
 		$singleDayInterval = SingleDayTimeInterval::fromString('01:02:03', '04:05:06');
-		$dateTimeInterval = $singleDayInterval->toDaTeTimeInterval(new DateTimeImmutable('2015-10-11 20:21:22'));
-		Assert::equal('[2015-10-11 01:02:03, 2015-10-11 04:05:06)', (string) $dateTimeInterval);
+		$dateTimeInterval = $singleDayInterval->toDaTeTimeInterval(new DateTimeImmutable('2015-10-11T20:21:22+02:00'));
+		Assert::equal('[2015-10-11T01:02:03+02:00, 2015-10-11T04:05:06+02:00)', (string) $dateTimeInterval);
 	}
 
 }

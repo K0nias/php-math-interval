@@ -28,13 +28,13 @@ final class UtilsTest extends TestCase
 	{
 		Assert::exception(
 			function () {
-				$first = new DateTimeImmutable('2017-01-01 00:00:00', new DateTimeZone('Europe/Prague'));
-				$second = new DateTimeImmutable('2017-01-01 00:00:00', new DateTimeZone('UTC'));
+				$first = new DateTimeImmutable('2017-01-01T00:00:00+02:00');
+				$second = new DateTimeImmutable('2017-01-01T00:00:00+00:00');
 
 				Utils::isSameDate($first, $second);
 			},
 			InvalidArgumentException::class,
-			'You cannot compare times from two different timezones (Europe/Prague, UTC) for same date.'
+			'You cannot compare times from two different timezones (+02:00, +00:00) for same date.'
 			. ' Date is not always same at a time in different locations.'
 		);
 	}
@@ -68,23 +68,21 @@ final class UtilsTest extends TestCase
 	 */
 	public function getDataForIsSameDate()
 	{
-		$prague = new DateTimeZone('Europe/Prague');
-
 		return [
 			[
 				TRUE,
-				new DateTimeImmutable('2017-01-01 00:00:00', $prague),
-				new DateTimeImmutable('2017-01-01 00:00:00', $prague),
+				new DateTimeImmutable('2017-01-01T00:00:00+02:00'),
+				new DateTimeImmutable('2017-01-01T00:00:00+02:00'),
 			],
 			[
 				TRUE,
-				new DateTimeImmutable('2017-01-01 00:00:00', $prague),
-				new DateTimeImmutable('2017-01-01 23:59:59', $prague),
+				new DateTimeImmutable('2017-01-01T00:00:00+02:00'),
+				new DateTimeImmutable('2017-01-01T23:59:59+02:00'),
 			],
 			[
 				FALSE,
-				new DateTimeImmutable('2017-01-01 00:00:00', $prague),
-				new DateTimeImmutable('2017-01-02 00:00:00', $prague),
+				new DateTimeImmutable('2017-01-01T00:00:00+02:00'),
+				new DateTimeImmutable('2017-01-02T00:00:00+02:00'),
 			],
 		];
 	}

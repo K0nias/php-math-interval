@@ -35,7 +35,7 @@ final class DateTimeImmutableIntervalStringParser extends IntervalStringParser
 		list($elementString, $state) = self::parseBoundaryDataFromString($input);
 
 		/** @var DateTimeImmutable $dateTime */
-		$dateTime = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $elementString);
+		$dateTime = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $elementString);
 
 		return new DateTimeImmutableBoundary(DateTimeImmutable::from($dateTime), $state);
 	}

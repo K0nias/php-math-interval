@@ -28,7 +28,7 @@ final class DateTimeTest extends TestCase
 
 	public function testCompare()
 	{
-		$this->assertForComparison(new DateTime('2015-05-05 12:00:00'), new DateTime('2015-05-06 12:00:00'));
+		$this->assertForComparison(new DateTime('2015-05-05T12:00:00+02:00'), new DateTime('2015-05-06T12:00:00+02:00'));
 		Assert::exception(
 			function () {
 				(new DateTime())->compare(new Integer(5));

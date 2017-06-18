@@ -38,7 +38,7 @@ final class DateTimeIntervalStringParser extends IntervalStringParser
 		list($elementString, $state) = self::parseBoundaryDataFromString($input);
 
 		/** @var DateTime $dateTime */
-		$dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $elementString);
+		$dateTime = DateTime::createFromFormat(\DateTime::ATOM, $elementString);
 
 		return new DateTimeBoundary(DateTime::from($dateTime), $state);
 	}

@@ -29,8 +29,8 @@ final class DateTimeImmutableTest extends TestCase
 	public function testCompare()
 	{
 		$this->assertForComparison(
-			new DateTimeImmutable('2015-05-05 12:00:00'),
-			new DateTimeImmutable('2015-05-06 12:00:00')
+			new DateTimeImmutable('2015-05-05T12:00:00+02:00'),
+			new DateTimeImmutable('2015-05-06T12:00:00+02:00')
 		);
 		Assert::exception(
 			function () {

@@ -47,7 +47,7 @@ final class DateTimeImmutable extends \DateTimeImmutable implements IComparable
 	 */
 	public function __toString(): string
 	{
-		return $this->format('Y-m-d H:i:s');
+		return $this->format(\DateTime::ATOM);
 	}
 
 }

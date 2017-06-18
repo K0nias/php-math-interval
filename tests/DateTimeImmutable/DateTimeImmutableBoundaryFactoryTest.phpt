@@ -23,9 +23,9 @@ final class DateTimeImmutableBoundaryFactoryTest extends TestCase
 	public function testAll()
 	{
 		Assert::equal(
-			'[2015-10-11 12:13:14]',
+			'[2015-10-11T12:13:14+02:00]',
 			(string) DateTimeImmutableBoundaryFactory::create(
-				new \DateTimeImmutable('2015-10-11 12:13:14'),
+				new \DateTimeImmutable('2015-10-11T12:13:14+02:00'),
 				Boundary::CLOSED
 			)
 		);
