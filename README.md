@@ -4,7 +4,7 @@
 [![Scrutinizer](https://scrutinizer-ci.com/g/Achse/php-math-interval/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Achse/php-math-interval/)
 [![Code Climate](https://codeclimate.com/github/Achse/php-math-interval/badges/gpa.svg)](https://codeclimate.com/github/Achse/php-math-interval)
 [![Coverage Status](https://coveralls.io/repos/github/Achse/php-math-interval/badge.svg?branch=master)](https://coveralls.io/github/Achse/php-math-interval?branch=master)
-[![Dependency Status](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef/badge.svg?style=flat)](https://www.versioneye.com/user/projects/572070f6fcd19a00518569ef)
+[![Dependency Status](https://www.versioneye.com/user/projects/59463ab16725bd00533b7d31/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/59463ab16725bd00533b7d31)
 
 ## What it does?
 
