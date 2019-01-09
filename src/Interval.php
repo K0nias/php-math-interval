@@ -264,8 +264,10 @@ class Interval
 
 
 	/**
+	 * If intervals don't overlaps than returned Interval will be "empty" - check via Interval::isEmpty() method
+	 *
 	 * @param Interval $other
-	 * @return static|NULL
+	 * @return static
 	 */
 	public function intersection(Interval $other)
 	{

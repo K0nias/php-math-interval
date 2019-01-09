@@ -76,6 +76,13 @@ $interval->isContainingElement(new Integer(3)); // false
 Parser::parse('(1, 3)')->intersection(Parser::parse('(2, 4)')); // (2, 3)
 ```
 
+* Get intersection between two **not** overlapping intervals => **empty** interval -- test via Interval::isEmpty()
+
+```php
+// (1, 2) ∩ (3, 4) ⟺ empty
+Parser::parse('(1, 2)')->intersection(Parser::parse('(1, 4)')); // (1, 1) -- empty interval
+```
+
 * Get union of two intervals
 ```php
 // Union of overlapping intervals
