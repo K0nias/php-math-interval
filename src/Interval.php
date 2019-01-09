@@ -336,7 +336,8 @@ class Interval
 	 */
 	public function difference(Interval $other): array
 	{
-		if (($other = $this->intersection($other)) === NULL) {
+		$other = $this->intersection($other);
+		if ($other->isEmpty()) {
 			return [$this];
 		}
 
