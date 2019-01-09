@@ -190,7 +190,7 @@ final class SingleDayTimeInterval extends Interval
 	 */
 	private function isEndingAtMidnightNextDay(Boundary $left, Boundary $right): bool
 	{
-		return !($left->isOpened() && $left->getValue()->isEqual($right))
+		return !($left->isOpened() && $left->getValue()->isEqual($right->getValue()))
 			&& $right->isOpened()
 			&& $right->getValue()->isEqual($this->getZeroElement());
 	}

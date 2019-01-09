@@ -10,8 +10,12 @@ namespace Achse\Tests\Interval\SingleDayTime;
 
 require __DIR__ . '/../bootstrap.php';
 
+use Achse\Math\Interval\Boundary;
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutable;
 use Achse\Math\Interval\DateTimeImmutable\DateTimeImmutableIntervalStringParser as ImmutableParser;
+use Achse\Math\Interval\IntervalRangesInvalidException;
+use Achse\Math\Interval\SingleDayTime\SingleDayTime;
+use Achse\Math\Interval\SingleDayTime\SingleDayTimeBoundary;
 use Achse\Math\Interval\SingleDayTime\SingleDayTimeInterval;
 use Achse\Math\Interval\SingleDayTime\SingleDayTimeIntervalStringParser as Parser;
 use Tester\Assert;
@@ -173,6 +177,29 @@ final class SingleDayTimeIntervalTest extends TestCase
 		$singleDayInterval = SingleDayTimeInterval::fromString('01:02:03', '04:05:06');
 		$dateTimeInterval = $singleDayInterval->toDaTeTimeInterval(new DateTimeImmutable('2015-10-11T20:21:22+02:00'));
 		Assert::equal('[2015-10-11T01:02:03+02:00, 2015-10-11T04:05:06+02:00)', (string) $dateTimeInterval);
+	}
+
+	public function testInvalidRangeTimeInterval()
+	{
+		Assert::exception(
+			function () {
+				new SingleDayTimeInterval(
+					new SingleDayTimeBoundary(SingleDayTime::from('00:10:00'), Boundary::OPENED),
+					new SingleDayTimeBoundary(SingleDayTime::from('00:01:00'), Boundary::OPENED)
+				);
+			},
+			IntervalRangesInvalidException::class
+		);
+	}
+
+	public function testOverMidnightTime()
+	{
+		$dateTimeInterval = new SingleDayTimeInterval(
+			new SingleDayTimeBoundary(SingleDayTime::from('00:10:00'), Boundary::OPENED),
+			new SingleDayTimeBoundary(SingleDayTime::from('00:00:00'), Boundary::OPENED)
+		);
+
+		Assert::equal('(00:10:00, 00:00:00)', (string) $dateTimeInterval);
 	}
 
 }
